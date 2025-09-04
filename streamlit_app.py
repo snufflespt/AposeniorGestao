@@ -38,6 +38,7 @@ if submit:
         sheet.append_row([nome, contacto])
         st.success(f"Utente '{nome}' com contacto '{contacto}' adicionado ao Google Sheets!")
 
+# Inicio da tabela de pesquisa/edicao e remover
 st.divider()
 st.subheader("Lista de utentes")
 
@@ -55,7 +56,29 @@ if dados:
     else:
         df_filtrado = df
 
-    st.dataframe(df_filtrado, use_container_width=True)
+    # Mostrar tabela com botões
+    for i, row in df_filtrado.iterrows():
+        col1, col2, col3 = st.columns([3, 2, 2])
+        col1.write(f"**{row['Nome']}** — {row['Contacto']}")
+        if col2.button("✏️ Editar", key=f"edit_{i}"):
+            st.session_state['edit_index'] = i
+        if col3.button("🗑️ Apagar", key=f"delete_{i}"):
+            sheet.delete_rows(i+2)  # +2 porque o índice começa em 0 e há cabeçalho
+            st.experimental_rerun()
+
+    # Se estiver em modo edição
+    if 'edit_index' in st.session_state:
+        idx = st.session_state['edit_index']
+        st.subheader("Editar utente")
+        with st.form("form_editar"):
+            novo_nome = st.text_input("Nome do utente", value=df.iloc[idx]['Nome'])
+            novo_contacto = st.text_input("Contacto", value=df.iloc[idx]['Contacto'])
+            guardar = st.form_submit_button("Guardar alterações")
+        if guardar:
+            sheet.update_cell(idx+2, 1, novo_nome)     # Coluna 1 = Nome
+            sheet.update_cell(idx+2, 2, novo_contacto) # Coluna 2 = Contacto
+            del st.session_state['edit_index']
+            st.experimental_rerun()
 
 else:
     st.info("Ainda não existem utentes registados.")
