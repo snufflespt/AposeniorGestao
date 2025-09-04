@@ -4,10 +4,17 @@ st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
 st.title("Gestão IPSS")
 st.write("Olá, Nuno! 👋")
+
 st.divider()
 
-with st.sidebar:
-    st.header("Menu")
-    st.write("Por enquanto, só um olá. Vamos passo a passo.")
+st.subheader("Adicionar utente (teste)")
 
-st.success("A app está a funcionar. Próximo: ligar ao Google Sheets.")
+# Formulário simples
+with st.form("form_utente"):
+    nome = st.text_input("Nome do utente")
+    contacto = st.text_input("Contacto")
+    submit = st.form_submit_button("Guardar")
+
+# Mostrar resultado
+if submit:
+    st.success(f"Utente '{nome}' com contacto '{contacto}' adicionado (teste).")
