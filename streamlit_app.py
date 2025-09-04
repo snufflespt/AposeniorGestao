@@ -63,10 +63,22 @@ if dados:
         if col2.button("✏️ Editar", key=f"edit_{i}"):
             st.session_state['edit_index'] = i
         if col3.button("🗑️ Apagar", key=f"delete_{i}"):
-            sheet.delete_rows(i+2)  # +2 porque o índice começa em 0 e há cabeçalho
+            st.session_state['delete_index'] = i
+
+    # Confirmação de apagar
+    if 'delete_index' in st.session_state:
+        idx = st.session_state['delete_index']
+        st.warning(f"Tens a certeza que queres apagar o utente: {df.iloc[idx]['Nome']}?")
+        col_conf1, col_conf2 = st.columns(2)
+        if col_conf1.button("✅ Sim, apagar"):
+            sheet.delete_rows(idx+2)  # +2 por causa do cabeçalho
+            del st.session_state['delete_index']
+            st.rerun()
+        if col_conf2.button("❌ Cancelar"):
+            del st.session_state['delete_index']
             st.rerun()
 
-    # Se estiver em modo edição
+    # Modo edição
     if 'edit_index' in st.session_state:
         idx = st.session_state['edit_index']
         st.subheader("Editar utente")
