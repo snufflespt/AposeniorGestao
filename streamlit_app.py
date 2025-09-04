@@ -44,10 +44,18 @@ st.subheader("Lista de utentes")
 # Ler todos os dados da folha
 dados = sheet.get_all_records()
 
-# Mostrar em tabela
 if dados:
     df = pd.DataFrame(dados)
-    st.dataframe(df)
+
+    # Campo de pesquisa
+    pesquisa = st.text_input("Pesquisar utente por nome ou contacto:")
+
+    if pesquisa:
+        df_filtrado = df[df.apply(lambda row: pesquisa.lower() in row.astype(str).str.lower().to_string(), axis=1)]
+    else:
+        df_filtrado = df
+
+    st.dataframe(df_filtrado, use_container_width=True)
+
 else:
     st.info("Ainda não existem utentes registados.")
-
