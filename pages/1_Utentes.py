@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from utils.sheets import get_worksheet
 
-st.set_page_config(page_title="Gestão de Utentes", page_icon="🧍")
 st.title("Gestão de Utentes")
 
 # Ligar à folha "Utentes"
