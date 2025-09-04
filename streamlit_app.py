@@ -64,7 +64,7 @@ if dados:
             st.session_state['edit_index'] = i
         if col3.button("🗑️ Apagar", key=f"delete_{i}"):
             sheet.delete_rows(i+2)  # +2 porque o índice começa em 0 e há cabeçalho
-            st.experimental_rerun()
+            st.rerun()
 
     # Se estiver em modo edição
     if 'edit_index' in st.session_state:
@@ -78,7 +78,7 @@ if dados:
             sheet.update_cell(idx+2, 1, novo_nome)     # Coluna 1 = Nome
             sheet.update_cell(idx+2, 2, novo_contacto) # Coluna 2 = Contacto
             del st.session_state['edit_index']
-            st.experimental_rerun()
+            st.rerun()
 
 else:
     st.info("Ainda não existem utentes registados.")
