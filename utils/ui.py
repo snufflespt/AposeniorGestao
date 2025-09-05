@@ -7,6 +7,9 @@ def configurar_pagina(titulo, icone="🧭"):
     aplicar_estilos()
     st.title(f"{icone} {titulo}")
 
+import streamlit as st
+import base64
+
 def imagem_base64(caminho):
     with open(caminho, "rb") as f:
         dados = f.read()
@@ -17,7 +20,6 @@ def aplicar_estilos():
     st.markdown(
         f"""
         <style>
-        /* Fonte global */
         html, body, [class*="css"] {{
             font-family: 'Segoe UI', sans-serif;
             color: #2E2E2E;
@@ -31,10 +33,11 @@ def aplicar_estilos():
             padding: 0.5em 1em;
             font-size: 1rem;
             border: none;
+            transition: all 0.2s ease-in-out;
         }}
         div.stButton > button:hover {{
             background-color: #E94E1B;
-            color: white;
+            transform: scale(1.03);
         }}
 
         /* Títulos */
@@ -60,6 +63,13 @@ def aplicar_estilos():
             color: #2E2E2E !important;
         }}
 
+        /* Área do logótipo no menu lateral */
+        section[data-testid="stSidebar"] img {{
+            background-color: #3a3a3a; /* fundo mais escuro para contraste */
+            padding: 8px;
+            border-radius: 8px;
+        }}
+
         /* Destacar opção ativa no menu lateral */
         section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {{
             background-color: #F26A21;
@@ -79,9 +89,10 @@ def aplicar_estilos():
             font-weight: bold !important;
             font-size: 1.25rem !important;
             border-bottom: 3px solid #F26A21 !important;
+            transform: scale(1.05);
         }}
 
-        /* Fundo geral da aplicação - ligeiramente mais escuro */
+        /* Fundo geral */
         [data-testid="stAppViewContainer"] {{
             background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
             background-attachment: fixed;
@@ -95,6 +106,10 @@ def aplicar_estilos():
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease-in-out;
+        }}
+        [data-testid="stVerticalBlock"] > div:first-child:hover {{
+            transform: translateY(-2px);
         }}
 
         /* Marca de água da mascote */
@@ -115,12 +130,6 @@ def aplicar_estilos():
         """,
         unsafe_allow_html=True
     )
-
-
-
-
-
-
 
 def titulo_secao(texto, icone="📌"):
     """Mostra um título de secção com divisor."""
