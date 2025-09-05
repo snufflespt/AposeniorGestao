@@ -77,7 +77,7 @@ def aplicar_estilos():
         }}
         .stTabs [role="tab"][aria-selected="true"] {{
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 2rem;
             border-bottom: 3px solid #F26A21;
         }}
 
