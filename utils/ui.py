@@ -8,6 +8,7 @@ def configurar_pagina(titulo, icone="🧭"):
     st.title(f"{icone} {titulo}")
 
 def imagem_base64(caminho):
+    """Converte imagem para base64 para usar no CSS."""
     with open(caminho, "rb") as f:
         dados = f.read()
     return base64.b64encode(dados).decode()
@@ -17,6 +18,7 @@ def aplicar_estilos():
     st.markdown(
         f"""
         <style>
+        /* Fonte global */
         html, body, [class*="css"] {{
             font-family: 'Segoe UI', sans-serif;
             color: #2E2E2E;
@@ -60,7 +62,7 @@ def aplicar_estilos():
             color: #2E2E2E !important;
         }}
 
-        /* LOGO - remover rectângulo branco e centralizar */
+        /* LOGO - centralizado e sem rectângulo branco */
         section[data-testid="stSidebar"] img {{
             display: block;
             margin: 0 auto;
@@ -69,13 +71,13 @@ def aplicar_estilos():
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }}
-        section[data-testid="stSidebar"] [data-testid="stImage"] > div {{
-            background: none !important; /* remove fundo branco do container */
+        section[data-testid="stSidebar"] [data-testid="stImage"] {{
+            background: none !important;
             padding: 0 !important;
         }}
 
-        /* OPÇÃO ATIVA NO MENU LATERAL - fundo + texto maior + bold */
-        section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {{
+        /* OPÇÃO ATIVA NO MENU LATERAL */
+        section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] > div {{
             background-color: #F26A21 !important;
             border-radius: 5px;
             padding: 0.4em;
