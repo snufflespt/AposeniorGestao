@@ -35,22 +35,20 @@ def aplicar_estilos():
 
         /* MENU LATERAL - aumentar tamanho do texto e ícones */
         section[data-testid="stSidebar"] {
-            font-size: 1.15rem;   /* aumenta tamanho do texto */
+            font-size: 1.15rem;
         }
         section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-            font-size: 1.15rem;   /* aumenta tamanho do texto de markdown */
+            font-size: 1.15rem;
         }
-
-        /* Ícones e labels do menu */
-        section[data-testid="stSidebar"] .css-1v3fvcr, /* ícones */
-        section[data-testid="stSidebar"] .css-1d391kg { /* labels */
+        section[data-testid="stSidebar"] .css-1v3fvcr,
+        section[data-testid="stSidebar"] .css-1d391kg {
             font-size: 1.15rem !important;
             line-height: 1.6;
         }
 
-        /* Destacar opção ativa no menu lateral */
-        section[data-testid="stSidebar"] .stRadio > label[data-baseweb="radio"] > div[role="radio"][aria-checked="true"] {
-            background-color: #e6f2ff; /* fundo azul claro */
+        /* Destacar qualquer opção ativa no menu lateral */
+        section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {
+            background-color: #e6f2ff;
             border-radius: 5px;
             padding: 0.3em;
             font-weight: bold;
