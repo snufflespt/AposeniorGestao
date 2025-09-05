@@ -2,20 +2,23 @@ import streamlit as st
 from utils.ui import aplicar_estilos
 from secoes import utentes, turmas, professores, disciplinas
 
+# Configuração global da página
 st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
-# Carregar CSS global logo no arranque
+# 🔹 Carregar CSS global logo no arranque
 aplicar_estilos()
+
+# 🔹 Logótipo no menu lateral
 st.sidebar.image("imagens/logo.png", use_container_width=True)
 st.sidebar.markdown("### Gestão IPSS")
 
-
-st.sidebar.title("Menu")
+# Menu principal
 opcao = st.sidebar.radio(
     "Escolhe a secção:",
     ["🏠 Início", "📚 Disciplinas", "🧍 Utentes", "🏫 Turmas", "👨‍🏫 Professores"]
 )
 
+# Conteúdo das páginas
 if opcao == "🏠 Início":
     st.title("Bem-vindo à Gestão IPSS")
     st.write("Usa o menu à esquerda para navegar entre as secções.")
