@@ -31,7 +31,7 @@ def mostrar_pagina():
                 st.success(f"Utente '{nome}' adicionado com sucesso!")
 
     with tab_gerir:
-        titulo_secao("Lista de utentes", "📋")
+        st.markdown("### Lista de utentes")
         dados = sheet.get_all_records()
 
         if dados:
