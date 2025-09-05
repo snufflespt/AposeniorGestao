@@ -2,12 +2,11 @@ import streamlit as st
 from utils.ui import aplicar_estilos
 from secoes import utentes, turmas, professores, disciplinas
 
-# Configuração global da página
-st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
-
-
 # 🔹 Carregar CSS global logo no arranque
 aplicar_estilos()
+
+# Configuração global da página
+st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
 # 🔹 Logótipo no menu lateral
 st.sidebar.image("imagens/logo.png", use_container_width=True)
