@@ -39,26 +39,26 @@ def aplicar_estilos():
             transform: scale(1.10);
         }}
 
-        /* Aproximar botões de ação e alinhar verticalmente */
-        div[data-testid="column"] > div:has(button) {{
-        display: flex;
-        align-items: center;      /* centraliza verticalmente */
-        justify-content: center;  /* centraliza horizontalmente dentro da coluna */
-        height: 100%;              /* ocupa altura total da linha */
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        }}
+/* Linha de texto: uma só linha com reticências */
+.linha-texto {{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2rem; /* altura baixa e consistente */
+}}
 
-        /* Reduzir margens horizontais entre botões */
-        div.stButton {{
-        margin-left: 0.2rem;
-        margin-right: 0.2rem;
-        }}
+/* Botões lado a lado mais compactos */
+div.stButton > button {{
+    padding: 0.35rem 0.5rem;
+}}
 
-        /* Garantir que os botões ocupam toda a largura da coluna */
-        div.stButton > button {{
-        width: 100%;
-        }}
+/* Fallback: centralizar verticalmente colunas de ações mesmo sem vertical_alignment */
+div[data-testid="column"] > div {{
+    display: flex;
+    align-items: center;
+}}
+
+
 
 
         /* Títulos */
