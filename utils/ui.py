@@ -28,7 +28,7 @@ def aplicar_estilos():
         div.stButton > button:first-child {{
             background-color: #F26A21;
             color: white;
-            border-radius: 3px;
+            border-radius: 6px;
             padding: 0.5em 1em;
             font-size: 1rem;
             border: none;
@@ -36,7 +36,7 @@ def aplicar_estilos():
         }}
         div.stButton > button:hover {{
             background-color: #E94E1B;
-            transform: scale(1.03);
+            transform: scale(1.10);
         }}
 
         /* Títulos */
