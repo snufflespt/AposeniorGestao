@@ -28,7 +28,7 @@ def aplicar_estilos():
         div.stButton > button:first-child {{
             background-color: #F26A21;
             color: white;
-            border-radius: 6px;
+            border-radius: 3px;
             padding: 0.5em 1em;
             font-size: 1rem;
             border: none;
