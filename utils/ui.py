@@ -31,11 +31,6 @@ def aplicar_estilos():
     padding-top: 0 !important;
 }}
 
-section.main > div:first-child {{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}}
-
 
 
         
