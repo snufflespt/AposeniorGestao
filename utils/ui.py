@@ -45,10 +45,10 @@ def aplicar_estilos():
         }}
 
         /* Aproximar botões de ação */
-        div.stButton {
+        div.stButton {{
         margin-right: 0.2rem;
         margin-left: 0.2rem;
-        }
+        }}
 
 
         /* Campos de input */
