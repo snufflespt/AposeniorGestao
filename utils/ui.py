@@ -19,17 +19,18 @@ def aplicar_estilos():
         f"""
         <style>
 
-/* Remove completamente a faixa/barra vazia no topo do conteúdo */
-[data-testid="stAppViewContainer"] > div:first-child {{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+/* Remove completamente o primeiro bloco vazio no topo do conteúdo */
+[data-testid="stAppViewContainer"] > div:first-child:empty {{
+    display: none !important;
 }}
 
-/* Remove também o espaço do primeiro bloco vertical */
-[data-testid="stVerticalBlock"] > div:first-child {{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+/* Em algumas versões, o bloco não está vazio mas é só espaçador */
+[data-testid="stAppViewContainer"] > div:first-child {{
+    min-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }}
+
 
 
 
