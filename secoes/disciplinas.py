@@ -54,14 +54,15 @@ def mostrar_pagina():
 
             # Listagem com ações
             for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([6, 1, 1])
-                nome = row.get('Nome da Disciplina', '')
-                cod = row.get('Código', '')
-                col1.write(f"**{nome}** — {cod}")
-                if col2.button("✏️ Editar", key=f"edit_disc_{i}"):
-                    st.session_state['edit_disc_index'] = i
-                if col3.button("🗑️ Apagar", key=f"delete_disc_{i}"):
-                    st.session_state['delete_disc_index'] = i
+    col1, col2, col3 = st.columns([6, 1, 1])
+    nome = row.get('Nome da Disciplina', '')
+    cod = row.get('Código', '')
+    col1.write(f"**{nome}** — {cod}")
+    if col2.button("✏️ Editar", key=f"edit_disc_{i}", width="stretch"):
+        st.session_state['edit_disc_index'] = i
+    if col3.button("🗑️ Apagar", key=f"delete_disc_{i}", width="stretch"):
+        st.session_state['delete_disc_index'] = i
+
 
 
             # Apagar com confirmação
