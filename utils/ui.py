@@ -19,6 +19,17 @@ def aplicar_estilos():
         f"""
         <style>
 
+        /* Remove espaço vazio no topo da área principal */
+        [data-testid="stAppViewContainer"] > .main {{
+            padding-top: 0rem !important;
+        }}
+        
+        /* Alternativa para versões mais recentes */
+        [data-testid="stAppViewContainer"] {{
+            padding-top: 0rem !important;
+        }}
+
+
         
       /* Fundo e tipografia global */
         html, body, [class*="css"] {{
