@@ -53,9 +53,9 @@ def aplicar_estilos():
             color: #2E2E2E;
         }}
 
-        /* MENU LATERAL - cinza claro */
+        /* MENU LATERAL - branco */
         section[data-testid="stSidebar"] {{
-            background-color: #f2f2f2;
+            background-color: white;
             font-size: 1.15rem;
         }}
         section[data-testid="stSidebar"] * {{
