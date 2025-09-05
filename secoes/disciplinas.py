@@ -53,22 +53,22 @@ def mostrar_pagina():
                 df_filtrado = df
 
             # Listagem com ações
-for i, row in df_filtrado.iterrows():
-    # Criar colunas com alinhamento vertical ao centro (se a tua versão do Streamlit suportar)
-    try:
-        col1, col2, col3 = st.columns([6, 1, 1], vertical_alignment="center")
-    except TypeError:
-        # fallback para versões antigas
-        col1, col2, col3 = st.columns([6, 1, 1])
+            for i, row in df_filtrado.iterrows():
+            # Criar colunas com alinhamento vertical ao centro (se a tua versão do Streamlit suportar)
+            try:
+            col1, col2, col3 = st.columns([6, 1, 1], vertical_alignment="center")
+            except TypeError:
+            # fallback para versões antigas
+            col1, col2, col3 = st.columns([6, 1, 1])
 
-    # Coluna de informação
-    col1.write(f"**{row.get('Nome da Turma','')}** — Sala {row.get('Sala','')} — {row.get('Disciplina','')}")
+            # Coluna de informação
+            col1.write(f"**{row.get('Nome da Turma','')}** — Sala {row.get('Sala','')} — {row.get('Disciplina','')}")
 
-    # Botões ocupam toda a largura da coluna e ficam centralizados verticalmente
-    with col2:
-        st.button("✏️Editar", key=f"edit_{i}", help="Editar", use_container_width=True)
-    with col3:
-        st.button("🗑️Apagar", key=f"delete_{i}", help="Apagar", use_container_width=True)
+            # Botões ocupam toda a largura da coluna e ficam centralizados verticalmente
+            with col2:
+            st.button("✏️Editar", key=f"edit_{i}", help="Editar", use_container_width=True)
+            with col3:
+            st.button("🗑️Apagar", key=f"delete_{i}", help="Apagar", use_container_width=True)
 
 
             # Apagar com confirmação
