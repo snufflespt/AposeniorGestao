@@ -18,79 +18,55 @@ def aplicar_estilos():
     st.markdown(
         f"""
         <style>
-        /* Fonte global */
-        html, body, [class*="css"] {{
-            font-family: 'Segoe UI', sans-serif;
-            color: #2E2E2E;
-        }}
+      /* Fundo e tipografia global */
+html, body, [class*="css"] {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
 
-        /* Botões */
-        div.stButton > button:first-child {{
-            background-color: #F26A21;
-            color: white;
-            border-radius: 6px;
-            padding: 0.5em 1em;
-            font-size: 1rem;
-            border: none;
-            transition: all 0.2s ease-in-out;
-        }}
-        div.stButton > button:hover {{
-            background-color: #E94E1B;
-            transform: scale(1.10);
-        }}
+/* Cartão de item */
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
 
-        /* Alinhar verticalmente colunas e igualar altura */
-        div[data-testid="column"] > div {{
-            display: flex;
-            align-items: center;
-        }}
-        
-        /* Ajustar altura dos botões para igualar ao texto */
-        div.stButton > button {{
-            padding-top: 0.6rem;
-            padding-bottom: 0.6rem;
-        }}
+/* Texto do cartão */
+.card-info {
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        
-        /* Linha de texto: uma só linha com reticências */
-        .linha-texto {{
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.2rem; /* altura baixa e consistente */
-        }}
-        
-        /* Botões lado a lado mais compactos */
-        div.stButton > button {{
-            padding: 0.35rem 0.5rem;
-        }}
-        
-        /* Fallback: centralizar verticalmente colunas de ações mesmo sem vertical_alignment */
-        div[data-testid="column"] > div {{
-            display: flex;
-            align-items: center;
-        }}
+/* Botões dentro dos cartões */
+.card-actions button {
+    background-color: #F26A21;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-left: 0.4rem;
+    transition: background 0.2s ease;
+}
+.card-actions button:hover {
+    background-color: #E94E1B;
+}
 
-        /* Títulos */
-        h1, h2, h3 {{
-            color: #F26A21;
-        }}
-
-        /* Aproximar botões de ação */
-        div.stButton {{
-        margin-right: 0.2rem;
-        margin-left: 0.2rem;
-        }}
-
-
-        /* Campos de input */
-        .stTextInput > div > div > input,
-        .stSelectbox > div > div > select,
-        textarea {{
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            color: #2E2E2E;
-        }}
+/* Alinhar verticalmente colunas */
+div[data-testid="column"] > div {
+    display: flex;
+    align-items: center;
+}
 
         /* MENU LATERAL - branco */
         section[data-testid="stSidebar"] {{
