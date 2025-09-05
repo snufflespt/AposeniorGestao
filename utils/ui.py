@@ -39,6 +39,28 @@ def aplicar_estilos():
             transform: scale(1.10);
         }}
 
+        /* Aproximar botões de ação e alinhar verticalmente */
+        div[data-testid="column"] > div:has(button) {{
+        display: flex;
+        align-items: center;      /* centraliza verticalmente */
+        justify-content: center;  /* centraliza horizontalmente dentro da coluna */
+        height: 100%;              /* ocupa altura total da linha */
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        }}
+
+        /* Reduzir margens horizontais entre botões */
+        div.stButton {{
+        margin-left: 0.2rem;
+        margin-right: 0.2rem;
+        }}
+
+        /* Garantir que os botões ocupam toda a largura da coluna */
+        div.stButton > button {{
+        width: 100%;
+        }}
+
+
         /* Títulos */
         h1, h2, h3 {{
             color: #F26A21;
