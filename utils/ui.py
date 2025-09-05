@@ -51,13 +51,13 @@ def aplicar_estilos():
             color: #2E2E2E;
         }}
 
-        /* MENU LATERAL - cinza mais claro */
+        /* MENU LATERAL - ainda mais claro */
         section[data-testid="stSidebar"] {{
-            background-color: #3a3a3a; /* cinza escuro suave */
+            background-color: #f9f9f9; /* quase branco */
             font-size: 1.15rem;
         }}
         section[data-testid="stSidebar"] * {{
-            color: #F5F5F5 !important;
+            color: #2E2E2E !important;
         }}
 
         /* Destacar opção ativa no menu lateral */
@@ -75,20 +75,20 @@ def aplicar_estilos():
             color: #F26A21;
             transition: all 0.2s ease-in-out;
         }}
-        /* Tab ativa */
+        /* Tab ativa - forçar aumento */
         .stTabs [role="tab"][aria-selected="true"] {{
-            font-weight: bold;
-            font-size: 1.2rem !important;
-            border-bottom: 3px solid #F26A21;
+            font-weight: bold !important;
+            font-size: 1.25rem !important;
+            border-bottom: 3px solid #F26A21 !important;
         }}
 
-        /* Fundo geral da aplicação */
+        /* Fundo geral da aplicação - mais escuro */
         [data-testid="stAppViewContainer"] {{
-            background: linear-gradient(135deg, #ffffff 0%, #fdf3ec 100%);
+            background: linear-gradient(135deg, #f0e9e4 0%, #e6d9d0 100%);
             background-attachment: fixed;
         }}
 
-        /* Marca de água da mascote */
+        /* Marca de água da mascote - mais visível */
         [data-testid="stAppViewContainer"]::after {{
             content: "";
             position: fixed;
@@ -99,13 +99,14 @@ def aplicar_estilos():
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.08;
+            opacity: 0.18; /* aumentada para ser mais visível */
             pointer-events: none;
         }}
         </style>
         """,
         unsafe_allow_html=True
     )
+
 
 
 
