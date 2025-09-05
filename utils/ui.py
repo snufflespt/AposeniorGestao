@@ -44,6 +44,13 @@ def aplicar_estilos():
             color: #F26A21;
         }}
 
+        /* Aproximar botões de ação */
+        div.stButton {
+        margin-right: 0.2rem;
+        margin-left: 0.2rem;
+        }
+
+
         /* Campos de input */
         .stTextInput > div > div > input,
         .stSelectbox > div > div > select,
