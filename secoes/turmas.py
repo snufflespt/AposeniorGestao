@@ -47,11 +47,15 @@ def mostrar_pagina():
 
             for i, row in df_filtrado.iterrows():
                 col1, col2, col3 = st.columns([6, 1, 1])
-                col1.write(f"**{row.get('Nome da Turma','')}** — Sala {row.get('Sala','')} — {row.get('Disciplina','')}")
-                if col2.button("✏️ Editar", key=f"edit_turma_{i}"):
+                nome = row.get('Nome da Turma', '')
+                sala = row.get('Sala', '')
+                disc = row.get('Disciplina', '')
+                col1.write(f"**{nome}** — Sala {sala} — {disc}")
+                if col2.button("✏️ Editar", key=f"edit_turma_{i}", width="stretch"):
                     st.session_state['edit_turma_index'] = i
-                if col3.button("🗑️ Apagar", key=f"delete_turma_{i}"):
+                if col3.button("🗑️ Apagar", key=f"delete_turma_{i}", width="stretch"):
                     st.session_state['delete_turma_index'] = i
+
 
             if 'delete_turma_index' in st.session_state:
                 idx = st.session_state['delete_turma_index']
