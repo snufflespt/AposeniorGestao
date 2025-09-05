@@ -6,6 +6,9 @@ st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
 # Carregar CSS global logo no arranque
 aplicar_estilos()
+st.sidebar.image("imagens/logo.png", use_container_width=True)
+st.sidebar.markdown("### Gestão IPSS")
+
 
 st.sidebar.title("Menu")
 opcao = st.sidebar.radio(
