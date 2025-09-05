@@ -19,17 +19,17 @@ def aplicar_estilos():
         f"""
         <style>
 
-/* Remove completamente o primeiro bloco vazio no topo do conteúdo */
-[data-testid="stAppViewContainer"] > div:first-child:empty {{
-    display: none !important;
+/* Streamlit 1.49.1 — remover barra/faixa vazia no topo do conteúdo */
+.block-container {{
+    padding-top: 0rem !important;   /* remove o espaço no topo */
 }}
 
-/* Em algumas versões, o bloco não está vazio mas é só espaçador */
-[data-testid="stAppViewContainer"] > div:first-child {{
-    min-height: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
+/* Garantir que o primeiro bloco não cria margem extra */
+.block-container > div:first-child {{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }}
+
 
 
 
