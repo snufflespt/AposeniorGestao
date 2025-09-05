@@ -1,7 +1,11 @@
 import streamlit as st
+from utils.ui import aplicar_estilos
 from secoes import utentes, turmas, professores, disciplinas
 
 st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
+
+# Carregar CSS global logo no arranque
+aplicar_estilos()
 
 st.sidebar.title("Menu")
 opcao = st.sidebar.radio(
