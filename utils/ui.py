@@ -51,11 +51,10 @@ def aplicar_estilos():
             color: #2E2E2E;
         }}
 
-        /* Fundo geral e menu lateral iguais */
-        [data-testid="stAppViewContainer"],
+        /* MENU LATERAL - cinza claro */
         section[data-testid="stSidebar"] {{
-            background: linear-gradient(135deg, #f0e9e4 0%, #e6d9d0 100%);
-            background-attachment: fixed;
+            background-color: #f2f2f2;
+            font-size: 1.15rem;
         }}
         section[data-testid="stSidebar"] * {{
             color: #2E2E2E !important;
@@ -82,12 +81,20 @@ def aplicar_estilos():
             border-bottom: 3px solid #F26A21 !important;
         }}
 
-        /* Sombreado no conteúdo principal */
+        /* Fundo geral da aplicação - ligeiramente mais escuro */
+        [data-testid="stAppViewContainer"] {{
+            background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
+            background-attachment: fixed;
+        }}
+
+        /* Glassmorphism no conteúdo */
         [data-testid="stVerticalBlock"] > div:first-child {{
-            background-color: rgba(255,255,255,0.85);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }}
 
         /* Marca de água da mascote */
@@ -101,13 +108,14 @@ def aplicar_estilos():
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.25; /* mais visível */
+            opacity: 0.25;
             pointer-events: none;
         }}
         </style>
         """,
         unsafe_allow_html=True
     )
+
 
 
 
