@@ -30,3 +30,5 @@ elif opcao == "🏫 Turmas":
     turmas.mostrar_pagina()
 elif opcao == "👨‍🏫 Professores":
     professores.mostrar_pagina()
+
+aplicar_estilos()
