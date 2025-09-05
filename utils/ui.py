@@ -32,7 +32,7 @@ def aplicar_estilos():
 
         /* Títulos */
         h1, h2, h3 {
-            color: #F26A21; /* cor principal */
+            color: #F26A21;
         }
 
         /* Campos de input */
@@ -45,7 +45,7 @@ def aplicar_estilos():
 
         /* MENU LATERAL */
         section[data-testid="stSidebar"] {
-            background-color: #F5F5F5; /* fundo suave */
+            background-color: #F5F5F5;
             font-size: 1.15rem;
         }
         section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
@@ -59,7 +59,7 @@ def aplicar_estilos():
 
         /* Destacar opção ativa no menu lateral */
         section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {
-            background-color: #F9A82533; /* amarelo dourado translúcido */
+            background-color: #F9A82533;
             border-radius: 5px;
             padding: 0.3em;
             font-weight: bold;
@@ -70,10 +70,21 @@ def aplicar_estilos():
         .stTabs [data-baseweb="tab"] {
             font-size: 1rem;
             color: #F26A21;
+            transition: all 0.2s ease-in-out;
         }
         .stTabs [aria-selected="true"] {
             font-weight: bold;
+            font-size: 1.2rem; /* aumenta tamanho quando ativa */
             border-bottom: 3px solid #F26A21;
+        }
+
+        /* Marca de água da mascote no fundo */
+        [data-testid="stAppViewContainer"] {
+            background-image: url("imagens/mascote.png");
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            background-size: 200px;
+            opacity: 0.98; /* mantém conteúdo visível */
         }
         </style>
         """,
