@@ -20,7 +20,7 @@ def aplicar_estilos():
         /* Fonte global */
         html, body, [class*="css"] {{
             font-family: 'Segoe UI', sans-serif;
-            color: #F5F5F5;
+            color: #2E2E2E;
         }}
 
         /* Botões */
@@ -39,7 +39,7 @@ def aplicar_estilos():
 
         /* Títulos */
         h1, h2, h3 {{
-            color: #F9A825;
+            color: #F26A21;
         }}
 
         /* Campos de input */
@@ -51,9 +51,9 @@ def aplicar_estilos():
             color: #2E2E2E;
         }}
 
-        /* MENU LATERAL ESCURO */
+        /* MENU LATERAL - cinza mais claro */
         section[data-testid="stSidebar"] {{
-            background-color: #2E2E2E;
+            background-color: #3a3a3a; /* cinza escuro suave */
             font-size: 1.15rem;
         }}
         section[data-testid="stSidebar"] * {{
@@ -69,25 +69,38 @@ def aplicar_estilos():
             color: white !important;
         }}
 
-        /* Tabs */
+        /* Tabs - estilo base */
         .stTabs [role="tab"] {{
             font-size: 1rem;
             color: #F26A21;
             transition: all 0.2s ease-in-out;
         }}
+        /* Tab ativa */
         .stTabs [role="tab"][aria-selected="true"] {{
             font-weight: bold;
-            font-size: 2rem;
+            font-size: 1.2rem !important;
             border-bottom: 3px solid #F26A21;
         }}
 
-        /* Marca de água da mascote no fundo */
+        /* Fundo geral da aplicação */
         [data-testid="stAppViewContainer"] {{
+            background: linear-gradient(135deg, #ffffff 0%, #fdf3ec 100%);
+            background-attachment: fixed;
+        }}
+
+        /* Marca de água da mascote */
+        [data-testid="stAppViewContainer"]::after {{
+            content: "";
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
             background-image: url("data:image/png;base64,{mascote_b64}");
+            background-size: contain;
             background-repeat: no-repeat;
-            background-position: bottom right;
-            background-size: 200px;
-            opacity: 1;
+            opacity: 0.08;
+            pointer-events: none;
         }}
         </style>
         """,
