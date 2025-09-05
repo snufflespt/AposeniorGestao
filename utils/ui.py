@@ -42,7 +42,6 @@ def aplicar_estilos():
         /* Títulos */
         h1, h2, h3 {{
             color: #F26A21;
-            font-size: 2rem;
         }}
 
         /* Campos de input */
