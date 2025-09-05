@@ -5,6 +5,10 @@ from secoes import utentes, turmas, professores, disciplinas
 # Configuração global da página
 st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
+st.write("Versão do Streamlit:", st.__version__)
+
+
+
 # 🔹 Carregar CSS global logo no arranque
 aplicar_estilos()
 
