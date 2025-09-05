@@ -45,7 +45,7 @@ def mostrar_pagina():
                 df_filtrado = df
 
             for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([4, 2, 2])
+                col1, col2, col3 = st.columns([6, 1, 1])
                 col1.write(f"**{row.get('Nome do Professor','')}** — {row.get('Disciplina','')}")
                 if col2.button("✏️ Editar", key=f"edit_prof_{i}"):
                     st.session_state['edit_prof_index'] = i
