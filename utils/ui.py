@@ -39,27 +39,37 @@ def aplicar_estilos():
             transform: scale(1.10);
         }}
 
-/* Linha de texto: uma só linha com reticências */
-.linha-texto {{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.2rem; /* altura baixa e consistente */
-}}
+        /* Alinhar verticalmente colunas e igualar altura */
+        div[data-testid="column"] > div {{
+            display: flex;
+            align-items: center;
+        }}
+        
+        /* Ajustar altura dos botões para igualar ao texto */
+        div.stButton > button {{
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+        }}
 
-/* Botões lado a lado mais compactos */
-div.stButton > button {{
-    padding: 0.35rem 0.5rem;
-}}
-
-/* Fallback: centralizar verticalmente colunas de ações mesmo sem vertical_alignment */
-div[data-testid="column"] > div {{
-    display: flex;
-    align-items: center;
-}}
-
-
-
+        
+        /* Linha de texto: uma só linha com reticências */
+        .linha-texto {{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2rem; /* altura baixa e consistente */
+        }}
+        
+        /* Botões lado a lado mais compactos */
+        div.stButton > button {{
+            padding: 0.35rem 0.5rem;
+        }}
+        
+        /* Fallback: centralizar verticalmente colunas de ações mesmo sem vertical_alignment */
+        div[data-testid="column"] > div {{
+            display: flex;
+            align-items: center;
+        }}
 
         /* Títulos */
         h1, h2, h3 {{
