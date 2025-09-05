@@ -19,54 +19,54 @@ def aplicar_estilos():
         f"""
         <style>
       /* Fundo e tipografia global */
-html, body, [class*="css"] {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-}
-
-/* Cartão de item */
-.card {
-    background: white;
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-    margin-bottom: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* Texto do cartão */
-.card-info {
-    font-size: 1rem;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Botões dentro dos cartões */
-.card-actions button {
-    background-color: #F26A21;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    margin-left: 0.4rem;
-    transition: background 0.2s ease;
-}
-.card-actions button:hover {
-    background-color: #E94E1B;
-}
-
-/* Alinhar verticalmente colunas */
-div[data-testid="column"] > div {
-    display: flex;
-    align-items: center;
-}
+        html, body, [class*="css"] {{
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }}
+        
+        /* Cartão de item */
+        .card {{
+            background: white;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }}
+        
+        /* Texto do cartão */
+        .card-info {{
+            font-size: 1rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }}
+        
+        /* Botões dentro dos cartões */
+        .card-actions button {{
+            background-color: #F26A21;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-left: 0.4rem;
+            transition: background 0.2s ease;
+        }}
+        .card-actions button:hover {{
+            background-color: #E94E1B;
+        }}
+        
+        /* Alinhar verticalmente colunas */
+        div[data-testid="column"] > div {{
+            display: flex;
+            align-items: center;
+        }}
 
         /* MENU LATERAL - branco */
         section[data-testid="stSidebar"] {{
