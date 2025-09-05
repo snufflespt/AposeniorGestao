@@ -53,15 +53,31 @@ def mostrar_pagina():
                 df_filtrado = df
 
             # Listagem com ações
-            for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([6, 1, 1])
-                nome = row.get('Nome da Disciplina', '')
-                cod = row.get('Código', '')
-                col1.write(f"**{nome}** — {cod}")
-                if col2.button("✏️ Editar", key=f"edit_disc_{i}"):
-                    st.session_state['edit_disc_index'] = i
-                if col3.button("🗑️ Apagar", key=f"delete_disc_{i}"):
-                    st.session_state['delete_disc_index'] = i
+for i, row in df_filtrado.iterrows():
+    # 1) Tenta alinhar verticalmente (funciona em Streamlit recente)
+    try:
+        col_info, col_actions = st.columns([8, 2], vertical_alignment="center")
+    except TypeError:
+        col_info, col_actions = st.columns([8, 2])
+
+    # 2) Texto em uma linha (ellipsis) para evitar aumentar a altura da linha
+    nome = row.get('Nome da Disciplina', '')
+    cod = row.get('Código', '')
+    texto = f"{nome} — {cod}"
+    col_info.markdown(
+        f'<div class="linha-texto">{texto}</div>',
+        unsafe_allow_html=True
+    )
+
+    # 3) Dois botões no MESMO bloco (com subcolunas), lado a lado
+    a1, a2 = col_actions.columns([1, 1])
+    with a1:
+        if st.button("✏️ Editar", key=f"edit_disc_{i}", use_container_width=True):
+            st.session_state['edit_disc_index'] = i
+    with a2:
+        if st.button("🗑️ Apagar", key=f"delete_disc_{i}", use_container_width=True):
+            st.session_state['delete_disc_index'] = i
+
 
 
             # Apagar com confirmação
