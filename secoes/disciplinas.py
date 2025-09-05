@@ -54,7 +54,7 @@ def mostrar_pagina():
 
             # Listagem com ações
             for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([4, 2, 2])
+                col1, col2, col3 = st.columns([6, 1, 1])
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
                 col1.write(f"**{nome}** — {cod}")
