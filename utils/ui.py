@@ -7,9 +7,6 @@ def configurar_pagina(titulo, icone="🧭"):
     aplicar_estilos()
     st.title(f"{icone} {titulo}")
 
-import streamlit as st
-import base64
-
 def imagem_base64(caminho):
     with open(caminho, "rb") as f:
         dados = f.read()
@@ -63,20 +60,29 @@ def aplicar_estilos():
             color: #2E2E2E !important;
         }}
 
-        /* Área do logótipo no menu lateral */
+        /* LOGO - remover rectângulo branco e centralizar */
         section[data-testid="stSidebar"] img {{
-            background-color: #3a3a3a; /* fundo mais escuro para contraste */
+            display: block;
+            margin: 0 auto;
+            background-color: #3a3a3a; /* fundo escuro */
             padding: 8px;
             border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }}
+        section[data-testid="stSidebar"] [data-testid="stImage"] > div {{
+            background: none !important; /* remove fundo branco do container */
+            padding: 0 !important;
         }}
 
-        /* Destacar opção ativa no menu lateral */
+        /* OPÇÃO ATIVA NO MENU LATERAL - fundo + texto maior + bold */
         section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {{
-            background-color: #F26A21;
+            background-color: #F26A21 !important;
             border-radius: 5px;
-            padding: 0.3em;
-            font-weight: bold;
+            padding: 0.4em;
+            font-weight: bold !important;
+            font-size: 1.1rem !important;
             color: white !important;
+            transition: all 0.2s ease-in-out;
         }}
 
         /* Tabs */
