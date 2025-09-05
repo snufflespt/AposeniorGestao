@@ -1,6 +1,12 @@
 import streamlit as st
 import base64
 
+def configurar_pagina(titulo, icone="🧭"):
+    """Configura título, ícone e layout da página."""
+    st.set_page_config(page_title=titulo, page_icon=icone, layout="wide")
+    aplicar_estilos()
+    st.title(f"{icone} {titulo}")
+
 def imagem_base64(caminho):
     with open(caminho, "rb") as f:
         dados = f.read()
@@ -130,3 +136,8 @@ def aplicar_estilos():
         """,
         unsafe_allow_html=True
     )
+
+def titulo_secao(texto, icone="📌"):
+    """Mostra um título de secção com divisor."""
+    st.markdown(f"### {icone} {texto}")
+    st.divider()
