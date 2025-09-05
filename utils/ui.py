@@ -17,11 +17,13 @@ def aplicar_estilos():
     st.markdown(
         f"""
         <style>
+        /* Fonte global */
         html, body, [class*="css"] {{
             font-family: 'Segoe UI', sans-serif;
             color: #2E2E2E;
         }}
 
+        /* Botões */
         div.stButton > button:first-child {{
             background-color: #F26A21;
             color: white;
@@ -35,10 +37,12 @@ def aplicar_estilos():
             color: white;
         }}
 
+        /* Títulos */
         h1, h2, h3 {{
             color: #F26A21;
         }}
 
+        /* Campos de input */
         .stTextInput > div > div > input,
         .stSelectbox > div > div > select,
         textarea {{
@@ -47,14 +51,17 @@ def aplicar_estilos():
             color: #2E2E2E;
         }}
 
+        /* Fundo geral e menu lateral iguais */
+        [data-testid="stAppViewContainer"],
         section[data-testid="stSidebar"] {{
-            background-color: #f9f9f9;
-            font-size: 1.15rem;
+            background: linear-gradient(135deg, #f0e9e4 0%, #e6d9d0 100%);
+            background-attachment: fixed;
         }}
         section[data-testid="stSidebar"] * {{
             color: #2E2E2E !important;
         }}
 
+        /* Destacar opção ativa no menu lateral */
         section[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {{
             background-color: #F26A21;
             border-radius: 5px;
@@ -75,11 +82,15 @@ def aplicar_estilos():
             border-bottom: 3px solid #F26A21 !important;
         }}
 
-        [data-testid="stAppViewContainer"] {{
-            background: linear-gradient(135deg, #f0e9e4 0%, #e6d9d0 100%);
-            background-attachment: fixed;
+        /* Sombreado no conteúdo principal */
+        [data-testid="stVerticalBlock"] > div:first-child {{
+            background-color: rgba(255,255,255,0.85);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }}
 
+        /* Marca de água da mascote */
         [data-testid="stAppViewContainer"]::after {{
             content: "";
             position: fixed;
@@ -90,7 +101,7 @@ def aplicar_estilos():
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.35;
+            opacity: 0.25; /* mais visível */
             pointer-events: none;
         }}
         </style>
