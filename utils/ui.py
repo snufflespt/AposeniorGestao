@@ -29,6 +29,12 @@ def aplicar_estilos():
             padding-top: 0rem !important;
         }}
 
+        /* Remove margem do primeiro elemento dentro do conteúdo */
+        [data-testid="stAppViewContainer"] [data-testid="stVerticalBlock"] > div:first-child {{
+        margin-top: 0 !important;
+        }}
+
+
 
         
       /* Fundo e tipografia global */
