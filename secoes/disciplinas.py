@@ -94,4 +94,3 @@ def mostrar_pagina():
                     st.rerun()
         else:
             st.info("Ainda não existem disciplinas registadas.")
-_index'] = ii
