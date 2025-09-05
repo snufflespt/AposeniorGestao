@@ -95,9 +95,9 @@ def aplicar_estilos():
         }}
         button[role="tab"][aria-selected="true"] {{
             font-weight: bold !important;
-            font-size: 1.20rem !important;
+            font-size: 1.10rem !important;
             border-bottom: 6px solid #F26A21 !important;
-            transform: scale(1.20);
+            transform: scale(1.10);
         }}
 
         /* Fundo geral */
