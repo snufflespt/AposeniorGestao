@@ -61,7 +61,7 @@ def mostrar_pagina():
                 if col2.button("✏️ Editar", key=f"edit_disc_{i}"):
                     st.session_state['edit_disc_index'] = i
                 if col3.button("🗑️ Apagar", key=f"delete_disc_{i}"):
-                    st.session_state['delete_disc
+                    st.session_state['delete_disc_index'] = i
 
 
             # Apagar com confirmação
