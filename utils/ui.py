@@ -21,7 +21,7 @@ def aplicar_estilos():
 
 /* Streamlit 1.49.1 — remover barra/faixa vazia no topo do conteúdo */
 .block-container {{
-    padding-top: 0rem !important;   /* remove o espaço no topo */
+    padding-top: 0.5rem !important;   /* remove o espaço no topo */
 }}
 
 /* Garantir que o primeiro bloco não cria margem extra */
