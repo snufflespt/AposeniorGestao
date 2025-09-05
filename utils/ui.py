@@ -18,11 +18,7 @@ def aplicar_estilos():
     st.markdown(
         f"""
         <style>
-    
-        /* Esconde o primeiro título grande da página */
-        h1:first-of-type {{
-            display: none;
-        }}
+
         
       /* Fundo e tipografia global */
         html, body, [class*="css"] {{
