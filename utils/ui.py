@@ -42,6 +42,7 @@ def aplicar_estilos():
         /* Títulos */
         h1, h2, h3 {{
             color: #F26A21;
+            font-size: 2rem;
         }}
 
         /* Campos de input */
@@ -97,7 +98,7 @@ def aplicar_estilos():
             font-weight: bold !important;
             font-size: 1.10rem !important;
             border-bottom: 6px solid #F26A21 !important;
-            transform: scale(1.10);
+            transform: scale(1.05);
         }}
 
         /* Fundo geral */
