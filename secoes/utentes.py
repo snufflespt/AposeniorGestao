@@ -1,7 +1,12 @@
 import streamlit as st
 import pandas as pd
+import time
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
+from utils.components import (
+    render_user_card,
+    render_confirmation_dialog
+)
 
 def mostrar_pagina():
     configurar_pagina("Gestão de Utentes", "🧍")
@@ -27,8 +32,9 @@ def mostrar_pagina():
             if nome.strip() == "" or contacto.strip() == "":
                 st.error("Por favor, preencha os campos obrigatórios.")
             else:
-                sheet.append_row([nome, contacto, morada, estado])
-                st.success(f"Utente '{nome}' adicionado com sucesso!")
+                if adicionar_utente(sheet, nome, contacto, morada, estado):
+                    st.success(f"Utente '{nome}' adicionado com sucesso!")
+                    st.rerun()
 
     with tab_gerir:
         st.markdown("### Lista de utentes")
@@ -46,74 +52,119 @@ def mostrar_pagina():
             else:
                 df_filtrado = df
 
+            # Renderizar lista de utentes usando componentes reutilizáveis
             for i, row in df_filtrado.iterrows():
-                nome = row.get('Nome', '')
-                contacto = row.get('Contacto', '')
-                morada = row.get('Morada', '')
-                estado = row.get('Estado', '')
-
-                # Usar container do Streamlit com estilo consistente
-                with st.container():
-                    # Layout em colunas para informação e botões
-                    col_info, col_actions = st.columns([4, 1])
-
-                    with col_info:
-                        # Nome e contacto
-                        st.markdown(f"**{nome}** — {contacto}")
-
-                        # Morada se existir
-                        if morada:
-                            st.markdown(f"🏠 {morada}")
-
-                        # Status badge
-                        if estado == 'Ativo':
-                            st.markdown('<span style="background-color: #d4edda; color: #155724; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● ATIVO</span>', unsafe_allow_html=True)
-                        else:
-                            st.markdown('<span style="background-color: #f8d7da; color: #721c24; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● INATIVO</span>', unsafe_allow_html=True)
-
-                    with col_actions:
-                        # Botões de ação em sub-colunas para consistência
-                        sub_col1, sub_col2 = st.columns(2)
-                        with sub_col1:
-                            if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
-                                st.session_state['edit_index'] = i
-                                st.rerun()
-                        with sub_col2:
-                            if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
-                                st.session_state['delete_index'] = i
-                                st.rerun()
-
-                    st.divider()
+                render_user_card(dict(row), i)
 
 
 
+            # Diálogo de confirmação usando componente reutilizável
             if 'delete_index' in st.session_state:
                 idx = st.session_state['delete_index']
-                st.warning(f"Tens a certeza que queres apagar o utente: {df.iloc[idx]['Nome']}?")
-                col_conf1, col_conf2 = st.columns(2)
-                if col_conf1.button("✅ Sim, apagar"):
-                    sheet.delete_rows(idx+2)
+                entity_name = df.iloc[idx]['Nome']
+
+                def confirm_delete():
+                    try:
+                        sheet.delete_rows(idx + 2)
+                        return True
+                    except Exception as e:
+                        st.error(f"Erro ao apagar utente: {str(e)}")
+                        return False
+
+                def cancel_delete():
                     del st.session_state['delete_index']
-                    st.rerun()
-                if col_conf2.button("❌ Cancelar"):
-                    del st.session_state['delete_index']
-                    st.rerun()
+
+                render_confirmation_dialog('utente', entity_name, confirm_delete, cancel_delete)
 
             if 'edit_index' in st.session_state:
                 idx = st.session_state['edit_index']
                 st.subheader("Editar utente")
+
                 with st.form("form_editar"):
                     novo_nome = st.text_input("Nome do utente", value=df.iloc[idx]['Nome'])
                     novo_contacto = st.text_input("Contacto", value=df.iloc[idx]['Contacto'])
                     nova_morada = st.text_input("Morada", value=df.iloc[idx].get('Morada', ''))
-                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo"], index=["Ativo", "Inativo"].index(df.iloc[idx].get('Estado', 'Ativo')))
-                    guardar = st.form_submit_button("Guardar alterações")
-                if guardar:
-                    sheet.update_cell(idx+2, 1, novo_nome)
-                    sheet.update_cell(idx+2, 2, novo_contacto)
-                    sheet.update_cell(idx+2, 3, nova_morada)
-                    sheet.update_cell(idx+2, 4, novo_estado)
-                    del st.session_state['edit_index']
-                    st.rerun()
+                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo"],
+                                              index=["Ativo", "Inativo"].index(df.iloc[idx].get('Estado', 'Ativo')))
+
+                    if st.form_submit_button("Guardar alterações"):
+                        novos_dados = {
+                            'Nome': novo_nome,
+                            'Contacto': novo_contacto,
+                            'Morada': nova_morada,
+                            'Estado': novo_estado
+                        }
+
+                        if atualizar_utente(sheet, idx, novos_dados):
+                            st.success(f"Utente '{novo_nome}' atualizado com sucesso!")
+                            del st.session_state['edit_index']
+                            time.sleep(0.5)  # Pequena pausa para mostrar mensagem
+                            st.rerun()
         else:
             st.info("Ainda não existem utentes registados.")
+
+
+# Funções auxiliares para operações CRUD
+def adicionar_utente(sheet, nome: str, contacto: str, morada: str = "", estado: str = "Ativo") -> bool:
+    """
+    Adiciona um novo utente à planilha
+
+    Args:
+        sheet: Planilha do Google Sheets
+        nome: Nome do utente
+        contacto: Contacto do utente
+        morada: Morada do utente (opcional)
+        estado: Estado do utente
+
+    Returns:
+        True se adicionado com sucesso, False caso contrário
+    """
+    try:
+        sheet.append_row([nome, contacto, morada, estado])
+        return True
+    except Exception as e:
+        st.error(f"Erro ao adicionar utente: {str(e)}")
+        return False
+
+
+def atualizar_utente(sheet, index: int, dados: dict) -> bool:
+    """
+    Atualiza os dados de um utente na planilha
+
+    Args:
+        sheet: Planilha do Google Sheets
+        index: Índice do utente na planilha
+        dados: Dicionário com novos dados
+
+    Returns:
+        True se atualizado com sucesso, False caso contrário
+    """
+    try:
+        # Atualizar cada campo
+        sheet.update_cell(index + 2, 1, dados.get('Nome', ''))
+        sheet.update_cell(index + 2, 2, dados.get('Contacto', ''))
+        sheet.update_cell(index + 2, 3, dados.get('Morada', ''))
+        sheet.update_cell(index + 2, 4, dados.get('Estado', 'Ativo'))
+        return True
+    except Exception as e:
+        st.error(f"Erro ao atualizar utente: {str(e)}")
+        return False
+
+
+def apagar_utente(sheet, index: int) -> bool:
+    """
+    Apaga um utente da planilha
+
+    Args:
+        sheet: Planilha do Google Sheets
+        index: Índice do utente na planilha
+
+    Returns:
+        True se apagado com sucesso, False caso contrário
+    """
+    try:
+        sheet.delete_rows(index + 2)
+        return True
+    except Exception as e:
+        st.error(f"Erro ao apagar utente: {str(e)}")
+        return False
