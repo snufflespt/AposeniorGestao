@@ -85,25 +85,23 @@ def mostrar_pagina():
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
 
-                # Usar HTML para manter o design do cartão original
-                button_html = f"""
-                <div style="display: flex; justify-content: space-between; align-items: center; background: white; border-radius: 8px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-                    <div style="font-size: 15px; font-weight: 500;">{nome} — {contacto}</div>
-                    <div style="display: flex; gap: 8px;">
-                        <button onclick="document.getElementById('edit_btn_{i}').click()" style="background-color: #F26A21; color: white; border: none; border-radius: 5px; padding: 6px 12px; font-size: 14px; cursor: pointer; transition: background 0.2s ease;">✏️ Editar</button>
-                        <button onclick="document.getElementById('delete_btn_{i}').click()" style="background-color: #F26A21; color: white; border: none; border-radius: 5px; padding: 6px 12px; font-size: 14px; cursor: pointer; transition: background 0.2s ease;">🗑️ Apagar</button>
-                    </div>
-                </div>
-                """
-                st.markdown(button_html, unsafe_allow_html=True)
+                # Usar colunas do Streamlit para melhor alinhamento
+                col1, col2, col3 = st.columns([6, 1, 1])
 
-                # Botões invisíveis do Streamlit para funcionalidade
-                if st.button("", key=f"edit_btn_{i}", help=""):
-                    st.session_state['edit_index'] = i
-                    st.rerun()
-                if st.button("", key=f"delete_btn_{i}", help=""):
-                    st.session_state['delete_index'] = i
-                    st.rerun()
+                with col1:
+                    st.markdown(f"**{nome}** — {contacto}")
+
+                with col2:
+                    if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
+                        st.session_state['edit_index'] = i
+                        st.rerun()
+
+                with col3:
+                    if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
+                        st.session_state['delete_index'] = i
+                        st.rerun()
+
+                st.divider()
 
 
 
