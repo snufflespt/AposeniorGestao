@@ -54,21 +54,22 @@ def mostrar_pagina():
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
 
-                # Cartão visual + botões alinhados
-                col1, col2, col3 = st.columns([6, 1, 1])
-                with col1:
-                    st.markdown(
-                        f"""
-                        <div class="card">
-                            <div class="card-info">{nome} — {cod}</div>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-                with col2:
+                # Cartão visual com texto + botões
+                st.markdown(
+                    f"""
+                    <div class="card">
+                        <div class="card-info">{nome} — {cod}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # Botões alinhados lado a lado
+                col_btns = st.columns([1, 1])
+                with col_btns[0]:
                     if st.button("✏️ Editar", key=f"edit_disc_{i}", use_container_width=True):
                         st.session_state['edit_disc_index'] = i
-                with col3:
+                with col_btns[1]:
                     if st.button("🗑️ Apagar", key=f"delete_disc_{i}", use_container_width=True):
                         st.session_state['delete_disc_index'] = i
 
@@ -76,14 +77,17 @@ def mostrar_pagina():
             if 'delete_disc_index' in st.session_state:
                 idx = st.session_state['delete_disc_index']
                 st.warning(f"Tens a certeza que queres apagar a disciplina: {df.iloc[idx]['Nome da Disciplina']}?")
-                col_conf1, col_conf2 = st.columns(2)
-                if col_conf1.button("✅ Sim, apagar"):
-                    sheet.delete_rows(idx + 2)
-                    del st.session_state['delete_disc_index']
-                    st.rerun()
-                if col_conf2.button("❌ Cancelar"):
-                    del st.session_state['delete_disc_index']
-                    st.rerun()
+
+                col_conf = st.columns([1, 1])
+                with col_conf[0]:
+                    if st.button("✅ Sim, apagar"):
+                        sheet.delete_rows(idx + 2)
+                        del st.session_state['delete_disc_index']
+                        st.rerun()
+                with col_conf[1]:
+                    if st.button("❌ Cancelar"):
+                        del st.session_state['delete_disc_index']
+                        st.rerun()
 
             # Edição
             if 'edit_disc_index' in st.session_state:
