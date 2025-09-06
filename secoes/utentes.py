@@ -191,7 +191,7 @@ def atualizar_utente(sheet, index: int, dados: dict) -> bool:
             dados.get('Estado', 'Ativo')
         ]
         # Atualizar a linha na planilha
-        sheet.update(f'A{index + 2}:D{index + 2}', [values)
+        sheet.update(f'A{index + 2}:D{index + 2}', [values])
         return True
     except Exception as e:
         st.error(f"Erro ao atualizar utente: {str(e)}")
