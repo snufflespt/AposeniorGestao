@@ -6,6 +6,7 @@ from utils.ui import configurar_pagina, titulo_secao
 from utils.components import (
     render_user_card,
     render_confirmation_dialog
+
 )
 
 # Configuração da página com tema moderno
@@ -53,6 +54,7 @@ def configurar_tema():
             }
         </style>
     """, unsafe_allow_html=True)
+
 
 def mostrar_pagina():
     st.markdown("""
@@ -113,7 +115,12 @@ def mostrar_pagina():
 
             # Renderizar lista de utentes usando componentes reutilizáveis
             for i, row in df_filtrado.iterrows():
-               render_user_card(dict(row), i)
+                col1, col2, col3 = st.columns([6, 1, 1])
+                nome = row.get('Nome', '')
+                contacto = row.get('Contacto', '')
+                col1.write(f"**{nome}** — {contacto}")
+                if col2.button("✏️ Editar", key=f"edit_utente_{i}", width="stretch"):
+                    st.session_state['edit_utente_index'] = i
 
             # Diálogo de confirmação usando componente reutilizável
             if 'delete_index' in st.session_state:
