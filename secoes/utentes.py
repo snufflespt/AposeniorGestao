@@ -59,10 +59,12 @@ def mostrar_pagina():
             color: white;
             border: none;
             border-radius: 5px;
-            padding: 6px 12px;
+            padding: 4px 8px;
             font-size: 14px;
             cursor: pointer;
             transition: background 0.2s ease;
+            height: 32px;
+            line-height: 1;
         }
         .utente-actions button:hover {
             background-color: #E94E1B;
