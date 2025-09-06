@@ -8,8 +8,55 @@ from utils.components import (
     render_confirmation_dialog
 )
 
+# Configuração da página com tema moderno
+def configurar_tema():
+    st.markdown("""
+        <style>
+            :root {
+                --primary-color: #264653;
+                --background-color: #f4f4f4;
+                --text-color: #333333;
+                --font-family: 'Arial', sans-serif;
+            }
+            body {
+                background-color: var(--background-color);
+                color: var(--text-color);
+                font-family: var(--font-family);
+            }
+            .stApp {
+                background-color: var(--background-color);
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: var(--primary-color);
+            }
+            .css-10trblm { /* stTextInput, stNumberInput, stTextArea */
+                background-color: white;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                padding: 5px 10px;
+            }
+            .css-qrbaxs { /* stSelectbox */
+                background-color: white;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                padding: 5px 10px;
+            }
+            .css-1egviio { /* submit button */
+                background-color: var(--primary-color);
+                color: white;
+                border-radius: 5px;
+                padding: 5px 10px;
+                border: none;
+            }
+            .css-1egviio:hover {
+                background-color: #2a9d8f;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
 def mostrar_pagina():
     configurar_pagina("Gestão de Utentes", "🧍")
+    configurar_tema()  # Aplicar o tema
 
     sheet = get_worksheet("Utentes")
 
@@ -25,7 +72,7 @@ def mostrar_pagina():
                 contacto = st.text_input("Contacto")
             with col2:
                 morada = st.text_input("Morada")
-                estado = st.selectbox("Estado", ["Ativo", "Inativo"])
+                estado = st.selectbox("Estado", ["Ativo", "Inativo")
             submit = st.form_submit_button("Guardar")
 
         if submit:
@@ -39,8 +86,6 @@ def mostrar_pagina():
     with tab_gerir:
         st.markdown("### Lista de utentes")
 
-
-
         dados = sheet.get_all_records()
 
         if dados:
@@ -48,7 +93,7 @@ def mostrar_pagina():
             pesquisa = st.text_input("Pesquisar utente por qualquer campo:")
 
             if pesquisa:
-                df_filtrado = df[df.apply(lambda row: pesquisa.lower() in row.astype(str).str.lower().to_string(), axis=1)]
+                df_filtrado = df[df.apply(lambda row: any(pesquisa.lower() in str(x).lower() for x in row), axis=1)]
             else:
                 df_filtrado = df
 
@@ -56,12 +101,10 @@ def mostrar_pagina():
             for i, row in df_filtrado.iterrows():
                 render_user_card(dict(row), i)
 
-
-
             # Diálogo de confirmação usando componente reutilizável
             if 'delete_index' in st.session_state:
                 idx = st.session_state['delete_index']
-                entity_name = df.iloc[idx]['Nome']
+                entity_name = df.iloc[idx['Nome']
 
                 def confirm_delete():
                     try:
@@ -84,7 +127,7 @@ def mostrar_pagina():
                     novo_nome = st.text_input("Nome do utente", value=df.iloc[idx]['Nome'])
                     novo_contacto = st.text_input("Contacto", value=df.iloc[idx]['Contacto'])
                     nova_morada = st.text_input("Morada", value=df.iloc[idx].get('Morada', ''))
-                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo"],
+                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo",
                                               index=["Ativo", "Inativo"].index(df.iloc[idx].get('Estado', 'Ativo')))
 
                     if st.form_submit_button("Guardar alterações"):
@@ -140,11 +183,15 @@ def atualizar_utente(sheet, index: int, dados: dict) -> bool:
         True se atualizado com sucesso, False caso contrário
     """
     try:
-        # Atualizar cada campo
-        sheet.update_cell(index + 2, 1, dados.get('Nome', ''))
-        sheet.update_cell(index + 2, 2, dados.get('Contacto', ''))
-        sheet.update_cell(index + 2, 3, dados.get('Morada', ''))
-        sheet.update_cell(index + 2, 4, dados.get('Estado', 'Ativo'))
+        # Criar lista de valores para atualizar a linha
+        values = [
+            dados.get('Nome', ''),
+            dados.get('Contacto', ''),
+            dados.get('Morada', ''),
+            dados.get('Estado', 'Ativo')
+        ]
+        # Atualizar a linha na planilha
+        sheet.update(f'A{index + 2}:D{index + 2}', [values)
         return True
     except Exception as e:
         st.error(f"Erro ao atualizar utente: {str(e)}")
@@ -168,3 +215,5 @@ def apagar_utente(sheet, index: int) -> bool:
     except Exception as e:
         st.error(f"Erro ao apagar utente: {str(e)}")
         return False
+```
+
