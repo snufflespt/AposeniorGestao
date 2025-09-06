@@ -55,6 +55,20 @@ def configurar_tema():
     """, unsafe_allow_html=True)
 
 def mostrar_pagina():
+    st.markdown("""
+        <style>
+        .user-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+
+def mostrar_pagina():
     configurar_pagina("Gestão de Utentes", "🧍")
     configurar_tema()  # Aplicar o tema
 
@@ -99,7 +113,7 @@ def mostrar_pagina():
 
             # Renderizar lista de utentes usando componentes reutilizáveis
             for i, row in df_filtrado.iterrows():
-                render_user_card(dict(row), i)
+               render_user_card(dict(row), i)
 
             # Diálogo de confirmação usando componente reutilizável
             if 'delete_index' in st.session_state:
@@ -215,5 +229,3 @@ def apagar_utente(sheet, index: int) -> bool:
     except Exception as e:
         st.error(f"Erro ao apagar utente: {str(e)}")
         return False
-
-
