@@ -59,11 +59,11 @@ def mostrar_pagina():
             color: white;
             border: none;
             border-radius: 5px;
-            padding: 6px 12px;
+            padding: 4px 8px;
             font-size: 14px;
             cursor: pointer;
             transition: background 0.2s ease;
-            min-height: 36px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
