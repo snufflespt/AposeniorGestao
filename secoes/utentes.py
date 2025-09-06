@@ -72,14 +72,16 @@ def mostrar_pagina():
                             st.markdown('<span style="background-color: #f8d7da; color: #721c24; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● INATIVO</span>', unsafe_allow_html=True)
 
                     with col_actions:
-                        # Botões de ação
-                        if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
-                            st.session_state['edit_index'] = i
-                            st.rerun()
-
-                        if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
-                            st.session_state['delete_index'] = i
-                            st.rerun()
+                        # Botões de ação em sub-colunas para consistência
+                        sub_col1, sub_col2 = st.columns(2)
+                        with sub_col1:
+                            if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
+                                st.session_state['edit_index'] = i
+                                st.rerun()
+                        with sub_col2:
+                            if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
+                                st.session_state['delete_index'] = i
+                                st.rerun()
 
                     st.divider()
 
