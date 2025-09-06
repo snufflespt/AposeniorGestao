@@ -6,21 +6,6 @@ from utils.ui import configurar_pagina, titulo_secao
 def mostrar_pagina():
     configurar_pagina("Gestão de Utentes", "🧍")
 
-    # Verificar parâmetros da URL para ações de editar/apagar
-    query_params = st.query_params
-    if 'edit' in query_params:
-        try:
-            st.session_state['edit_index'] = int(query_params['edit'])
-            st.query_params.clear()  # Limpar parâmetros após usar
-        except ValueError:
-            pass
-    if 'delete' in query_params:
-        try:
-            st.session_state['delete_index'] = int(query_params['delete'])
-            st.query_params.clear()  # Limpar parâmetros após usar
-        except ValueError:
-            pass
-
     sheet = get_worksheet("Utentes")
 
     # Criar tabs
@@ -47,6 +32,44 @@ def mostrar_pagina():
 
     with tab_gerir:
         st.markdown("### Lista de utentes")
+
+        # CSS personalizado para os botões
+        st.markdown("""
+        <style>
+        .utente-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .utente-info {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .utente-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .utente-actions button {
+            background-color: #F26A21;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .utente-actions button:hover {
+            background-color: #E94E1B;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
         dados = sheet.get_all_records()
 
         if dados:
@@ -62,19 +85,20 @@ def mostrar_pagina():
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
 
-                # Usar HTML para manter o design do cartão
-                st.markdown(
-                    f"""
-                    <div class="card">
-                        <div class="card-info">{nome} — {contacto}</div>
-                        <div class="card-actions">
-                            <button onclick="window.location.href='?edit={i}'">✏️ Editar</button>
-                            <button onclick="window.location.href='?delete={i}'">🗑️ Apagar</button>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                # Usar container para simular o design do cartão
+                with st.container():
+                    col1, col2 = st.columns([4, 1])
+                    with col1:
+                        st.markdown(f"**{nome}** — {contacto}")
+                    with col2:
+                        # Botões do Streamlit com estilo personalizado
+                        if st.button("✏️ Editar", key=f"edit_{i}", help="Editar utente"):
+                            st.session_state['edit_index'] = i
+                            st.rerun()
+                        if st.button("🗑️ Apagar", key=f"delete_{i}", help="Apagar utente"):
+                            st.session_state['delete_index'] = i
+                            st.rerun()
+                st.markdown("---")  # Separador entre cartões
 
 
 
