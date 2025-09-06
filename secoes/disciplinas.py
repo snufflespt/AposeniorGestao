@@ -36,7 +36,7 @@ def mostrar_pagina():
     # Tab: Gerir
     # -----------------------
     with tab_gerir:
-        titulo_secao("📋 Gerir disciplinas")
+        titulo_secao("Gerir disciplinas", "📋")
         dados = sheet.get_all_records()
 
         if dados:
@@ -57,26 +57,22 @@ def mostrar_pagina():
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
 
-                st.markdown(
-                    f"""
-                    <div class="card">
-                        <div class="card-info">{nome} — {cod}</div>
-                        <div class="card-actions">
-                            <form method="post">
-                                <button name="edit_disc_{i}">✏️ Editar</button>
-                                <button name="delete_disc_{i}">🗑️ Apagar</button>
-                            </form>
+                col_info, col_edit, col_delete = st.columns([6, 1, 1])
+                with col_info:
+                    st.markdown(
+                        f"""
+                        <div class="card">
+                            <div class="card-info">{nome} — {cod}</div>
                         </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                # Captura dos botões via session_state
-                if st.session_state.get(f"edit_disc_{i}"):
-                    st.session_state['edit_disc_index'] = i
-                if st.session_state.get(f"delete_disc_{i}"):
-                    st.session_state['delete_disc_index'] = i
+                        """,
+                        unsafe_allow_html=True
+                    )
+                with col_edit:
+                    if st.button("✏️ Editar", key=f"edit_disc_{i}", help="Editar disciplina", use_container_width=True):
+                        st.session_state['edit_disc_index'] = i
+                with col_delete:
+                    if st.button("🗑️ Apagar", key=f"delete_disc_{i}", help="Apagar disciplina", use_container_width=True):
+                        st.session_state['delete_disc_index'] = i
 
             # Apagar com confirmação
             if 'delete_disc_index' in st.session_state:
