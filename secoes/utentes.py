@@ -46,19 +46,18 @@ def mostrar_pagina():
             for i, row in df_filtrado.iterrows():
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
-            
-                st.markdown(
-                    f"""
-                    <div class="card">
-                        <div class="card-info">{nome} — {contacto}</div>
-                        <div class="card-actions">
-                            <button onclick="window.location.href='?edit={i}'">✏️ Editar</button>
-                            <button onclick="window.location.href='?delete={i}'">🗑️ Apagar</button>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+
+                col1, col2, col3 = st.columns([3, 1, 1])
+                with col1:
+                    st.write(f"**{nome}** — {contacto}")
+                with col2:
+                    if st.button("✏️ Editar", key=f"edit_{i}"):
+                        st.session_state['edit_index'] = i
+                        st.rerun()
+                with col3:
+                    if st.button("🗑️ Apagar", key=f"delete_{i}"):
+                        st.session_state['delete_index'] = i
+                        st.rerun()
 
 
 
