@@ -54,6 +54,17 @@ def mostrar_pagina():
             display: flex;
             gap: 8px;
         }
+        .equal-height-row {
+            display: flex;
+            align-items: stretch;
+        }
+        .equal-height-row > div {
+            display: flex;
+            flex-direction: column;
+        }
+        .equal-height-row > div > div {
+            flex: 1;
+        }
         .utente-actions button {
             background-color: #F26A21;
             color: white;
@@ -92,12 +103,14 @@ def mostrar_pagina():
                 contacto = row.get('Contacto', '')
 
                 # Layout em linha única com botões no final
+                st.markdown('<div class="equal-height-row">', unsafe_allow_html=True)
                 col1, col2 = st.columns([5, 5])
 
                 with col1:
-                    st.markdown(f"**{nome}** — {contacto}")
+                    st.markdown(f'<div>**{nome}** — {contacto}</div>', unsafe_allow_html=True)
 
                 with col2:
+                    st.markdown('<div>', unsafe_allow_html=True)
                     col_edit, col_delete = st.columns(2)
                     with col_edit:
                         if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
@@ -107,7 +120,9 @@ def mostrar_pagina():
                         if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
                             st.session_state['delete_index'] = i
                             st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
 
+                st.markdown('</div>', unsafe_allow_html=True)
                 st.divider()
 
 
