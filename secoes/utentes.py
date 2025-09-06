@@ -67,6 +67,8 @@ def mostrar_pagina():
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
         }
         .utente-actions button:hover {
             background-color: #E94E1B;
