@@ -1,6 +1,5 @@
 """
-Biblioteca de componentes reutilizáveis para a aplicação Streamlit
-Centraliza lógica comum para exibição de dados e interações
+Biblioteca de componentes reutilizáveis para a aplicação Streamlit. Centraliza lógica comum para exibição de dados e interações.
 """
 
 import streamlit as st
@@ -9,15 +8,16 @@ from typing import Dict, Any, Optional, Callable
 
 def render_user_card(user_data: Dict[str, Any], index: int, on_edit: Optional[Callable] = None, on_delete: Optional[Callable] = None) -> None:
     """
-    Renderiza um card de utente com informações e botões de ação
+    Renderiza um card de utente com informações e botões de ação.
 
     Args:
-        user_data: Dicionário com dados do utente
-        index: Índice do utente na lista
-        on_edit: Callback para ação de editar
-        on_delete: Callback para ação de apagar
+        user_data (Dict[str, Any]): Dicionário com dados do utente.
+        index (int): Índice do utente na lista.
+        on_edit (Optional[Callable], optional): Callback para ação de editar. Defaults to None.
+        on_delete (Optional[Callable], optional): Callback para ação de apagar. Defaults to None.
     """
     nome = user_data.get('Nome', '')
+
     contacto = user_data.get('Contacto', '')
     morada = user_data.get('Morada', '')
     estado = user_data.get('Estado', '')
@@ -48,15 +48,17 @@ def render_user_card(user_data: Dict[str, Any], index: int, on_edit: Optional[Ca
 
 
 def render_action_buttons(index: int, on_edit: Optional[Callable] = None, on_delete: Optional[Callable] = None, entity_type: str = "item") -> None:
-    """
-    Renderiza botões de ação padronizados (Editar/Apagar)
+    """Renderiza botões de ação padronizados (Editar/Apagar).
 
     Args:
-        index: Índice do item para chaves únicas
-        on_edit: Função callback para editar
-        on_delete: Função callback para apagar
-        entity_type: Tipo de entidade (para chaves de session_state)
+        index (int): Índice do item para chaves únicas.
+        on_edit (Optional[Callable], optional): Função callback para editar. Defaults to None.
+        on_delete (Optional[Callable], optional): Função callback para apagar. Defaults to None.
+        entity_type (str, optional): Tipo de entidade (para chaves de session_state). Defaults to "item".
     """
+
+
+
     # Sub-colunas para os dois botões
     sub_col1, sub_col2 = st.columns(2)
 
@@ -83,11 +85,11 @@ def render_edit_form(entity_type: str, fields: Dict[str, Dict[str, Any]], curren
     """
     Renderiza um formulário de edição padronizado
 
-    Args:
-        entity_type: Tipo da entidade (ex: "utente", "professor")
-        fields: Configuração dos campos do formulário
-        current_data: Dados atuais para preencher o formulário
-        on_save: Função callback para salvar alterações
+    Args:w
+        entity_type (str): Tipo da entidade (ex: "utente", "professor").
+        fields (Dict[str, Dict[str, Any]]): Configuração dos campos do formulário.
+        current_data (Dict[str, Any]): Dados atuais para preencher o formulário.
+        on_save (Callable): Função callback para salvar alterações.
     """
     entity_name = current_data.get('Nome', current_data.get('Nome do Professor', 'Item'))
 
@@ -163,10 +165,9 @@ def _render_form_field(field_config: Dict[str, Any], current_data: Dict[str, Any
 def render_confirmation_dialog(entity_type: str, entity_name: str, on_confirm: Callable, on_cancel: Callable) -> None:
     """
     Renderiza um diálogo de confirmação padronizado
-
     Args:
-        entity_type: Tipo da entidade
-        entity_name: Nome da entidade
+        entity_type (str): Tipo da entidade.
+        entity_name (str): Nome da entidade.
         on_confirm: Callback para confirmação
         on_cancel: Callback para cancelamento
     """

@@ -183,7 +183,6 @@ def adicionar_utente(sheet, nome: str, contacto: str, morada: str = "", estado: 
         st.error(f"Erro ao adicionar utente: {str(e)}")
         return False
 
-
 def atualizar_utente(sheet, index: int, dados: dict) -> bool:
     """
     Atualiza os dados de um utente na planilha
@@ -210,7 +209,6 @@ def atualizar_utente(sheet, index: int, dados: dict) -> bool:
     except Exception as e:
         st.error(f"Erro ao atualizar utente: {str(e)}")
         return False
-
 
 def apagar_utente(sheet, index: int) -> bool:
     """
