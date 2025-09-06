@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import uuid
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 
@@ -8,7 +9,6 @@ def mostrar_pagina():
 
     sheet = get_worksheet("Disciplinas")
 
-    # Tabs
     tab_adicionar, tab_gerir = st.tabs(["➕ Adicionar disciplina", "📋 Gerir disciplinas"])
 
     # -----------------------
@@ -42,7 +42,6 @@ def mostrar_pagina():
         if dados:
             df = pd.DataFrame(dados)
 
-            # Pesquisa
             pesquisa = st.text_input("Pesquisar por nome, código ou descrição:")
             if pesquisa:
                 df_filtrado = df[df.apply(
@@ -52,7 +51,6 @@ def mostrar_pagina():
             else:
                 df_filtrado = df
 
-            # Listagem com novo visual
             for i, row in df_filtrado.iterrows():
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
@@ -67,13 +65,15 @@ def mostrar_pagina():
                     unsafe_allow_html=True
                 )
 
-                # Botões funcionais
+                # Chave única para cada botão
+                unique_id = str(uuid.uuid4())
+
                 col_edit, col_delete = st.columns([1, 1])
                 with col_edit:
-                    if st.button("✏️ Editar", key=f"edit_disc_{i}", help="Editar disciplina", use_container_width=True):
+                    if st.button("✏️ Editar", key=f"edit_disc_{unique_id}", use_container_width=True):
                         st.session_state['edit_disc_index'] = i
                 with col_delete:
-                    if st.button("🗑️ Apagar", key=f"delete_disc_{i}", help="Apagar disciplina", use_container_width=True):
+                    if st.button("🗑️ Apagar", key=f"delete_disc_{unique_id}", use_container_width=True):
                         st.session_state['delete_disc_index'] = i
 
             # Apagar com confirmação
@@ -82,7 +82,7 @@ def mostrar_pagina():
                 st.warning(f"Tens a certeza que queres apagar a disciplina: {df.iloc[idx]['Nome da Disciplina']}?")
                 col_conf1, col_conf2 = st.columns(2)
                 if col_conf1.button("✅ Sim, apagar"):
-                    sheet.delete_rows(idx + 2)  # +2 por causa do cabeçalho
+                    sheet.delete_rows(idx + 2)
                     del st.session_state['delete_disc_index']
                     st.rerun()
                 if col_conf2.button("❌ Cancelar"):
