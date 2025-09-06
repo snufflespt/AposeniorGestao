@@ -108,6 +108,21 @@ def aplicar_estilos():
             align-items: center;
         }}
 
+        /* Botões com altura e estilo consistentes */
+        div.stButton > button {{
+            background-color: #F26A21;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }}
+        div.stButton > button:hover {{
+            background-color: #E94E1B;
+        }}
+
         /* MENU LATERAL */
         section[data-testid="stSidebar"] {{
             background-color: white;
