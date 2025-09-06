@@ -127,7 +127,7 @@ def mostrar_pagina():
                     novo_nome = st.text_input("Nome do utente", value=df.iloc[idx]['Nome'])
                     novo_contacto = st.text_input("Contacto", value=df.iloc[idx]['Contacto'])
                     nova_morada = st.text_input("Morada", value=df.iloc[idx].get('Morada', ''))
-                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo",
+                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo"],
                                               index=["Ativo", "Inativo"].index(df.iloc[idx].get('Estado', 'Ativo')))
 
                     if st.form_submit_button("Guardar alterações"):
