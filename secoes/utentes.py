@@ -86,7 +86,7 @@ def mostrar_pagina():
                 contacto = row.get('Contacto', '')
 
                 # Usar colunas do Streamlit para melhor alinhamento
-                col1, col2, col3 = st.columns([6, 1, 1])
+                col1, col2, col3 = st.columns([4, 1, 1])
 
                 with col1:
                     st.markdown(f"**{nome}** — {contacto}")
