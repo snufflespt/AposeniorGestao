@@ -92,7 +92,7 @@ def mostrar_pagina():
                 contacto = row.get('Contacto', '')
 
                 # Layout em linha única com botões no final
-                col1, col2 = st.columns([8, 2])
+                col1, col2 = st.columns([6, 4])
 
                 with col1:
                     st.markdown(f"**{nome}** — {contacto}")
