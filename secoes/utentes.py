@@ -114,16 +114,19 @@ def mostrar_pagina():
 
             # Renderizar lista de utentes usando componentes reutilizáveis
             for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([6, 1, 1])
+                col1, col2 = st.columns([4, 2])
 
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
 
                 col1.write(f"**{nome}** — {contacto}")
-                if col2.button("✏️ Editar", key=f"edit_utente_{i}", width="stretch"):
-                    st.session_state['edit_utente_index'] = i
-                if col3.button("🗑️ Apagar", key=f"delete_utente_{i}", width="stretch"):
-                    st.session_state['delete_utente_index'] = i
+                
+                with col2:
+                    btn_col1, btn_col2 = st.columns(2)
+                    if btn_col1.button("✏️ Editar", key=f"edit_utente_{i}", use_container_width=True):
+                        st.session_state['edit_utente_index'] = i
+                    if btn_col2.button("🗑️ Apagar", key=f"delete_utente_{i}", use_container_width=True):
+                        st.session_state['delete_utente_index'] = i
 
             if 'delete_utente_index' in st.session_state:
                 idx = st.session_state['delete_utente_index']
