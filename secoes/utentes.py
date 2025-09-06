@@ -60,11 +60,11 @@ def mostrar_pagina():
             color: white;
             border: none;
             border-radius: 5px;
-            padding: 4px 8px;
+            padding: 2px 6px;
             font-size: 14px;
             cursor: pointer;
             transition: background 0.2s ease;
-            height: 28px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
