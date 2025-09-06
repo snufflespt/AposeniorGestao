@@ -4,8 +4,7 @@ import time
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 from utils.components import (
-    render_user_card,
-    render_confirmation_dialog
+    render_confirmation_dialog, render_action_buttons
 
 )
 
@@ -116,12 +115,24 @@ def mostrar_pagina():
             # Renderizar lista de utentes usando componentes reutilizáveis
             for i, row in df_filtrado.iterrows():
                 col1, col2, col3 = st.columns([6, 1, 1])
+
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
+
                 col1.write(f"**{nome}** — {contacto}")
                 if col2.button("✏️ Editar", key=f"edit_utente_{i}", width="stretch"):
                     st.session_state['edit_utente_index'] = i
+                if col3.button("🗑️ Apagar", key=f"delete_utente_{i}", width="stretch"):
+                    st.session_state['delete_utente_index'] = i
 
+            if 'delete_utente_index' in st.session_state:
+                idx = st.session_state['delete_utente_index']
+                st.warning(f"Tens a certeza que queres apagar o utente: {df.iloc[idx]['Nome']}?")
+                col_conf1, col_conf2 = st.columns(2)
+                if col_conf1.button("✅ Sim, apagar"):
+                    sheet.delete_rows(idx + 2)
+                    del st.session_state['delete_utente_index']
+                    st.rerun()
             # Diálogo de confirmação usando componente reutilizável
             if 'delete_index' in st.session_state:
                 idx = st.session_state['delete_index']
