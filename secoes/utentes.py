@@ -52,32 +52,36 @@ def mostrar_pagina():
                 morada = row.get('Morada', '')
                 estado = row.get('Estado', '')
 
-                # Usar a classe .card do ui.py para consistência visual
-                html_content = f"""
-                <div class="card">
-                    <div class="card-info">
-                        <strong>{nome}</strong> — {contacto}
-                        {f'<br><small>🏠 {morada}</small>' if morada else ''}
-                        <span style="float: right; background-color: {'#d4edda' if estado == 'Ativo' else '#f8d7da'}; color: {'#155724' if estado == 'Ativo' else '#721c24'}; padding: 2px 6px; border-radius: 10px; font-size: 11px; font-weight: bold;">{estado}</span>
-                    </div>
-                    <div class="card-actions">
-                        <button onclick="this.closest('.card').querySelector('button[key*=\'edit_{i}\']').click()">✏️ Editar</button>
-                        <button onclick="this.closest('.card').querySelector('button[key*=\'delete_{i}\']').click()">🗑️ Apagar</button>
-                    </div>
-                </div>
-                """
-                st.markdown(html_content, unsafe_allow_html=True)
+                # Usar container do Streamlit com estilo consistente
+                with st.container():
+                    # Layout em colunas para informação e botões
+                    col_info, col_actions = st.columns([4, 1])
 
-                # Botões invisíveis para manter funcionalidade
-                col1, col2 = st.columns([1, 1])
-                with col1:
-                    if st.button("", key=f"edit_{i}"):
-                        st.session_state['edit_index'] = i
-                        st.rerun()
-                with col2:
-                    if st.button("", key=f"delete_{i}"):
-                        st.session_state['delete_index'] = i
-                        st.rerun()
+                    with col_info:
+                        # Nome e contacto
+                        st.markdown(f"**{nome}** — {contacto}")
+
+                        # Morada se existir
+                        if morada:
+                            st.markdown(f"🏠 {morada}")
+
+                        # Status badge
+                        if estado == 'Ativo':
+                            st.markdown('<span style="background-color: #d4edda; color: #155724; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● ATIVO</span>', unsafe_allow_html=True)
+                        else:
+                            st.markdown('<span style="background-color: #f8d7da; color: #721c24; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● INATIVO</span>', unsafe_allow_html=True)
+
+                    with col_actions:
+                        # Botões de ação
+                        if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
+                            st.session_state['edit_index'] = i
+                            st.rerun()
+
+                        if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
+                            st.session_state['delete_index'] = i
+                            st.rerun()
+
+                    st.divider()
 
 
 
