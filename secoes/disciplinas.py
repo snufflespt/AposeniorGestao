@@ -36,7 +36,7 @@ def mostrar_pagina():
     # Tab: Gerir
     # -----------------------
     with tab_gerir:
-        titulo_secao("Lista de disciplinas", "📋")
+        titulo_secao("📋 Gerir disciplinas")
         dados = sheet.get_all_records()
 
         if dados:
@@ -52,18 +52,31 @@ def mostrar_pagina():
             else:
                 df_filtrado = df
 
-            # Listagem com ações
+            # Listagem com novo visual
             for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([6, 1, 1])
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
-                col1.write(f"**{nome}** — {cod}")
-                if col2.button("✏️ Editar", key=f"edit_disc_{i}", width="stretch"):
+
+                st.markdown(
+                    f"""
+                    <div class="card">
+                        <div class="card-info">{nome} — {cod}</div>
+                        <div class="card-actions">
+                            <form method="post">
+                                <button name="edit_disc_{i}">✏️ Editar</button>
+                                <button name="delete_disc_{i}">🗑️ Apagar</button>
+                            </form>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # Captura dos botões via session_state
+                if st.session_state.get(f"edit_disc_{i}"):
                     st.session_state['edit_disc_index'] = i
-                    if col3.button("🗑️ Apagar", key=f"delete_disc_{i}", width="stretch"):
-                        st.session_state['delete_disc_index'] = i
-
-
+                if st.session_state.get(f"delete_disc_{i}"):
+                    st.session_state['delete_disc_index'] = i
 
             # Apagar com confirmação
             if 'delete_disc_index' in st.session_state:
@@ -71,7 +84,7 @@ def mostrar_pagina():
                 st.warning(f"Tens a certeza que queres apagar a disciplina: {df.iloc[idx]['Nome da Disciplina']}?")
                 col_conf1, col_conf2 = st.columns(2)
                 if col_conf1.button("✅ Sim, apagar"):
-                    sheet.delete_rows(idx+2)  # +2 por causa do cabeçalho
+                    sheet.delete_rows(idx + 2)  # +2 por causa do cabeçalho
                     del st.session_state['delete_disc_index']
                     st.rerun()
                 if col_conf2.button("❌ Cancelar"):
@@ -88,9 +101,9 @@ def mostrar_pagina():
                     nova_desc = st.text_area("Descrição", value=df.iloc[idx]['Descrição'])
                     guardar = st.form_submit_button("Guardar alterações")
                 if guardar:
-                    sheet.update_cell(idx+2, 1, novo_nome)   # Coluna 1 = Nome da Disciplina
-                    sheet.update_cell(idx+2, 2, novo_codigo) # Coluna 2 = Código
-                    sheet.update_cell(idx+2, 3, nova_desc)   # Coluna 3 = Descrição
+                    sheet.update_cell(idx + 2, 1, novo_nome)
+                    sheet.update_cell(idx + 2, 2, novo_codigo)
+                    sheet.update_cell(idx + 2, 3, nova_desc)
                     del st.session_state['edit_disc_index']
                     st.rerun()
         else:
