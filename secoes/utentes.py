@@ -89,21 +89,22 @@ def mostrar_pagina():
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
 
-                # Usar colunas do Streamlit para melhor alinhamento
-                col1, col2, col3 = st.columns([4, 1, 1])
+                # Layout em linha única com botões no final
+                col1, col2 = st.columns([8, 2])
 
                 with col1:
                     st.markdown(f"**{nome}** — {contacto}")
 
                 with col2:
-                    if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
-                        st.session_state['edit_index'] = i
-                        st.rerun()
-
-                with col3:
-                    if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
-                        st.session_state['delete_index'] = i
-                        st.rerun()
+                    col_edit, col_delete = st.columns(2)
+                    with col_edit:
+                        if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
+                            st.session_state['edit_index'] = i
+                            st.rerun()
+                    with col_delete:
+                        if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
+                            st.session_state['delete_index'] = i
+                            st.rerun()
 
                 st.divider()
 
