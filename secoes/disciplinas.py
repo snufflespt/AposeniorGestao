@@ -57,16 +57,18 @@ def mostrar_pagina():
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
 
-                col_info, col_edit, col_delete = st.columns([6, 1, 1])
-                with col_info:
-                    st.markdown(
-                        f"""
-                        <div class="card">
-                            <div class="card-info">{nome} — {cod}</div>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                # Cartão visual
+                st.markdown(
+                    f"""
+                    <div class="card">
+                        <div class="card-info">{nome} — {cod}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # Botões funcionais
+                col_edit, col_delete = st.columns([1, 1])
                 with col_edit:
                     if st.button("✏️ Editar", key=f"edit_disc_{i}", help="Editar disciplina", use_container_width=True):
                         st.session_state['edit_disc_index'] = i
