@@ -92,22 +92,29 @@ def mostrar_pagina():
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
 
-                # Layout em linha única com botões no final
-                col1, col2 = st.columns([5, 5])
+                # Layout inline com texto e botões na mesma linha
+                st.markdown(f"""
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0;">
+                    <div style="font-size: 15px; font-weight: 500; flex: 1;">
+                        **{nome}** — {contacto}
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-left: 16px;">
+                        <button style="background-color: #F26A21; color: white; border: none; border-radius: 5px; padding: 4px 8px; font-size: 14px; cursor: pointer; height: 28px; display: flex; align-items: center; justify-content: center; min-width: 60px;" onclick="this.closest('.stMarkdown').querySelector('button[key*='edit_{i}']').click()">✏️ Editar</button>
+                        <button style="background-color: #F26A21; color: white; border: none; border-radius: 5px; padding: 4px 8px; font-size: 14px; cursor: pointer; height: 28px; display: flex; align-items: center; justify-content: center; min-width: 60px;" onclick="this.closest('.stMarkdown').querySelector('button[key*='delete_{i}']').click()">🗑️ Apagar</button>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
+                # Botões invisíveis para funcionalidade
+                col1, col2 = st.columns([1, 1])
                 with col1:
-                    st.markdown(f"**{nome}** — {contacto}")
-
+                    if st.button("✏️ Editar", key=f"edit_{i}", help=""):
+                        st.session_state['edit_index'] = i
+                        st.rerun()
                 with col2:
-                    col_edit, col_delete = st.columns(2)
-                    with col_edit:
-                        if st.button("✏️ Editar", key=f"edit_{i}", use_container_width=True):
-                            st.session_state['edit_index'] = i
-                            st.rerun()
-                    with col_delete:
-                        if st.button("🗑️ Apagar", key=f"delete_{i}", use_container_width=True):
-                            st.session_state['delete_index'] = i
-                            st.rerun()
+                    if st.button("🗑️ Apagar", key=f"delete_{i}", help=""):
+                        st.session_state['delete_index'] = i
+                        st.rerun()
 
                 st.divider()
 
