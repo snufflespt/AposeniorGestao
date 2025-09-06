@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import uuid
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 
@@ -55,25 +54,22 @@ def mostrar_pagina():
                 nome = row.get('Nome da Disciplina', '')
                 cod = row.get('Código', '')
 
-                # Cartão visual
-                st.markdown(
-                    f"""
-                    <div class="card">
-                        <div class="card-info">{nome} — {cod}</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                # Chave única para cada botão
-                unique_id = str(uuid.uuid4())
-
-                col_edit, col_delete = st.columns([1, 1])
-                with col_edit:
-                    if st.button("✏️ Editar", key=f"edit_disc_{unique_id}", use_container_width=True):
+                # Cartão visual + botões alinhados
+                col1, col2, col3 = st.columns([6, 1, 1])
+                with col1:
+                    st.markdown(
+                        f"""
+                        <div class="card">
+                            <div class="card-info">{nome} — {cod}</div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                with col2:
+                    if st.button("✏️ Editar", key=f"edit_disc_{i}", use_container_width=True):
                         st.session_state['edit_disc_index'] = i
-                with col_delete:
-                    if st.button("🗑️ Apagar", key=f"delete_disc_{unique_id}", use_container_width=True):
+                with col3:
+                    if st.button("🗑️ Apagar", key=f"delete_disc_{i}", use_container_width=True):
                         st.session_state['delete_disc_index'] = i
 
             # Apagar com confirmação
