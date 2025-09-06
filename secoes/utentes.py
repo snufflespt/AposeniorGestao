@@ -72,7 +72,7 @@ def mostrar_pagina():
                 contacto = st.text_input("Contacto")
             with col2:
                 morada = st.text_input("Morada")
-                estado = st.selectbox("Estado", ["Ativo", "Inativo")
+                estado = st.selectbox("Estado", ["Ativo", "Inativo"])
             submit = st.form_submit_button("Guardar")
 
         if submit:
