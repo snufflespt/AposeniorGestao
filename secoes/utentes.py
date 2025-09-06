@@ -53,7 +53,7 @@ def mostrar_pagina():
                 estado = row.get('Estado', '')
 
                 # Usar a classe .card do ui.py para consistência visual
-                st.markdown(f"""
+                html_content = f"""
                 <div class="card">
                     <div class="card-info">
                         <strong>{nome}</strong> — {contacto}
@@ -61,11 +61,12 @@ def mostrar_pagina():
                         <span style="float: right; background-color: {'#d4edda' if estado == 'Ativo' else '#f8d7da'}; color: {'#155724' if estado == 'Ativo' else '#721c24'}; padding: 2px 6px; border-radius: 10px; font-size: 11px; font-weight: bold;">{estado}</span>
                     </div>
                     <div class="card-actions">
-                        <button onclick="this.closest('.card').querySelector('button[key*='edit_{i}']').click()">✏️ Editar</button>
-                        <button onclick="this.closest('.card').querySelector('button[key*='delete_{i}']').click()">🗑️ Apagar</button>
+                        <button onclick="this.closest('.card').querySelector('button[key*=\'edit_{i}\']').click()">✏️ Editar</button>
+                        <button onclick="this.closest('.card').querySelector('button[key*=\'delete_{i}\']').click()">🗑️ Apagar</button>
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
+                """
+                st.markdown(html_content, unsafe_allow_html=True)
 
                 # Botões invisíveis para manter funcionalidade
                 col1, col2 = st.columns([1, 1])
