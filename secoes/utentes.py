@@ -104,7 +104,7 @@ def mostrar_pagina():
             # Diálogo de confirmação usando componente reutilizável
             if 'delete_index' in st.session_state:
                 idx = st.session_state['delete_index']
-                entity_name = df.iloc[idx['Nome']
+                entity_name = df.iloc[idx['Nome']   ]   
 
                 def confirm_delete():
                     try:
@@ -215,5 +215,5 @@ def apagar_utente(sheet, index: int) -> bool:
     except Exception as e:
         st.error(f"Erro ao apagar utente: {str(e)}")
         return False
-```
+
 
