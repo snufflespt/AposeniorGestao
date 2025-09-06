@@ -91,16 +91,23 @@ def mostrar_pagina():
             for i, row in df_filtrado.iterrows():
                 nome = row.get('Nome', '')
                 contacto = row.get('Contacto', '')
+                morada = row.get('Morada', '')
+                estado = row.get('Estado', '')
 
-                # Layout inline com texto e botões na mesma linha
+                # Card moderno para cada utente
                 st.markdown(f"""
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0;">
-                    <div style="font-size: 15px; font-weight: 500; flex: 1;">
-                        **{nome}** — {contacto}
-                    </div>
-                    <div style="display: flex; gap: 8px; margin-left: 16px;">
-                        <button style="background-color: #F26A21; color: white; border: none; border-radius: 5px; padding: 4px 8px; font-size: 14px; cursor: pointer; height: 28px; display: flex; align-items: center; justify-content: center; min-width: 60px;" onclick="this.closest('.stMarkdown').querySelector('button[key*='edit_{i}']').click()">✏️ Editar</button>
-                        <button style="background-color: #F26A21; color: white; border: none; border-radius: 5px; padding: 4px 8px; font-size: 14px; cursor: pointer; height: 28px; display: flex; align-items: center; justify-content: center; min-width: 60px;" onclick="this.closest('.stMarkdown').querySelector('button[key*='delete_{i}']').click()">🗑️ Apagar</button>
+                <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.07); border-left: 4px solid {'#28a745' if estado == 'Ativo' else '#dc3545'};">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 8px 0; color: #2c3e50; font-size: 18px; font-weight: 600;">{nome}</h4>
+                            <p style="margin: 4px 0; color: #6c757d; font-size: 14px;"><strong>📞 Contacto:</strong> {contacto}</p>
+                            {f'<p style="margin: 4px 0; color: #6c757d; font-size: 14px;"><strong>🏠 Morada:</strong> {morada}</p>' if morada else ''}
+                            <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; background: {'#d4edda' if estado == 'Ativo' else '#f8d7da'}; color: {'#155724' if estado == 'Ativo' else '#721c24'}; margin-top: 8px;">{estado}</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-left: 16px;">
+                            <button style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 14px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,123,255,0.2);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0,123,255,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,123,255,0.2)';" onclick="this.closest('.stMarkdown').querySelector('button[key*='edit_{i}']').click()">✏️ Editar</button>
+                            <button style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 14px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(220,53,69,0.2);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(220,53,69,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(220,53,69,0.2)';" onclick="this.closest('.stMarkdown').querySelector('button[key*='delete_{i}']').click()">🗑️ Apagar</button>
+                        </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -108,15 +115,13 @@ def mostrar_pagina():
                 # Botões invisíveis para funcionalidade
                 col1, col2 = st.columns([1, 1])
                 with col1:
-                    if st.button("✏️ Editar", key=f"edit_{i}", help=""):
+                    if st.button("", key=f"edit_{i}"):
                         st.session_state['edit_index'] = i
                         st.rerun()
                 with col2:
-                    if st.button("🗑️ Apagar", key=f"delete_{i}", help=""):
+                    if st.button("", key=f"delete_{i}"):
                         st.session_state['delete_index'] = i
                         st.rerun()
-
-                st.divider()
 
 
 
