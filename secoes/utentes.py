@@ -18,7 +18,7 @@ def mostrar_pagina():
 
     with tab_adicionar:
         titulo_secao("Adicionar novo utente", "➕")
-        with st.form("form_utente"):
+        with st.form("form_utente", clear_on_submit=True):
             col1, col2 = st.columns(2)
             with col1:
                 nome = st.text_input("Nome do utente")
