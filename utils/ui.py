@@ -40,9 +40,9 @@ def aplicar_estilos():
             font-size: var(--fs-body);
         }}
         
-        /* Remove padding excessivo no topo da página */
+        /* Adiciona espaçamento no topo da página */
         .block-container {{
-            padding-top: 1rem !important;
+            padding-top: 2rem !important;
         }}
 
         /* --- ESTILOS DE COMPONENTES --- */
@@ -76,7 +76,7 @@ def aplicar_estilos():
 
         /* Menu Lateral */
         [data-testid="stSidebar"] {{
-            background-color: #f0f2f6; /* Cinza claro */
+            background-color: #3a3a3a; /* Cinza escuro para contraste com o logo */
         }}
         [data-testid="stSidebar"] [role="radio"][aria-checked="true"] > div {{
             background-color: var(--color-brand) !important;
