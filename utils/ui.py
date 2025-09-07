@@ -62,6 +62,18 @@ def aplicar_estilos():
             background-color: var(--color-brand-hover);
         }}
 
+        /* Inputs de Texto (geral e desativado) */
+        [data-testid="stTextInput"] input {{
+            border: 1px solid #ccc;
+            border-radius: var(--radius);
+        }}
+        /* Garante que o texto em campos desativados seja legível */
+        [data-testid="stTextInput"] input:disabled {{
+            -webkit-text-fill-color: var(--color-text); /* Para Chrome/Safari */
+            color: var(--color-text); /* Para outros browsers */
+            background-color: #fafafa; /* Fundo cinza claro para indicar que está desativado */
+        }}
+
         /* Menu Lateral */
         [data-testid="stSidebar"] {{
             background-color: var(--color-card);
