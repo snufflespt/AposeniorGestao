@@ -1,7 +1,6 @@
 import streamlit as st
 from utils.ui import aplicar_estilos
 from secoes import utentes, turmas, professores, disciplinas
-from utils import auth
 
 # 🔹 Carregar CSS global logo no arranque
 aplicar_estilos()
