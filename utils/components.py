@@ -173,7 +173,7 @@ def render_confirmation_dialog(entity_type: str, entity_name: str, on_confirm: C
     """
     st.warning(f"Tens a certeza que queres apagar o {entity_type}: {entity_name}?")
 
-    col1, col2 = st.columns(2)
+    col1, col2, _ = st.columns([1, 1, 5])  # Colunas mais pequenas para botões mais juntos
 
     with col1:
         if st.button("✅ Sim, apagar"):
