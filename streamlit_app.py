@@ -9,10 +9,6 @@ aplicar_estilos()
 # Configuração global da página
 st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
-# Lógica de login - verificar se o utilizador está autenticado
-auth.show_login()
-
-# --- A APP SÓ CONTINUA A SER EXECUTADA SE O LOGIN TIVER SUCESSO ---
 
 # 🔹 Logótipo no menu lateral
 st.sidebar.image("imagens/logo.png", use_container_width=True)
