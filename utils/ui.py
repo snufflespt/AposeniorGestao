@@ -76,13 +76,21 @@ def aplicar_estilos():
 
         /* Menu Lateral */
         [data-testid="stSidebar"] {{
-            background-color: #3a3a3a; /* Cinza escuro para contraste com o logo */
+            background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
         }}
         [data-testid="stSidebar"] [role="radio"][aria-checked="true"] > div {{
             background-color: var(--color-brand) !important;
             border-radius: var(--radius);
             font-weight: bold !important;
             color: white !important;
+        }}
+
+        /* Estilo para a imagem do logo para garantir contraste no fundo claro */
+        [data-testid="stSidebar"] [data-testid="stImage"] img {{
+            background-color: #3a3a3a;
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }}
         
         /* Abas (Tabs) */
