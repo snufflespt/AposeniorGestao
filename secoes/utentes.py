@@ -79,6 +79,30 @@ def mostrar_pagina():
                             time.sleep(0.5)
                             st.rerun()
             
+            # --- VISTA DE APAGAR ---
+            elif 'delete_index' in st.session_state:
+                idx = st.session_state['delete_index']
+                entity_name = df.loc[idx, 'Nome']
+
+                if st.button("⬅️ Voltar à lista"):
+                    del st.session_state['delete_index']
+                    st.rerun()
+
+                st.subheader("Apagar utente")
+                
+                def confirm_delete():
+                    if apagar_utente(sheet, idx):
+                        st.success(f"Utente '{entity_name}' apagado com sucesso!")
+                        del st.session_state['delete_index']
+                        time.sleep(0.5)
+                        st.rerun()
+
+                def cancel_delete():
+                    del st.session_state['delete_index']
+                    st.rerun()
+
+                render_confirmation_dialog('utente', entity_name, confirm_delete, cancel_delete)
+
             # --- VISTA DE LISTA ---
             else:
                 st.markdown("### Lista de utentes")
@@ -112,24 +136,6 @@ def mostrar_pagina():
                                 st.rerun()
                     
                     st.write("")
-
-                # Diálogo de confirmação para apagar (apenas na vista de lista)
-                if 'delete_index' in st.session_state:
-                    idx = st.session_state['delete_index']
-                    entity_name = df.loc[idx, 'Nome']
-
-                    def confirm_delete():
-                        if apagar_utente(sheet, idx):
-                            st.success(f"Utente '{entity_name}' apagado com sucesso!")
-                            del st.session_state['delete_index']
-                            time.sleep(0.5)
-                            st.rerun()
-
-                    def cancel_delete():
-                        del st.session_state['delete_index']
-                        st.rerun()
-
-                    render_confirmation_dialog('utente', entity_name, confirm_delete, cancel_delete)
 
 
 # Funções auxiliares para operações CRUD
