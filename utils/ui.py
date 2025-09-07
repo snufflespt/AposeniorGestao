@@ -200,6 +200,21 @@ def aplicar_estilos():
             opacity: 0.25;
             pointer-events: none;
         }}
+
+        /* Botões de ação dentro de um expander (ex: página de utentes) */
+        div[data-testid="stExpander"] div[data-testid="column"]:nth-of-type(2) .stButton button {{
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+            box-sizing: border-box; /* Garante que o padding está incluído na largura total */
+        }}
+
+        /* Remove a margem do último botão para um alinhamento perfeito */
+        div[data-testid="stExpander"] div[data-testid="column"]:nth-of-type(2) .stButton:last-child button {{
+            margin-bottom: 0;
+        }}
         </style>
         """,
         unsafe_allow_html=True

@@ -8,79 +8,8 @@ from utils.components import (
 
 )
 
-# Configuração da página com tema moderno
-def configurar_tema():
-    st.markdown("""
-        <style>
-            :root {
-                --primary-color: #264653;
-                --background-color: #f4f4f4;
-                --text-color: #333333;
-                --font-family: 'Arial', sans-serif;
-            }
-            body {
-                background-color: var(--background-color);
-                color: var(--text-color);
-                font-family: var(--font-family);
-            }
-            .stApp {
-                background-color: var(--background-color);
-            }
-            h1, h2, h3, h4, h5, h6 {
-                color: var(--primary-color);
-            }
-            .css-10trblm { /* stTextInput, stNumberInput, stTextArea */
-                background-color: white;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                padding: 5px 10px;
-            }
-            .css-qrbaxs { /* stSelectbox */
-                background-color: white;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                padding: 5px 10px;
-            }
-            .css-1egviio { /* submit button */
-                background-color: var(--primary-color);
-                color: white;
-                border-radius: 5px;
-                padding: 5px 10px;
-                border: none;
-            }
-            .css-1egviio:hover {
-                background-color: #2a9d8f;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
-
 def mostrar_pagina():
     configurar_pagina("Gestão de Utentes", "🧍")
-    configurar_tema()  # Aplicar o tema
-    st.markdown("""
-        <style>
-        .user-card {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        /* Garante que os botões de ação dentro do expander tenham o mesmo tamanho */
-        div[data-testid="stExpander"] div[data-testid="column"]:nth-of-type(2) .stButton button {
-            width: 100%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 5px; /* Adiciona um espaçamento consistente entre os botões */
-        }
-        /* Remove a margem do último botão para um alinhamento perfeito */
-        div[data-testid="stExpander"] div[data-testid="column"]:nth-of-type(2) .stButton:last-child button {
-            margin-bottom: 0;
-        }
-        </style>
-    """, unsafe_allow_html=True)
 
     sheet = get_worksheet("Utentes")
 
