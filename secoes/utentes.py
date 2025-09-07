@@ -125,7 +125,7 @@ def mostrar_pagina():
                         
                         st.write("")
 
-                        botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
+                        botoes_col1, botoes_col2, botoes_col3, _ = st.columns([1, 1, 1, 4])
                         with botoes_col1:
                             if st.button("✏️ Editar", key=f"edit_utente_{i}", use_container_width=True):
                                 st.session_state['edit_index'] = i
@@ -134,6 +134,8 @@ def mostrar_pagina():
                             if st.button("🗑️ Apagar", key=f"delete_utente_{i}", use_container_width=True):
                                 st.session_state['delete_index'] = i
                                 st.rerun()
+                        with botoes_col3:
+                            st.button("⚙️ Gerir", key=f"manage_utente_{i}", use_container_width=True)
                     
                     st.write("")
 
