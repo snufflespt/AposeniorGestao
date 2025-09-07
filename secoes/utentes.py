@@ -50,26 +50,32 @@ def mostrar_pagina():
             else:
                 df_filtrado = df
 
-            # Renderizar lista de utentes com cartões expansíveis
+            # Renderizar lista de utentes com cartões de detalhe
             for i, row in df_filtrado.iterrows():
-                with st.expander(f"**{row.get('Nome', '')}**"):
-                    card_col, actions_col = st.columns([4, 1])
+                with st.container(border=True):
+                    # Layout de 2 colunas para os dados, semelhante ao formulário de adicionar/editar
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.text_input("Nome do utente", value=row.get('Nome', ''), key=f"disp_nome_{i}", disabled=True)
+                        st.text_input("Contacto", value=row.get('Contacto', ''), key=f"disp_contacto_{i}", disabled=True)
+                    with col2:
+                        st.text_input("Morada", value=row.get('Morada', ''), key=f"disp_morada_{i}", disabled=True)
+                        st.text_input("Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
+                    
+                    st.write("") # Espaço vertical
 
-                    with card_col:
-                        with st.container(border=True):
-                            st.markdown(f"**Contacto:** {row.get('Contacto', 'N/A')}")
-                            st.markdown(f"**Morada:** {row.get('Morada', 'N/A')}")
-                            st.markdown(f"**Estado:** {row.get('Estado', 'N/A')}")
-
-                    with actions_col:
-                        # Usar o índice do DataFrame (i) que corresponde à linha original
+                    # Botões de ação
+                    botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
+                    with botoes_col1:
                         if st.button("✏️ Editar", key=f"edit_utente_{i}", use_container_width=True):
                             st.session_state['edit_index'] = i
                             st.rerun()
-
-                        if st.button("🗑️ Apagar", key=f"delete_utente_{i}", use_container_width=True):
+                    with botoes_col2:
+                         if st.button("🗑️ Apagar", key=f"delete_utente_{i}", use_container_width=True):
                             st.session_state['delete_index'] = i
                             st.rerun()
+                
+                st.write("") # Espaço entre os cartões
 
             # --- Diálogos de Ação (Apagar / Editar) ---
 
