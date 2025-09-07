@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 
@@ -15,7 +16,7 @@ def mostrar_pagina():
     # -----------------------
     with tab_adicionar:
         titulo_secao("Adicionar nova disciplina", "➕")
-        with st.form("form_disciplina"):
+        with st.form("form_disciplina", clear_on_submit=True):
             col1, col2 = st.columns(2)
             with col1:
                 nome_disc = st.text_input("Nome da disciplina")
@@ -35,74 +36,95 @@ def mostrar_pagina():
     # Tab: Gerir
     # -----------------------
     with tab_gerir:
-        titulo_secao("Gerir disciplinas", "📋")
         dados = sheet.get_all_records()
 
-        if dados:
+        if not dados:
+            st.info("Ainda não existem disciplinas registadas.")
+        else:
             df = pd.DataFrame(dados)
 
-            pesquisa = st.text_input("Pesquisar por nome, código ou descrição:")
-            if pesquisa:
-                df_filtrado = df[df.apply(
-                    lambda row: pesquisa.lower() in row.astype(str).str.lower().to_string(),
-                    axis=1
-                )]
-            else:
-                df_filtrado = df
-
-            for i, row in df_filtrado.iterrows():
-                nome = row.get('Nome da Disciplina', '')
-                cod = row.get('Código', '')
-
-                # Cartão visual com texto + botões
-                st.markdown(
-                    f"""
-                    <div class="card">
-                        <div class="card-info">{nome} — {cod}</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                # Botões alinhados lado a lado
-                col_btns = st.columns([1, 1])
-                with col_btns[0]:
-                    if st.button("✏️ Editar", key=f"edit_disc_{i}", use_container_width=True):
-                        st.session_state['edit_disc_index'] = i
-                with col_btns[1]:
-                    if st.button("🗑️ Apagar", key=f"delete_disc_{i}", use_container_width=True):
-                        st.session_state['delete_disc_index'] = i
-
-            # Apagar com confirmação
-            if 'delete_disc_index' in st.session_state:
-                idx = st.session_state['delete_disc_index']
-                st.warning(f"Tens a certeza que queres apagar a disciplina: {df.iloc[idx]['Nome da Disciplina']}?")
-
-                col_conf = st.columns([1, 1])
-                with col_conf[0]:
-                    if st.button("✅ Sim, apagar"):
-                        sheet.delete_rows(idx + 2)
-                        del st.session_state['delete_disc_index']
-                        st.rerun()
-                with col_conf[1]:
-                    if st.button("❌ Cancelar"):
-                        del st.session_state['delete_disc_index']
-                        st.rerun()
-
-            # Edição
+            # --- VISTA DE EDIÇÃO ---
             if 'edit_disc_index' in st.session_state:
                 idx = st.session_state['edit_disc_index']
-                st.subheader("Editar disciplina")
-                with st.form("form_editar_disc"):
-                    novo_nome = st.text_input("Nome da disciplina", value=df.iloc[idx]['Nome da Disciplina'])
-                    novo_codigo = st.text_input("Código", value=df.iloc[idx]['Código'])
-                    nova_desc = st.text_area("Descrição", value=df.iloc[idx]['Descrição'])
-                    guardar = st.form_submit_button("Guardar alterações")
-                if guardar:
-                    sheet.update_cell(idx + 2, 1, novo_nome)
-                    sheet.update_cell(idx + 2, 2, novo_codigo)
-                    sheet.update_cell(idx + 2, 3, nova_desc)
+                disciplina_atual = df.loc[idx]
+
+                if st.button("⬅️ Voltar à lista"):
                     del st.session_state['edit_disc_index']
                     st.rerun()
-        else:
-            st.info("Ainda não existem disciplinas registadas.")
+
+                st.subheader(f"Editar disciplina: {disciplina_atual['Nome da Disciplina']}")
+                with st.form("form_editar_disc"):
+                    novo_nome = st.text_input("Nome da disciplina", value=disciplina_atual['Nome da Disciplina'])
+                    novo_codigo = st.text_input("Código", value=disciplina_atual.get('Código', ''))
+                    nova_desc = st.text_area("Descrição", value=disciplina_atual.get('Descrição', ''))
+                    
+                    if st.form_submit_button("Guardar alterações"):
+                        sheet.update_cell(idx + 2, 1, novo_nome)
+                        sheet.update_cell(idx + 2, 2, novo_codigo)
+                        sheet.update_cell(idx + 2, 3, nova_desc)
+                        
+                        st.success(f"Disciplina '{novo_nome}' atualizada com sucesso!")
+                        del st.session_state['edit_disc_index']
+                        time.sleep(0.5)
+                        st.rerun()
+
+            # --- VISTA DE APAGAR ---
+            elif 'delete_disc_index' in st.session_state:
+                idx = st.session_state['delete_disc_index']
+                entity_name = df.loc[idx, 'Nome da Disciplina']
+
+                if st.button("⬅️ Voltar à lista"):
+                    del st.session_state['delete_disc_index']
+                    st.rerun()
+
+                st.subheader("Apagar disciplina")
+                st.warning(f"Tens a certeza que queres apagar a disciplina: {entity_name}?")
+                
+                col1, col2, _ = st.columns([1, 1, 5])
+                with col1:
+                    if st.button("Sim, apagar", type="primary"):
+                        sheet.delete_rows(idx + 2)
+                        st.success(f"Disciplina '{entity_name}' apagada com sucesso!")
+                        del st.session_state['delete_disc_index']
+                        time.sleep(0.5)
+                        st.rerun()
+                with col2:
+                    if st.button("Cancelar"):
+                        del st.session_state['delete_disc_index']
+                        st.rerun()
+
+            # --- VISTA DE LISTA ---
+            else:
+                titulo_secao("Gerir disciplinas", "📋")
+                pesquisa = st.text_input("Pesquisar por nome, código ou descrição:")
+                
+                if pesquisa:
+                    df_filtrado = df[df.apply(
+                        lambda row: any(pesquisa.lower() in str(x).lower() for x in row),
+                        axis=1
+                    )]
+                else:
+                    df_filtrado = df
+
+                for i, row in df_filtrado.iterrows():
+                    with st.container(border=True):
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.text_input("Nome da disciplina", value=row.get('Nome da Disciplina', ''), key=f"disp_nome_{i}", disabled=True)
+                            st.text_input("Código", value=row.get('Código', ''), key=f"disp_codigo_{i}", disabled=True)
+                        with col2:
+                            st.text_area("Descrição", value=row.get('Descrição', ''), key=f"disp_desc_{i}", disabled=True, height=129)
+
+                        st.write("") 
+
+                        botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
+                        with botoes_col1:
+                            if st.button("✏️ Editar", key=f"edit_disc_{i}", use_container_width=True):
+                                st.session_state['edit_disc_index'] = i
+                                st.rerun()
+                        with botoes_col2:
+                            if st.button("🗑️ Apagar", key=f"delete_disc_{i}", use_container_width=True):
+                                st.session_state['delete_disc_index'] = i
+                                st.rerun()
+                    
+                    st.write("")

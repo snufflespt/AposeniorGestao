@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 
@@ -15,7 +16,7 @@ def mostrar_pagina():
 
     with tab_adicionar:
         titulo_secao("Adicionar novo professor", "➕")
-        with st.form("form_professor"):
+        with st.form("form_professor", clear_on_submit=True):
             col1, col2 = st.columns(2)
             with col1:
                 nome_prof = st.text_input("Nome do professor")
@@ -32,55 +33,96 @@ def mostrar_pagina():
                 st.success(f"Professor '{nome_prof}' adicionado com sucesso!")
 
     with tab_gerir:
-        titulo_secao("Lista de professores", "📋")
         dados = sheet_prof.get_all_records()
 
-        if dados:
+        if not dados:
+            st.info("Ainda não existem professores registados.")
+        else:
             df = pd.DataFrame(dados)
-            pesquisa = st.text_input("Pesquisar por nome, contacto ou disciplina:")
 
-            if pesquisa:
-                df_filtrado = df[df.apply(lambda row: pesquisa.lower() in row.astype(str).str.lower().to_string(), axis=1)]
-            else:
-                df_filtrado = df
-
-            for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([6, 1, 1])
-                nome = row.get('Nome do Professor', '')
-                disc = row.get('Disciplina', '')
-                contacto = row.get('Contacto', '')
-                col1.write(f"**{nome}** — {disc} — {contacto}")
-                if col2.button("✏️ Editar", key=f"edit_prof_{i}", width="stretch"):
-                    st.session_state['edit_prof_index'] = i
-                if col3.button("🗑️ Apagar", key=f"delete_prof_{i}", width="stretch"):
-                    st.session_state['delete_prof_index'] = i
-
-
-            if 'delete_prof_index' in st.session_state:
-                idx = st.session_state['delete_prof_index']
-                st.warning(f"Tens a certeza que queres apagar o professor: {df.iloc[idx]['Nome do Professor']}?")
-                col_conf1, col_conf2 = st.columns(2)
-                if col_conf1.button("✅ Sim, apagar"):
-                    sheet_prof.delete_rows(idx+2)
-                    del st.session_state['delete_prof_index']
-                    st.rerun()
-                if col_conf2.button("❌ Cancelar"):
-                    del st.session_state['delete_prof_index']
-                    st.rerun()
-
+            # --- VISTA DE EDIÇÃO ---
             if 'edit_prof_index' in st.session_state:
                 idx = st.session_state['edit_prof_index']
-                st.subheader("Editar professor")
-                with st.form("form_editar_prof"):
-                    novo_nome = st.text_input("Nome do professor", value=df.iloc[idx]['Nome do Professor'])
-                    novo_contacto = st.text_input("Contacto", value=df.iloc[idx]['Contacto'])
-                    nova_disciplina = st.selectbox("Disciplina", disciplinas, index=disciplinas.index(df.iloc[idx]['Disciplina']) if df.iloc[idx]['Disciplina'] in disciplinas else 0)
-                    guardar = st.form_submit_button("Guardar alterações")
-                if guardar:
-                    sheet_prof.update_cell(idx+2, 1, novo_nome)
-                    sheet_prof.update_cell(idx+2, 2, novo_contacto)
-                    sheet_prof.update_cell(idx+2, 3, nova_disciplina)
+                prof_atual = df.loc[idx]
+
+                if st.button("⬅️ Voltar à lista"):
                     del st.session_state['edit_prof_index']
                     st.rerun()
-        else:
-            st.info("Ainda não existem professores registados.")
+                
+                st.subheader(f"Editar professor: {prof_atual['Nome do Professor']}")
+                with st.form("form_editar_prof"):
+                    novo_nome = st.text_input("Nome do professor", value=prof_atual['Nome do Professor'])
+                    novo_contacto = st.text_input("Contacto", value=prof_atual.get('Contacto', ''))
+                    
+                    disciplina_atual = prof_atual.get('Disciplina')
+                    disciplina_idx = disciplinas.index(disciplina_atual) if disciplina_atual in disciplinas else 0
+                    nova_disciplina = st.selectbox("Disciplina", disciplinas, index=disciplina_idx)
+
+                    if st.form_submit_button("Guardar alterações"):
+                        sheet_prof.update_cell(idx + 2, 1, novo_nome)
+                        sheet_prof.update_cell(idx + 2, 2, novo_contacto)
+                        sheet_prof.update_cell(idx + 2, 3, nova_disciplina)
+                        
+                        st.success(f"Professor '{novo_nome}' atualizado com sucesso!")
+                        del st.session_state['edit_prof_index']
+                        time.sleep(0.5)
+                        st.rerun()
+
+            # --- VISTA DE APAGAR ---
+            elif 'delete_prof_index' in st.session_state:
+                idx = st.session_state['delete_prof_index']
+                entity_name = df.loc[idx, 'Nome do Professor']
+
+                if st.button("⬅️ Voltar à lista"):
+                    del st.session_state['delete_prof_index']
+                    st.rerun()
+
+                st.subheader("Apagar professor")
+                st.warning(f"Tens a certeza que queres apagar o professor: {entity_name}?")
+                
+                col1, col2, _ = st.columns([1, 1, 5])
+                with col1:
+                    if st.button("Sim, apagar", type="primary"):
+                        sheet_prof.delete_rows(idx + 2)
+                        st.success(f"Professor '{entity_name}' apagado com sucesso!")
+                        del st.session_state['delete_prof_index']
+                        time.sleep(0.5)
+                        st.rerun()
+                with col2:
+                    if st.button("Cancelar"):
+                        del st.session_state['delete_prof_index']
+                        st.rerun()
+
+            # --- VISTA DE LISTA ---
+            else:
+                titulo_secao("Lista de professores", "📋")
+                pesquisa = st.text_input("Pesquisar por nome, contacto ou disciplina:")
+
+                if pesquisa:
+                    df_filtrado = df[df.apply(lambda row: any(pesquisa.lower() in str(x).lower() for x in row), axis=1)]
+                else:
+                    df_filtrado = df
+
+                for i, row in df_filtrado.iterrows():
+                    with st.container(border=True):
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.text_input("Nome do Professor", value=row.get('Nome do Professor', ''), key=f"disp_nome_{i}", disabled=True)
+                        with col2:
+                            st.text_input("Contacto", value=row.get('Contacto', ''), key=f"disp_contacto_{i}", disabled=True)
+                        
+                        st.text_input("Disciplina", value=row.get('Disciplina', ''), key=f"disp_disc_{i}", disabled=True)
+                        
+                        st.write("")
+
+                        botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
+                        with botoes_col1:
+                            if st.button("✏️ Editar", key=f"edit_prof_{i}", use_container_width=True):
+                                st.session_state['edit_prof_index'] = i
+                                st.rerun()
+                        with botoes_col2:
+                            if st.button("🗑️ Apagar", key=f"delete_prof_{i}", use_container_width=True):
+                                st.session_state['delete_prof_index'] = i
+                                st.rerun()
+                    
+                    st.write("")
