@@ -67,6 +67,18 @@ def mostrar_pagina():
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        /* Garante que os botões de ação dentro do expander tenham o mesmo tamanho */
+        div[data-testid="stExpander"] div[data-testid="column"]:nth-of-type(2) .stButton button {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px; /* Adiciona um espaçamento consistente entre os botões */
+        }
+        /* Remove a margem do último botão para um alinhamento perfeito */
+        div[data-testid="stExpander"] div[data-testid="column"]:nth-of-type(2) .stButton:last-child button {
+            margin-bottom: 0;
+        }
         </style>
     """, unsafe_allow_html=True)
 
