@@ -56,6 +56,8 @@ def configurar_tema():
 
 
 def mostrar_pagina():
+    configurar_pagina("Gestão de Utentes", "🧍")
+    configurar_tema()  # Aplicar o tema
     st.markdown("""
         <style>
         .user-card {
@@ -67,11 +69,6 @@ def mostrar_pagina():
         }
         </style>
     """, unsafe_allow_html=True)
-
-
-def mostrar_pagina():
-    configurar_pagina("Gestão de Utentes", "🧍")
-    configurar_tema()  # Aplicar o tema
 
     sheet = get_worksheet("Utentes")
 
@@ -112,59 +109,63 @@ def mostrar_pagina():
             else:
                 df_filtrado = df
 
-            # Renderizar lista de utentes usando componentes reutilizáveis
+            # Renderizar lista de utentes com cartões expansíveis
             for i, row in df_filtrado.iterrows():
-                col1, col2, col3 = st.columns([8, 1, 1])
+                with st.expander(f"**{row.get('Nome', '')}**"):
+                    card_col, actions_col = st.columns([4, 1])
 
-                nome = row.get('Nome', '')
-                contacto = row.get('Contacto', '')
+                    with card_col:
+                        with st.container(border=True):
+                            st.markdown(f"**Contacto:** {row.get('Contacto', 'N/A')}")
+                            st.markdown(f"**Morada:** {row.get('Morada', 'N/A')}")
+                            st.markdown(f"**Estado:** {row.get('Estado', 'N/A')}")
 
-                with col1:
-                    st.write(f"**{nome}** — {contacto}")
-                
-                with col2:
-                    if st.button("✏️", key=f"edit_utente_{i}", use_container_width=True, help="Editar utente"):
-                        st.session_state['edit_utente_index'] = i
-                with col3:
-                    if st.button("🗑️", key=f"delete_utente_{i}", use_container_width=True, help="Apagar utente"):
-                        st.session_state['delete_utente_index'] = i
+                    with actions_col:
+                        # Usar o índice do DataFrame (i) que corresponde à linha original
+                        if st.button("✏️ Editar", key=f"edit_utente_{i}", use_container_width=True):
+                            st.session_state['edit_index'] = i
+                            st.rerun()
 
-            if 'delete_utente_index' in st.session_state:
-                idx = st.session_state['delete_utente_index']
-                st.warning(f"Tens a certeza que queres apagar o utente: {df.iloc[idx]['Nome']}?")
-                col_conf1, col_conf2 = st.columns(2)
-                if col_conf1.button("✅ Sim, apagar"):
-                    sheet.delete_rows(idx + 2)
-                    del st.session_state['delete_utente_index']
-                    st.rerun()
-            # Diálogo de confirmação usando componente reutilizável
+                        if st.button("🗑️ Apagar", key=f"delete_utente_{i}", use_container_width=True):
+                            st.session_state['delete_index'] = i
+                            st.rerun()
+
+            # --- Diálogos de Ação (Apagar / Editar) ---
+
+            # Diálogo de confirmação para apagar
             if 'delete_index' in st.session_state:
                 idx = st.session_state['delete_index']
-                entity_name = df.iloc[idx['Nome']   ]   
+                # Usar o dataframe original (df) para obter os dados do utente pelo índice
+                entity_name = df.loc[idx, 'Nome']
 
                 def confirm_delete():
-                    try:
-                        sheet.delete_rows(idx + 2)
-                        return True
-                    except Exception as e:
-                        st.error(f"Erro ao apagar utente: {str(e)}")
-                        return False
+                    if apagar_utente(sheet, idx):
+                        st.success(f"Utente '{entity_name}' apagado com sucesso!")
+                        del st.session_state['delete_index']
+                        time.sleep(0.5)
+                        st.rerun()
 
                 def cancel_delete():
                     del st.session_state['delete_index']
+                    st.rerun()
 
                 render_confirmation_dialog('utente', entity_name, confirm_delete, cancel_delete)
 
             if 'edit_index' in st.session_state:
                 idx = st.session_state['edit_index']
-                st.subheader("Editar utente")
+                utente_atual = df.loc[idx]
+                st.subheader(f"Editar utente: {utente_atual['Nome']}")
 
                 with st.form("form_editar"):
-                    novo_nome = st.text_input("Nome do utente", value=df.iloc[idx]['Nome'])
-                    novo_contacto = st.text_input("Contacto", value=df.iloc[idx]['Contacto'])
-                    nova_morada = st.text_input("Morada", value=df.iloc[idx].get('Morada', ''))
-                    novo_estado = st.selectbox("Estado", ["Ativo", "Inativo"],
-                                              index=["Ativo", "Inativo"].index(df.iloc[idx].get('Estado', 'Ativo')))
+                    novo_nome = st.text_input("Nome do utente", value=utente_atual['Nome'])
+                    novo_contacto = st.text_input("Contacto", value=utente_atual['Contacto'])
+                    nova_morada = st.text_input("Morada", value=utente_atual.get('Morada', ''))
+                    
+                    estado_options = ["Ativo", "Inativo"]
+                    estado_atual = utente_atual.get('Estado', 'Ativo')
+                    # Prevenir erro se estado_atual não estiver nas opções
+                    estado_index = estado_options.index(estado_atual) if estado_atual in estado_options else 0
+                    novo_estado = st.selectbox("Estado", estado_options, index=estado_index)
 
                     if st.form_submit_button("Guardar alterações"):
                         novos_dados = {
