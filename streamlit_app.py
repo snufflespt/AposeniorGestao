@@ -13,11 +13,6 @@ st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 st.sidebar.image("imagens/logo.png", use_container_width=True)
 st.sidebar.markdown("### Gestão IPSS")
 
-st.sidebar.markdown(f"Bem-vindo, **{st.session_state['username']}**!")
-if st.sidebar.button("Logout", type="primary"):
-    st.session_state['logged_in'] = False
-    st.rerun()
-
 st.sidebar.markdown("---")
 
 # Menu principal
