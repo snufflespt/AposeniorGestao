@@ -76,7 +76,7 @@ def aplicar_estilos():
 
         /* Menu Lateral */
         [data-testid="stSidebar"] {{
-            background-color: var(--color-card);
+            background-color: #f0f2f6; /* Cinza claro */
         }}
         [data-testid="stSidebar"] [role="radio"][aria-checked="true"] > div {{
             background-color: var(--color-brand) !important;
@@ -107,6 +107,12 @@ def aplicar_estilos():
         }}
 
         /* --- ELEMENTOS VISUAIS --- */
+
+        /* Fundo da aplicação principal */
+        [data-testid="stAppViewContainer"] {{
+            background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
+            background-attachment: fixed;
+        }}
 
         /* Marca de água da mascote */
         [data-testid="stAppViewContainer"]::after {{
