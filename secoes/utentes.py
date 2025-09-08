@@ -38,48 +38,48 @@ def mostrar_pagina():
     with tab_adicionar:
         titulo_secao("Adicionar novo utente", "➕")
         with st.form("form_utente", clear_on_submit=True):
-            with st.expander("Informação Pessoal", expanded=True):
+            with st.expander("👤 Informação Pessoal", expanded=True):
                 col1, col2 = st.columns(2)
                 with col1:
-                    nome = st.text_input("**Nome do utente**", help="Campo obrigatório")
-                    data_nascimento = st.date_input("**Data de nascimento**", value=None, min_value=date(1920, 1, 1), format="DD/MM/YYYY", help="Campo obrigatório")
-                    naturalidade = st.text_input("Naturalidade")
+                    nome = st.text_input("**👤 Nome do utente**", help="Campo obrigatório")
+                    data_nascimento = st.date_input("**🎂 Data de nascimento**", value=None, min_value=date(1920, 1, 1), format="DD/MM/YYYY", help="Campo obrigatório")
+                    naturalidade = st.text_input("🌍 Naturalidade")
                 with col2:
-                    nacionalidade = st.text_input("Nacionalidade")
-                    grau_escolaridade = st.selectbox("Grau de Escolaridade", options=GRAU_ESCOLARIDADE_OPCOES)
-                    profissao = st.text_input("Profissão")
-                    situacao_profissional = st.selectbox("Situação Profissional", options=SITUACAO_PROFISSIONAL_OPCOES)
+                    nacionalidade = st.text_input("🌍 Nacionalidade")
+                    grau_escolaridade = st.selectbox("🎓 Grau de Escolaridade", options=GRAU_ESCOLARIDADE_OPCOES)
+                    profissao = st.text_input("💼 Profissão")
+                    situacao_profissional = st.selectbox("📈 Situação Profissional", options=SITUACAO_PROFISSIONAL_OPCOES)
 
-            with st.expander("Contactos e Morada"):
+            with st.expander("📞 Contactos e Morada"):
                 col1, col2 = st.columns(2)
                 with col1:
-                    contacto_telefónico = st.text_input("**Contacto telefónico**", help="Campo obrigatório")
-                    contacto_telefónico_2 = st.text_input("Contacto telefónico 2")
-                    email = st.text_input("Email")
+                    contacto_telefónico = st.text_input("**📞 Contacto telefónico**", help="Campo obrigatório")
+                    contacto_telefónico_2 = st.text_input("📱 Contacto telefónico 2")
+                    email = st.text_input("📧 Email")
                 with col2:
-                    morada = st.text_input("**Morada**", help="Campo obrigatório")
-                    codigo_postal = st.text_input("**Código Postal**", help="Campo obrigatório")
-                    localidade = st.text_input("Localidade")
+                    morada = st.text_input("**🏠 Morada**", help="Campo obrigatório")
+                    codigo_postal = st.text_input("**📮 Código Postal**", help="Campo obrigatório")
+                    localidade = st.text_input("📍 Localidade")
 
-            with st.expander("Documentos de Identificação"):
+            with st.expander("💳 Documentos de Identificação"):
                 col1, col2 = st.columns(2)
                 with col1:
-                    cartao_cidadao = st.text_input("Cartão de Cidadão")
-                    cc_validade = st.date_input("Validade do CC", value=None, format="DD/MM/YYYY")
-                    nif = st.text_input("**NIF**", help="Campo obrigatório")
+                    cartao_cidadao = st.text_input("💳 Cartão de Cidadão")
+                    cc_validade = st.date_input("🗓️ Validade do CC", value=None, format="DD/MM/YYYY")
+                    nif = st.text_input("**🧾 NIF**", help="Campo obrigatório")
                 with col2:
-                    niss = st.text_input("NISS")
-                    cartao_utente = st.text_input("Cartão de Utente")
+                    niss = st.text_input("🧾 NISS")
+                    cartao_utente = st.text_input("🏥 Cartão de Utente")
 
-            with st.expander("Informação Familiar e Administrativa"):
+            with st.expander("👨‍👩‍👧‍👦 Informação Familiar e Administrativa"):
                 col1, col2 = st.columns(2)
                 with col1:
-                    familiar = st.text_input("Familiar")
-                    telefone_familiar = st.text_input("Telefone do Familiar")
+                    familiar = st.text_input("👨‍👩‍👧‍👦 Familiar")
+                    telefone_familiar = st.text_input("📞 Telefone do Familiar")
                 with col2:
-                    data_inscricao = st.date_input("Data de inscrição", value=date.today(), format="DD/MM/YYYY")
-                    estado = st.selectbox("Estado", ["Ativo", "Inativo"])
-                observacoes = st.text_area("Observações")
+                    data_inscricao = st.date_input("✍️ Data de inscrição", value=date.today(), format="DD/MM/YYYY")
+                    estado = st.selectbox("🚦 Estado", ["Ativo", "Inativo"])
+                observacoes = st.text_area("📋 Observações")
 
             botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
             with botoes_col1:
@@ -137,60 +137,60 @@ def mostrar_pagina():
                 with st.form("form_editar"):
                     st.text_input("ID", value=utente_atual.get('ID', ''), disabled=True)
 
-                    with st.expander("Informação Pessoal", expanded=True):
+                    with st.expander("👤 Informação Pessoal", expanded=True):
                         col1, col2 = st.columns(2)
                         with col1:
-                            novo_nome = st.text_input("**Nome do utente**", value=utente_atual.get('Nome', ''), help="Campo obrigatório")
-                            nova_data_nascimento = st.date_input("**Data de nascimento**", value=parse_date(utente_atual.get('Data_de_nascimento')), min_value=date(1920, 1, 1), format="DD/MM/YYYY", help="Campo obrigatório")
-                            nova_naturalidade = st.text_input("Naturalidade", value=utente_atual.get('Naturalidade', ''))
+                            novo_nome = st.text_input("**👤 Nome do utente**", value=utente_atual.get('Nome', ''), help="Campo obrigatório")
+                            nova_data_nascimento = st.date_input("**🎂 Data de nascimento**", value=parse_date(utente_atual.get('Data_de_nascimento')), min_value=date(1920, 1, 1), format="DD/MM/YYYY", help="Campo obrigatório")
+                            nova_naturalidade = st.text_input("🌍 Naturalidade", value=utente_atual.get('Naturalidade', ''))
                         with col2:
-                            nova_nacionalidade = st.text_input("Nacionalidade", value=utente_atual.get('Nacionalidade', ''))
+                            nova_nacionalidade = st.text_input("🌍 Nacionalidade", value=utente_atual.get('Nacionalidade', ''))
                             
                             grau_atual = utente_atual.get('Grau_Escolaridade', '')
                             grau_idx = GRAU_ESCOLARIDADE_OPCOES.index(grau_atual) if grau_atual in GRAU_ESCOLARIDADE_OPCOES else 0
-                            novo_grau_escolaridade = st.selectbox("Grau de Escolaridade", options=GRAU_ESCOLARIDADE_OPCOES, index=grau_idx)
+                            novo_grau_escolaridade = st.selectbox("🎓 Grau de Escolaridade", options=GRAU_ESCOLARIDADE_OPCOES, index=grau_idx)
                             
-                            nova_profissao = st.text_input("Profissão", value=utente_atual.get('Profissao', ''))
+                            nova_profissao = st.text_input("💼 Profissão", value=utente_atual.get('Profissao', ''))
 
                             situacao_atual = utente_atual.get('Situacao_Profissional', '')
                             situacao_idx = SITUACAO_PROFISSIONAL_OPCOES.index(situacao_atual) if situacao_atual in SITUACAO_PROFISSIONAL_OPCOES else 0
-                            nova_situacao_profissional = st.selectbox("Situação Profissional", options=SITUACAO_PROFISSIONAL_OPCOES, index=situacao_idx)
+                            nova_situacao_profissional = st.selectbox("📈 Situação Profissional", options=SITUACAO_PROFISSIONAL_OPCOES, index=situacao_idx)
 
-                    with st.expander("Contactos e Morada"):
+                    with st.expander("📞 Contactos e Morada"):
                         col1, col2 = st.columns(2)
                         with col1:
-                            novo_contacto_telefónico = st.text_input("**Contacto telefónico**", value=utente_atual.get('Contacto_telefónico', ''), help="Campo obrigatório")
-                            novo_contacto_telefónico_2 = st.text_input("Contacto telefónico 2", value=utente_atual.get('Contacto_telefónico_2', ''))
-                            novo_email = st.text_input("Email", value=utente_atual.get('Email', ''))
+                            novo_contacto_telefónico = st.text_input("**📞 Contacto telefónico**", value=utente_atual.get('Contacto_telefónico', ''), help="Campo obrigatório")
+                            novo_contacto_telefónico_2 = st.text_input("📱 Contacto telefónico 2", value=utente_atual.get('Contacto_telefónico_2', ''))
+                            novo_email = st.text_input("📧 Email", value=utente_atual.get('Email', ''))
                         with col2:
-                            nova_morada = st.text_input("**Morada**", value=utente_atual.get('Morada', ''), help="Campo obrigatório")
-                            novo_codigo_postal = st.text_input("**Código Postal**", value=utente_atual.get('Codigo_Postal', ''), help="Campo obrigatório")
-                            nova_localidade = st.text_input("Localidade", value=utente_atual.get('Localidade', ''))
+                            nova_morada = st.text_input("**🏠 Morada**", value=utente_atual.get('Morada', ''), help="Campo obrigatório")
+                            novo_codigo_postal = st.text_input("**📮 Código Postal**", value=utente_atual.get('Codigo_Postal', ''), help="Campo obrigatório")
+                            nova_localidade = st.text_input("📍 Localidade", value=utente_atual.get('Localidade', ''))
 
-                    with st.expander("Documentos de Identificação"):
+                    with st.expander("💳 Documentos de Identificação"):
                         col1, col2 = st.columns(2)
                         with col1:
-                            novo_cartao_cidadao = st.text_input("Cartão de Cidadão", value=utente_atual.get('Cartao_Cidadao', ''))
-                            nova_cc_validade = st.date_input("Validade do CC", value=parse_date(utente_atual.get('CC_Validade')), format="DD/MM/YYYY")
-                            novo_nif = st.text_input("**NIF**", value=utente_atual.get('NIF', ''), help="Campo obrigatório")
+                            novo_cartao_cidadao = st.text_input("💳 Cartão de Cidadão", value=utente_atual.get('Cartao_Cidadao', ''))
+                            nova_cc_validade = st.date_input("🗓️ Validade do CC", value=parse_date(utente_atual.get('CC_Validade')), format="DD/MM/YYYY")
+                            novo_nif = st.text_input("**🧾 NIF**", value=utente_atual.get('NIF', ''), help="Campo obrigatório")
                         with col2:
-                            novo_niss = st.text_input("NISS", value=utente_atual.get('NISS', ''))
-                            novo_cartao_utente = st.text_input("Cartão de Utente", value=utente_atual.get('Cartao_Utente', ''))
+                            novo_niss = st.text_input("🧾 NISS", value=utente_atual.get('NISS', ''))
+                            novo_cartao_utente = st.text_input("🏥 Cartão de Utente", value=utente_atual.get('Cartao_Utente', ''))
 
-                    with st.expander("Informação Familiar e Administrativa"):
+                    with st.expander("👨‍👩‍👧‍👦 Informação Familiar e Administrativa"):
                         col1, col2 = st.columns(2)
                         with col1:
-                            novo_familiar = st.text_input("Familiar", value=utente_atual.get('Familiar', ''))
-                            novo_telefone_familiar = st.text_input("Telefone do Familiar", value=utente_atual.get('Telefone_Familiar', ''))
+                            novo_familiar = st.text_input("👨‍👩‍👧‍👦 Familiar", value=utente_atual.get('Familiar', ''))
+                            novo_telefone_familiar = st.text_input("📞 Telefone do Familiar", value=utente_atual.get('Telefone_Familiar', ''))
                         with col2:
-                            nova_data_inscricao = st.date_input("Data de inscrição", value=parse_date(utente_atual.get('Data de inscrição')), format="DD/MM/YYYY")
+                            nova_data_inscricao = st.date_input("✍️ Data de inscrição", value=parse_date(utente_atual.get('Data de inscrição')), format="DD/MM/YYYY")
                             
                             estado_options = ["Ativo", "Inativo"]
                             estado_atual = utente_atual.get('Estado', 'Ativo')
                             estado_index = estado_options.index(estado_atual) if estado_atual in estado_options else 0
-                            novo_estado = st.selectbox("Estado", estado_options, index=estado_index)
+                            novo_estado = st.selectbox("🚦 Estado", estado_options, index=estado_index)
                         
-                        novo_observacoes = st.text_area("Observações", value=utente_atual.get('Observacoes', ''))
+                        novo_observacoes = st.text_area("📋 Observações", value=utente_atual.get('Observacoes', ''))
                     
                     if st.form_submit_button("Guardar alterações"):
                         campos_obrigatorios = {
