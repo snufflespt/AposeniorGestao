@@ -79,6 +79,7 @@ def mostrar_pagina():
                 with col2:
                     data_inscricao = st.date_input("Data de inscrição", value=date.today(), format="DD/MM/YYYY")
                     estado = st.selectbox("Estado", ["Ativo", "Inativo"])
+                observacoes = st.text_area("Observações")
 
             submit = st.form_submit_button("Guardar Utente")
 
@@ -92,7 +93,7 @@ def mostrar_pagina():
                     codigo_postal, localidade, cartao_cidadao, cc_validade, nif,
                     niss, cartao_utente, telefone_familiar, familiar,
                     grau_escolaridade, profissao, situacao_profissional,
-                    data_inscricao, estado
+                    data_inscricao, observacoes, estado
                 ):
                     st.success(f"Utente '{nome}' adicionado com sucesso!")
                     st.rerun()
@@ -171,6 +172,8 @@ def mostrar_pagina():
                             estado_atual = utente_atual.get('Estado', 'Ativo')
                             estado_index = estado_options.index(estado_atual) if estado_atual in estado_options else 0
                             novo_estado = st.selectbox("Estado", estado_options, index=estado_index)
+                        
+                        novo_observacoes = st.text_area("Observações", value=utente_atual.get('Observacoes', ''))
                     
                     if st.form_submit_button("Guardar alterações"):
                         novos_dados = {
@@ -185,7 +188,8 @@ def mostrar_pagina():
                             'Telefone_Familiar': novo_telefone_familiar, 'Familiar': novo_familiar,
                             'Grau_Escolaridade': novo_grau_escolaridade, 'Profissao': nova_profissao,
                             'Situacao_Profissional': nova_situacao_profissional,
-                            'Data de inscrição': nova_data_inscricao, 'Estado': novo_estado
+                            'Data de inscrição': nova_data_inscricao, 'Observacoes': novo_observacoes, 
+                            'Estado': novo_estado
                         }
 
                         if atualizar_utente(sheet, idx, novos_dados):
@@ -262,7 +266,7 @@ def adicionar_utente(sheet, nome, data_nascimento, naturalidade, nacionalidade,
                    codigo_postal, localidade, cartao_cidadao, cc_validade, nif,
                    niss, cartao_utente, telefone_familiar, familiar,
                    grau_escolaridade, profissao, situacao_profissional,
-                   data_inscricao, estado) -> bool:
+                   data_inscricao, observacoes, estado) -> bool:
     """Adiciona um novo utente à planilha com todos os campos."""
     try:
         # Gerar ID sequencial
@@ -291,7 +295,7 @@ def adicionar_utente(sheet, nome, data_nascimento, naturalidade, nacionalidade,
             codigo_postal, localidade, cartao_cidadao, format_date(cc_validade), nif,
             niss, cartao_utente, telefone_familiar, familiar,
             grau_escolaridade, profissao, situacao_profissional,
-            format_date(data_inscricao), estado
+            format_date(data_inscricao), observacoes, estado
         ]
         
         sheet.append_row(nova_linha)
@@ -318,11 +322,12 @@ def atualizar_utente(sheet, index: int, dados: dict) -> bool:
             dados.get('Cartao_Utente', ''), dados.get('Telefone_Familiar', ''),
             dados.get('Familiar', ''), dados.get('Grau_Escolaridade', ''),
             dados.get('Profissao', ''), dados.get('Situacao_Profissional', ''),
-            format_date(dados.get('Data de inscrição')), dados.get('Estado', 'Ativo')
+            format_date(dados.get('Data de inscrição')), dados.get('Observacoes', ''), 
+            dados.get('Estado', 'Ativo')
         ]
         
-        # Atualizar da coluna B (Nome) até à coluna W (Estado)
-        sheet.update(f'B{index + 2}:W{index + 2}', [values])
+        # Atualizar da coluna B (Nome) até à coluna X (Estado)
+        sheet.update(f'B{index + 2}:X{index + 2}', [values])
         return True
     except Exception as e:
         st.error(f"Erro ao atualizar utente: {str(e)}")
