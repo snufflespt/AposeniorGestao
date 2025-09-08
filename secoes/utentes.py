@@ -81,7 +81,12 @@ def mostrar_pagina():
                     estado = st.selectbox("Estado", ["Ativo", "Inativo"])
                 observacoes = st.text_area("Observações")
 
-            submit = st.form_submit_button("Guardar Utente")
+            botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
+            with botoes_col1:
+                submit = st.form_submit_button("Guardar Utente", type="primary")
+            with botoes_col2:
+                # A opção `clear_on_submit=True` do formulário trata de limpar os campos.
+                st.form_submit_button("Limpar")
 
         if submit:
             campos_obrigatorios = {
