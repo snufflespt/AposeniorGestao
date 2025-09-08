@@ -57,14 +57,19 @@ def mostrar_pagina():
                 st.subheader(f"Editar utente: {utente_atual['Nome']}")
 
                 with st.form("form_editar"):
-                    novo_nome = st.text_input("Nome do utente", value=utente_atual['Nome'])
-                    novo_contacto = st.text_input("Contacto", value=utente_atual['Contacto'])
-                    nova_morada = st.text_input("Morada", value=utente_atual.get('Morada', ''))
-                    
-                    estado_options = ["Ativo", "Inativo"]
-                    estado_atual = utente_atual.get('Estado', 'Ativo')
-                    estado_index = estado_options.index(estado_atual) if estado_atual in estado_options else 0
-                    novo_estado = st.selectbox("Estado", estado_options, index=estado_index)
+                    st.text_input("ID", value=utente_atual.get('ID', ''), disabled=True)
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        novo_nome = st.text_input("Nome do utente", value=utente_atual['Nome'])
+                        novo_contacto = st.text_input("Contacto", value=utente_atual['Contacto'])
+                    with col2:
+                        nova_morada = st.text_input("Morada", value=utente_atual.get('Morada', ''))
+                        
+                        estado_options = ["Ativo", "Inativo"]
+                        estado_atual = utente_atual.get('Estado', 'Ativo'
+                        )
+                        estado_index = estado_options.index(estado_atual) if estado_atual in estado_options else 0
+                        novo_estado = st.selectbox("Estado", estado_options, index=estado_index)
 
                     if st.form_submit_button("Guardar alterações"):
                         novos_dados = {
