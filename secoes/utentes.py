@@ -8,12 +8,22 @@ from utils.components import (
     render_confirmation_dialog, render_action_buttons
 )
 
+GRAU_ESCOLARIDADE_OPCOES = [
+    "Sem Escolaridade", "1º Ciclo (4ª classe)", "2º Ciclo (6º ano)", 
+    "3º Ciclo (9º ano)", "Ensino Secundário (12º ano)", "Licenciatura", 
+    "Mestrado", "Doutoramento", "Outro"
+]
+
+SITUACAO_PROFISSIONAL_OPCOES = [
+    "Ativo", "Desempregado", "Estudante", "Reformado", "Doméstico/a", "Outra"
+]
+
 def parse_date(date_str: str):
-    """Converte uma string de data (YYYY-MM-DD) para um objeto date, ou retorna None."""
+    """Converte uma string de data (DD/MM/YYYY) para um objeto date, ou retorna None."""
     if not date_str or not isinstance(date_str, str):
         return None
     try:
-        return datetime.strptime(date_str, '%Y-%m-%d').date()
+        return datetime.strptime(date_str, '%d/%m/%Y').date()
     except ValueError:
         return None
 
@@ -32,13 +42,13 @@ def mostrar_pagina():
                 col1, col2 = st.columns(2)
                 with col1:
                     nome = st.text_input("**Nome do utente**", help="Campo obrigatório")
-                    data_nascimento = st.date_input("Data de nascimento", value=None)
+                    data_nascimento = st.date_input("Data de nascimento", value=None, min_value=date(1920, 1, 1), format="DD/MM/YYYY")
                     naturalidade = st.text_input("Naturalidade")
                 with col2:
                     nacionalidade = st.text_input("Nacionalidade")
-                    grau_escolaridade = st.text_input("Grau de Escolaridade")
+                    grau_escolaridade = st.selectbox("Grau de Escolaridade", options=GRAU_ESCOLARIDADE_OPCOES)
                     profissao = st.text_input("Profissão")
-                    situacao_profissional = st.text_input("Situação Profissional")
+                    situacao_profissional = st.selectbox("Situação Profissional", options=SITUACAO_PROFISSIONAL_OPCOES)
 
             with st.expander("Contactos e Morada"):
                 col1, col2 = st.columns(2)
@@ -55,7 +65,7 @@ def mostrar_pagina():
                 col1, col2 = st.columns(2)
                 with col1:
                     cartao_cidadao = st.text_input("Cartão de Cidadão")
-                    cc_validade = st.date_input("Validade do CC", value=None)
+                    cc_validade = st.date_input("Validade do CC", value=None, format="DD/MM/YYYY")
                     nif = st.text_input("NIF")
                 with col2:
                     niss = st.text_input("NISS")
@@ -67,7 +77,7 @@ def mostrar_pagina():
                     familiar = st.text_input("Familiar")
                     telefone_familiar = st.text_input("Telefone do Familiar")
                 with col2:
-                    data_inscricao = st.date_input("Data de inscrição", value=date.today())
+                    data_inscricao = st.date_input("Data de inscrição", value=date.today(), format="DD/MM/YYYY")
                     estado = st.selectbox("Estado", ["Ativo", "Inativo"])
 
             submit = st.form_submit_button("Guardar Utente")
@@ -113,13 +123,20 @@ def mostrar_pagina():
                         col1, col2 = st.columns(2)
                         with col1:
                             novo_nome = st.text_input("**Nome do utente**", value=utente_atual.get('Nome', ''))
-                            nova_data_nascimento = st.date_input("Data de nascimento", value=parse_date(utente_atual.get('Data_de_nascimento')))
+                            nova_data_nascimento = st.date_input("Data de nascimento", value=parse_date(utente_atual.get('Data_de_nascimento')), min_value=date(1920, 1, 1), format="DD/MM/YYYY")
                             nova_naturalidade = st.text_input("Naturalidade", value=utente_atual.get('Naturalidade', ''))
                         with col2:
                             nova_nacionalidade = st.text_input("Nacionalidade", value=utente_atual.get('Nacionalidade', ''))
-                            novo_grau_escolaridade = st.text_input("Grau de Escolaridade", value=utente_atual.get('Grau_Escolaridade', ''))
+                            
+                            grau_atual = utente_atual.get('Grau_Escolaridade', '')
+                            grau_idx = GRAU_ESCOLARIDADE_OPCOES.index(grau_atual) if grau_atual in GRAU_ESCOLARIDADE_OPCOES else 0
+                            novo_grau_escolaridade = st.selectbox("Grau de Escolaridade", options=GRAU_ESCOLARIDADE_OPCOES, index=grau_idx)
+                            
                             nova_profissao = st.text_input("Profissão", value=utente_atual.get('Profissao', ''))
-                            nova_situacao_profissional = st.text_input("Situação Profissional", value=utente_atual.get('Situacao_Profissional', ''))
+
+                            situacao_atual = utente_atual.get('Situacao_Profissional', '')
+                            situacao_idx = SITUACAO_PROFISSIONAL_OPCOES.index(situacao_atual) if situacao_atual in SITUACAO_PROFISSIONAL_OPCOES else 0
+                            nova_situacao_profissional = st.selectbox("Situação Profissional", options=SITUACAO_PROFISSIONAL_OPCOES, index=situacao_idx)
 
                     with st.expander("Contactos e Morada"):
                         col1, col2 = st.columns(2)
@@ -136,7 +153,7 @@ def mostrar_pagina():
                         col1, col2 = st.columns(2)
                         with col1:
                             novo_cartao_cidadao = st.text_input("Cartão de Cidadão", value=utente_atual.get('Cartao_Cidadao', ''))
-                            nova_cc_validade = st.date_input("Validade do CC", value=parse_date(utente_atual.get('CC_Validade')))
+                            nova_cc_validade = st.date_input("Validade do CC", value=parse_date(utente_atual.get('CC_Validade')), format="DD/MM/YYYY")
                             novo_nif = st.text_input("NIF", value=utente_atual.get('NIF', ''))
                         with col2:
                             novo_niss = st.text_input("NISS", value=utente_atual.get('NISS', ''))
@@ -148,7 +165,7 @@ def mostrar_pagina():
                             novo_familiar = st.text_input("Familiar", value=utente_atual.get('Familiar', ''))
                             novo_telefone_familiar = st.text_input("Telefone do Familiar", value=utente_atual.get('Telefone_Familiar', ''))
                         with col2:
-                            nova_data_inscricao = st.date_input("Data de inscrição", value=parse_date(utente_atual.get('Data de inscrição')))
+                            nova_data_inscricao = st.date_input("Data de inscrição", value=parse_date(utente_atual.get('Data de inscrição')), format="DD/MM/YYYY")
                             
                             estado_options = ["Ativo", "Inativo"]
                             estado_atual = utente_atual.get('Estado', 'Ativo')
@@ -264,9 +281,9 @@ def adicionar_utente(sheet, nome, data_nascimento, naturalidade, nacionalidade,
             proximo_id_num = max_id + 1
         novo_id = f"{proximo_id_num:04d}"
 
-        # Formatar datas para string (YYYY-MM-DD) ou string vazia
+        # Formatar datas para string (DD/MM/YYYY) ou string vazia
         def format_date(d):
-            return d.strftime('%Y-%m-%d') if d else ""
+            return d.strftime('%d/%m/%Y') if d else ""
 
         nova_linha = [
             novo_id, nome, format_date(data_nascimento), naturalidade, nacionalidade,
@@ -287,7 +304,7 @@ def atualizar_utente(sheet, index: int, dados: dict) -> bool:
     """Atualiza os dados de um utente na planilha."""
     try:
         def format_date(d):
-            return d.strftime('%Y-%m-%d') if d else ""
+            return d.strftime('%d/%m/%Y') if d else ""
 
         # A ordem deve corresponder exatamente à ordem das colunas na folha, a partir da coluna B
         values = [
