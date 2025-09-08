@@ -1,12 +1,35 @@
 import streamlit as st
 import pandas as pd
 import time
+import re
 from datetime import date, datetime
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 from utils.components import (
     render_confirmation_dialog, render_action_buttons
 )
+
+# --- Funções de Validação ---
+def is_valid_phone(phone):
+    """Verifica se o número de telefone tem 9 dígitos (ignorando espaços)."""
+    if not phone: return True # Campo opcional, válido se vazio
+    cleaned_phone = phone.replace(" ", "")
+    return cleaned_phone.isdigit() and len(cleaned_phone) == 9
+
+def is_valid_nif(nif):
+    """Verifica se o NIF tem 9 dígitos."""
+    if not nif: return True # A obrigatoriedade é verificada noutro lado
+    return str(nif).strip().isdigit() and len(str(nif).strip()) == 9
+
+def is_valid_postal_code(pc):
+    """Verifica se o código postal está no formato XXXX-XXX."""
+    if not pc: return True # A obrigatoriedade é verificada noutro lado
+    return bool(re.match(r'^\d{4}-\d{3}$', pc.strip()))
+
+def is_valid_email(email):
+    """Verifica se o formato do email é válido."""
+    if not email: return True # Campo opcional, válido se vazio
+    return bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email.strip()))
 
 GRAU_ESCOLARIDADE_OPCOES = [
     "Sem Escolaridade", "1º Ciclo (4ª classe)", "2º Ciclo (6º ano)", 
@@ -61,7 +84,7 @@ def mostrar_pagina():
                     email = st.text_input("📧 Email")
                 with col2:
                     morada = st.text_input("**🏠 Morada**", help="Campo obrigatório")
-                    codigo_postal = st.text_input("**📮 Código Postal**", help="Campo obrigatório")
+                    codigo_postal = st.text_input("**📮 Código Postal**", help="Campo obrigatório. Formato: XXXX-XXX")
                     localidade = st.text_input("📍 Localidade")
 
             with st.expander("💳 Documentos de Identificação"):
@@ -95,24 +118,32 @@ def mostrar_pagina():
             st.rerun()
 
         if submit_guardar:
+            # --- Validação de Campos ---
             campos_obrigatorios = {
-                "Nome": nome,
-                "Data de nascimento": data_nascimento,
-                "Contacto telefónico": contacto_telefónico,
-                "Morada": morada,
-                "Código Postal": codigo_postal,
-                "NIF": nif
+                "Nome": nome, "Data de nascimento": data_nascimento,
+                "Contacto telefónico": contacto_telefónico, "Morada": morada,
+                "Código Postal": codigo_postal, "NIF": nif
             }
             campos_em_falta = [campo for campo, valor in campos_obrigatorios.items() if not valor]
+            
+            validation_errors = []
+            if not is_valid_phone(contacto_telefónico): validation_errors.append("Contacto telefónico inválido (deve ter 9 dígitos).")
+            if not is_valid_phone(contacto_telefónico_2): validation_errors.append("Contacto telefónico 2 inválido (deve ter 9 dígitos).")
+            if not is_valid_phone(telefone_familiar): validation_errors.append("Telefone do Familiar inválido (deve ter 9 dígitos).")
+            if not is_valid_nif(nif): validation_errors.append("NIF inválido (deve ter 9 dígitos).")
+            if not is_valid_postal_code(codigo_postal): validation_errors.append("Código Postal inválido (formato esperado: XXXX-XXX).")
+            if not is_valid_email(email): validation_errors.append("Email com formato inválido.")
 
             if campos_em_falta:
                 st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
+            elif validation_errors:
+                st.error("Por favor, corrija os seguintes erros:\n- " + "\n- ".join(validation_errors))
             else:
                 # Validar NIF duplicado
                 dados_atuais = sheet.get_all_records()
-                nifs_existentes = [str(registo.get('NIF', '')) for registo in dados_atuais if str(registo.get('NIF', ''))]
+                nifs_existentes = [str(registo.get('NIF', '')).strip() for registo in dados_atuais if str(registo.get('NIF', '')).strip()]
                 
-                if nif and str(nif) in nifs_existentes:
+                if nif and str(nif).strip() in nifs_existentes:
                     st.error(f"O NIF '{nif}' já está associado a outro utente. Por favor, verifique os dados.")
                 elif adicionar_utente(
                     sheet, nome, data_nascimento, naturalidade, nacionalidade,
@@ -175,7 +206,7 @@ def mostrar_pagina():
                             novo_email = st.text_input("📧 Email", value=utente_atual.get('Email', ''))
                         with col2:
                             nova_morada = st.text_input("**🏠 Morada**", value=utente_atual.get('Morada', ''), help="Campo obrigatório")
-                            novo_codigo_postal = st.text_input("**📮 Código Postal**", value=utente_atual.get('Codigo_Postal', ''), help="Campo obrigatório")
+                            novo_codigo_postal = st.text_input("**📮 Código Postal**", value=utente_atual.get('Codigo_Postal', ''), help="Campo obrigatório. Formato: XXXX-XXX")
                             nova_localidade = st.text_input("📍 Localidade", value=utente_atual.get('Localidade', ''))
 
                     with st.expander("💳 Documentos de Identificação"):
@@ -204,18 +235,26 @@ def mostrar_pagina():
                         novo_observacoes = st.text_area("📋 Observações", value=utente_atual.get('Observacoes', ''))
                     
                     if st.form_submit_button("Guardar alterações"):
+                        # --- Validação de Campos ---
                         campos_obrigatorios = {
-                            "Nome": novo_nome,
-                            "Data de nascimento": nova_data_nascimento,
-                            "Contacto telefónico": novo_contacto_telefónico,
-                            "Morada": nova_morada,
-                            "Código Postal": novo_codigo_postal,
-                            "NIF": novo_nif
+                            "Nome": novo_nome, "Data de nascimento": nova_data_nascimento,
+                            "Contacto telefónico": novo_contacto_telefónico, "Morada": nova_morada,
+                            "Código Postal": novo_codigo_postal, "NIF": novo_nif
                         }
                         campos_em_falta = [campo for campo, valor in campos_obrigatorios.items() if not valor]
 
+                        validation_errors = []
+                        if not is_valid_phone(novo_contacto_telefónico): validation_errors.append("Contacto telefónico inválido (deve ter 9 dígitos).")
+                        if not is_valid_phone(novo_contacto_telefónico_2): validation_errors.append("Contacto telefónico 2 inválido (deve ter 9 dígitos).")
+                        if not is_valid_phone(novo_telefone_familiar): validation_errors.append("Telefone do Familiar inválido (deve ter 9 dígitos).")
+                        if not is_valid_nif(novo_nif): validation_errors.append("NIF inválido (deve ter 9 dígitos).")
+                        if not is_valid_postal_code(novo_codigo_postal): validation_errors.append("Código Postal inválido (formato esperado: XXXX-XXX).")
+                        if not is_valid_email(novo_email): validation_errors.append("Email com formato inválido.")
+
                         if campos_em_falta:
                             st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
+                        elif validation_errors:
+                            st.error("Por favor, corrija os seguintes erros:\n- " + "\n- ".join(validation_errors))
                         else:
                             # Validar NIF duplicado
                             dados_atuais = sheet.get_all_records()
@@ -223,7 +262,7 @@ def mostrar_pagina():
                             if novo_nif:
                                 for i_registo, registo in enumerate(dados_atuais):
                                     # Verifica se o NIF existe e pertence a um utente diferente do que está a ser editado
-                                    if str(registo.get('NIF', '')) == str(novo_nif) and i_registo != idx:
+                                    if str(registo.get('NIF', '')).strip() == str(novo_nif).strip() and i_registo != idx:
                                         st.error(f"O NIF '{novo_nif}' já está associado a outro utente. Por favor, verifique os dados.")
                                         nif_duplicado = True
                                         break
