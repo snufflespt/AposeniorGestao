@@ -233,8 +233,8 @@ def mostrar_pagina():
                     df_filtrado = df
 
                 for i, row in df_filtrado.iterrows():
-                    # Título do expander com informação chave
-                    expander_title = f"ID: {row.get('ID', 'N/A')} | {row.get('Nome', 'Sem Nome')} | NIF: {row.get('NIF', 'N/A')}"
+                    # Título do expander apenas com o nome do utente
+                    expander_title = f"**{row.get('Nome', 'Sem Nome')}**"
                     with st.expander(expander_title):
                         # Detalhes do utente organizados em secções
                         with st.expander("Informação Pessoal"):
