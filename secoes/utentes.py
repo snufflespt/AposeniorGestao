@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import time
-import uuid
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 from utils.components import (
@@ -150,7 +149,7 @@ def mostrar_pagina():
 # Funções auxiliares para operações CRUD
 def adicionar_utente(sheet, nome: str, contacto: str, morada: str = "", estado: str = "Ativo") -> bool:
     """
-    Adiciona um novo utente à planilha, com um ID único.
+    Adiciona um novo utente à planilha, com um ID sequencial.
 
     Args:
         sheet: Planilha do Google Sheets
@@ -163,7 +162,24 @@ def adicionar_utente(sheet, nome: str, contacto: str, morada: str = "", estado: 
         True se adicionado com sucesso, False caso contrário
     """
     try:
-        novo_id = str(uuid.uuid4())[:8]  # Gera um ID único de 8 caracteres
+        dados = sheet.get_all_records()
+        if not dados:
+            proximo_id_num = 1
+        else:
+            max_id = 0
+            for registo in dados:
+                try:
+                    # Tenta converter o ID para número, ignorando se falhar
+                    id_num = int(registo.get('ID', 0))
+                    if id_num > max_id:
+                        max_id = id_num
+                except (ValueError, TypeError):
+                    continue
+            proximo_id_num = max_id + 1
+        
+        # Formatar o ID com 4 dígitos (ex: 0001)
+        novo_id = f"{proximo_id_num:04d}"
+
         sheet.append_row([novo_id, nome, contacto, morada, estado])
         return True
     except Exception as e:
