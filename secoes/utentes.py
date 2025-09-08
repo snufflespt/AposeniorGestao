@@ -30,6 +30,9 @@ def parse_date(date_str: str):
 def mostrar_pagina():
     configurar_pagina("Gestão de Utentes", "🧍")
 
+    if 'form_add_key' not in st.session_state:
+        st.session_state.form_add_key = 0
+
     sheet = get_worksheet("Utentes")
 
     # Criar tabs
@@ -37,7 +40,7 @@ def mostrar_pagina():
 
     with tab_adicionar:
         titulo_secao("Adicionar novo utente", "➕")
-        with st.form("form_utente", clear_on_submit=True):
+        with st.form(f"form_utente_{st.session_state.form_add_key}"):
             with st.expander("👤 Informação Pessoal", expanded=True):
                 col1, col2 = st.columns(2)
                 with col1:
@@ -85,11 +88,12 @@ def mostrar_pagina():
             with botoes_col1:
                 submit_guardar = st.form_submit_button("Guardar Utente", type="primary")
             with botoes_col2:
-                # A opção `clear_on_submit=True` do formulário trata de limpar os campos.
                 submit_limpar = st.form_submit_button("Limpar")
 
-        # A lógica só avança se o botão "Guardar" for premido.
-        # Se o botão "Limpar" for premido, o formulário é limpo devido ao `clear_on_submit=True` e a execução não entra neste bloco.
+        if submit_limpar:
+            st.session_state.form_add_key += 1
+            st.rerun()
+
         if submit_guardar:
             campos_obrigatorios = {
                 "Nome": nome,
@@ -119,6 +123,7 @@ def mostrar_pagina():
                     data_inscricao, observacoes, estado
                 ):
                     st.success(f"Utente '{nome}' adicionado com sucesso!")
+                    st.session_state.form_add_key += 1
                     st.rerun()
 
     with tab_gerir:
