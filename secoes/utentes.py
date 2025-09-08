@@ -42,7 +42,7 @@ def mostrar_pagina():
                 col1, col2 = st.columns(2)
                 with col1:
                     nome = st.text_input("**Nome do utente**", help="Campo obrigatório")
-                    data_nascimento = st.date_input("Data de nascimento", value=None, min_value=date(1920, 1, 1), format="DD/MM/YYYY")
+                    data_nascimento = st.date_input("**Data de nascimento**", value=None, min_value=date(1920, 1, 1), format="DD/MM/YYYY", help="Campo obrigatório")
                     naturalidade = st.text_input("Naturalidade")
                 with col2:
                     nacionalidade = st.text_input("Nacionalidade")
@@ -57,8 +57,8 @@ def mostrar_pagina():
                     contacto_telefónico_2 = st.text_input("Contacto telefónico 2")
                     email = st.text_input("Email")
                 with col2:
-                    morada = st.text_input("Morada")
-                    codigo_postal = st.text_input("Código Postal")
+                    morada = st.text_input("**Morada**", help="Campo obrigatório")
+                    codigo_postal = st.text_input("**Código Postal**", help="Campo obrigatório")
                     localidade = st.text_input("Localidade")
 
             with st.expander("Documentos de Identificação"):
@@ -66,7 +66,7 @@ def mostrar_pagina():
                 with col1:
                     cartao_cidadao = st.text_input("Cartão de Cidadão")
                     cc_validade = st.date_input("Validade do CC", value=None, format="DD/MM/YYYY")
-                    nif = st.text_input("NIF")
+                    nif = st.text_input("**NIF**", help="Campo obrigatório")
                 with col2:
                     niss = st.text_input("NISS")
                     cartao_utente = st.text_input("Cartão de Utente")
@@ -84,8 +84,18 @@ def mostrar_pagina():
             submit = st.form_submit_button("Guardar Utente")
 
         if submit:
-            if not nome or not contacto_telefónico:
-                st.error("Por favor, preencha os campos obrigatórios (Nome e Contacto telefónico).")
+            campos_obrigatorios = {
+                "Nome": nome,
+                "Data de nascimento": data_nascimento,
+                "Contacto telefónico": contacto_telefónico,
+                "Morada": morada,
+                "Código Postal": codigo_postal,
+                "NIF": nif
+            }
+            campos_em_falta = [campo for campo, valor in campos_obrigatorios.items() if not valor]
+
+            if campos_em_falta:
+                st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
             else:
                 if adicionar_utente(
                     sheet, nome, data_nascimento, naturalidade, nacionalidade,
@@ -123,8 +133,8 @@ def mostrar_pagina():
                     with st.expander("Informação Pessoal", expanded=True):
                         col1, col2 = st.columns(2)
                         with col1:
-                            novo_nome = st.text_input("**Nome do utente**", value=utente_atual.get('Nome', ''))
-                            nova_data_nascimento = st.date_input("Data de nascimento", value=parse_date(utente_atual.get('Data_de_nascimento')), min_value=date(1920, 1, 1), format="DD/MM/YYYY")
+                            novo_nome = st.text_input("**Nome do utente**", value=utente_atual.get('Nome', ''), help="Campo obrigatório")
+                            nova_data_nascimento = st.date_input("**Data de nascimento**", value=parse_date(utente_atual.get('Data_de_nascimento')), min_value=date(1920, 1, 1), format="DD/MM/YYYY", help="Campo obrigatório")
                             nova_naturalidade = st.text_input("Naturalidade", value=utente_atual.get('Naturalidade', ''))
                         with col2:
                             nova_nacionalidade = st.text_input("Nacionalidade", value=utente_atual.get('Nacionalidade', ''))
@@ -142,12 +152,12 @@ def mostrar_pagina():
                     with st.expander("Contactos e Morada"):
                         col1, col2 = st.columns(2)
                         with col1:
-                            novo_contacto_telefónico = st.text_input("**Contacto telefónico**", value=utente_atual.get('Contacto_telefónico', ''))
+                            novo_contacto_telefónico = st.text_input("**Contacto telefónico**", value=utente_atual.get('Contacto_telefónico', ''), help="Campo obrigatório")
                             novo_contacto_telefónico_2 = st.text_input("Contacto telefónico 2", value=utente_atual.get('Contacto_telefónico_2', ''))
                             novo_email = st.text_input("Email", value=utente_atual.get('Email', ''))
                         with col2:
-                            nova_morada = st.text_input("Morada", value=utente_atual.get('Morada', ''))
-                            novo_codigo_postal = st.text_input("Código Postal", value=utente_atual.get('Codigo_Postal', ''))
+                            nova_morada = st.text_input("**Morada**", value=utente_atual.get('Morada', ''), help="Campo obrigatório")
+                            novo_codigo_postal = st.text_input("**Código Postal**", value=utente_atual.get('Codigo_Postal', ''), help="Campo obrigatório")
                             nova_localidade = st.text_input("Localidade", value=utente_atual.get('Localidade', ''))
 
                     with st.expander("Documentos de Identificação"):
@@ -155,7 +165,7 @@ def mostrar_pagina():
                         with col1:
                             novo_cartao_cidadao = st.text_input("Cartão de Cidadão", value=utente_atual.get('Cartao_Cidadao', ''))
                             nova_cc_validade = st.date_input("Validade do CC", value=parse_date(utente_atual.get('CC_Validade')), format="DD/MM/YYYY")
-                            novo_nif = st.text_input("NIF", value=utente_atual.get('NIF', ''))
+                            novo_nif = st.text_input("**NIF**", value=utente_atual.get('NIF', ''), help="Campo obrigatório")
                         with col2:
                             novo_niss = st.text_input("NISS", value=utente_atual.get('NISS', ''))
                             novo_cartao_utente = st.text_input("Cartão de Utente", value=utente_atual.get('Cartao_Utente', ''))
@@ -176,27 +186,40 @@ def mostrar_pagina():
                         novo_observacoes = st.text_area("Observações", value=utente_atual.get('Observacoes', ''))
                     
                     if st.form_submit_button("Guardar alterações"):
-                        novos_dados = {
-                            'Nome': novo_nome, 'Data_de_nascimento': nova_data_nascimento,
-                            'Naturalidade': nova_naturalidade, 'Nacionalidade': nova_nacionalidade,
-                            'Contacto_telefónico': novo_contacto_telefónico,
-                            'Contacto_telefónico_2': novo_contacto_telefónico_2, 'Email': novo_email,
-                            'Morada': nova_morada, 'Codigo_Postal': novo_codigo_postal,
-                            'Localidade': nova_localidade, 'Cartao_Cidadao': novo_cartao_cidadao,
-                            'CC_Validade': nova_cc_validade, 'NIF': novo_nif, 'NISS': novo_niss,
-                            'Cartao_Utente': novo_cartao_utente,
-                            'Telefone_Familiar': novo_telefone_familiar, 'Familiar': novo_familiar,
-                            'Grau_Escolaridade': novo_grau_escolaridade, 'Profissao': nova_profissao,
-                            'Situacao_Profissional': nova_situacao_profissional,
-                            'Data de inscrição': nova_data_inscricao, 'Observacoes': novo_observacoes, 
-                            'Estado': novo_estado
+                        campos_obrigatorios = {
+                            "Nome": novo_nome,
+                            "Data de nascimento": nova_data_nascimento,
+                            "Contacto telefónico": novo_contacto_telefónico,
+                            "Morada": nova_morada,
+                            "Código Postal": novo_codigo_postal,
+                            "NIF": novo_nif
                         }
+                        campos_em_falta = [campo for campo, valor in campos_obrigatorios.items() if not valor]
 
-                        if atualizar_utente(sheet, idx, novos_dados):
-                            st.success(f"Utente '{novo_nome}' atualizado com sucesso!")
-                            del st.session_state['edit_index']
-                            time.sleep(0.5)
-                            st.rerun()
+                        if campos_em_falta:
+                            st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
+                        else:
+                            novos_dados = {
+                                'Nome': novo_nome, 'Data_de_nascimento': nova_data_nascimento,
+                                'Naturalidade': nova_naturalidade, 'Nacionalidade': nova_nacionalidade,
+                                'Contacto_telefónico': novo_contacto_telefónico,
+                                'Contacto_telefónico_2': novo_contacto_telefónico_2, 'Email': novo_email,
+                                'Morada': nova_morada, 'Codigo_Postal': novo_codigo_postal,
+                                'Localidade': nova_localidade, 'Cartao_Cidadao': novo_cartao_cidadao,
+                                'CC_Validade': nova_cc_validade, 'NIF': novo_nif, 'NISS': novo_niss,
+                                'Cartao_Utente': novo_cartao_utente,
+                                'Telefone_Familiar': novo_telefone_familiar, 'Familiar': novo_familiar,
+                                'Grau_Escolaridade': novo_grau_escolaridade, 'Profissao': nova_profissao,
+                                'Situacao_Profissional': nova_situacao_profissional,
+                                'Data de inscrição': nova_data_inscricao, 'Observacoes': novo_observacoes, 
+                                'Estado': novo_estado
+                            }
+
+                            if atualizar_utente(sheet, idx, novos_dados):
+                                st.success(f"Utente '{novo_nome}' atualizado com sucesso!")
+                                del st.session_state['edit_index']
+                                time.sleep(0.5)
+                                st.rerun()
             
             # --- VISTA DE APAGAR ---
             elif 'delete_index' in st.session_state:
