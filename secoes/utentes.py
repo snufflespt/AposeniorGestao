@@ -233,18 +233,57 @@ def mostrar_pagina():
                     df_filtrado = df
 
                 for i, row in df_filtrado.iterrows():
-                    with st.container(border=True):
-                        st.text_input("ID", value=row.get('ID', ''), key=f"disp_id_{i}", disabled=True)
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.text_input("Nome do utente", value=row.get('Nome', ''), key=f"disp_nome_{i}", disabled=True)
-                            st.text_input("Contacto", value=row.get('Contacto', ''), key=f"disp_contacto_{i}", disabled=True)
-                        with col2:
-                            st.text_input("Morada", value=row.get('Morada', ''), key=f"disp_morada_{i}", disabled=True)
-                            st.text_input("Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
-                        
-                        st.write("")
+                    # Título do expander com informação chave
+                    expander_title = f"ID: {row.get('ID', 'N/A')} | {row.get('Nome', 'Sem Nome')} | NIF: {row.get('NIF', 'N/A')}"
+                    with st.expander(expander_title):
+                        # Detalhes do utente organizados em secções
+                        with st.expander("Informação Pessoal"):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.text_input("Nome", value=row.get('Nome', ''), key=f"disp_nome_{i}", disabled=True)
+                                st.text_input("Data de nascimento", value=row.get('Data_de_nascimento', ''), key=f"disp_data_nasc_{i}", disabled=True)
+                                st.text_input("Naturalidade", value=row.get('Naturalidade', ''), key=f"disp_naturalidade_{i}", disabled=True)
+                            with col2:
+                                st.text_input("Nacionalidade", value=row.get('Nacionalidade', ''), key=f"disp_nacionalidade_{i}", disabled=True)
+                                st.text_input("Grau de Escolaridade", value=row.get('Grau_Escolaridade', ''), key=f"disp_grau_{i}", disabled=True)
+                                st.text_input("Profissão", value=row.get('Profissao', ''), key=f"disp_profissao_{i}", disabled=True)
+                            st.text_input("Situação Profissional", value=row.get('Situacao_Profissional', ''), key=f"disp_situacao_{i}", disabled=True)
 
+                        with st.expander("Contactos e Morada"):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.text_input("Contacto telefónico", value=row.get('Contacto_telefónico', ''), key=f"disp_contacto1_{i}", disabled=True)
+                                st.text_input("Contacto telefónico 2", value=row.get('Contacto_telefónico_2', ''), key=f"disp_contacto2_{i}", disabled=True)
+                                st.text_input("Email", value=row.get('Email', ''), key=f"disp_email_{i}", disabled=True)
+                            with col2:
+                                st.text_input("Morada", value=row.get('Morada', ''), key=f"disp_morada_{i}", disabled=True)
+                                st.text_input("Código Postal", value=row.get('Codigo_Postal', ''), key=f"disp_cp_{i}", disabled=True)
+                                st.text_input("Localidade", value=row.get('Localidade', ''), key=f"disp_localidade_{i}", disabled=True)
+
+                        with st.expander("Documentos de Identificação"):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.text_input("Cartão de Cidadão", value=row.get('Cartao_Cidadao', ''), key=f"disp_cc_{i}", disabled=True)
+                                st.text_input("Validade do CC", value=row.get('CC_Validade', ''), key=f"disp_cc_val_{i}", disabled=True)
+                                st.text_input("NIF", value=row.get('NIF', ''), key=f"disp_nif_{i}", disabled=True)
+                            with col2:
+                                st.text_input("NISS", value=row.get('NISS', ''), key=f"disp_niss_{i}", disabled=True)
+                                st.text_input("Cartão de Utente", value=row.get('Cartao_Utente', ''), key=f"disp_utente_doc_{i}", disabled=True)
+
+                        with st.expander("Informação Familiar e Administrativa"):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.text_input("Familiar", value=row.get('Familiar', ''), key=f"disp_familiar_{i}", disabled=True)
+                                st.text_input("Telefone do Familiar", value=row.get('Telefone_Familiar', ''), key=f"disp_tel_familiar_{i}", disabled=True)
+                            with col2:
+                                st.text_input("Data de inscrição", value=row.get('Data de inscrição', ''), key=f"disp_data_insc_{i}", disabled=True)
+                                st.text_input("Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
+                        
+                        st.text_area("Observações", value=row.get('Observacoes', ''), key=f"disp_obs_{i}", disabled=True)
+                        
+                        st.write("---")
+
+                        # Botões de ação
                         botoes_col1, botoes_col2, botoes_col3, _ = st.columns([1, 1, 1, 4])
                         with botoes_col1:
                             if st.button("✏️ Editar", key=f"edit_utente_{i}", use_container_width=True):
@@ -256,8 +295,6 @@ def mostrar_pagina():
                                 st.rerun()
                         with botoes_col3:
                             st.button("⚙️ Gerir", key=f"manage_utente_{i}", use_container_width=True)
-                    
-                    st.write("")
 
 
 # Funções auxiliares para operações CRUD
