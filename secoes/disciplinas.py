@@ -1,9 +1,20 @@
 import streamlit as st
 import pandas as pd
 import time
+import unicodedata
 from datetime import date
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
+
+def normalize_string(s):
+    """Remove acentos e converte para minúsculas para comparação."""
+    if not s or not isinstance(s, str):
+        return ""
+    # Normaliza para a forma 'NFD' que separa caracteres e acentos, e converte para minúsculas
+    s = unicodedata.normalize('NFD', s.lower())
+    # Codifica para ASCII ignorando caracteres não-ASCII (os acentos) e depois descodifica
+    s = s.encode('ascii', 'ignore').decode('utf-8')
+    return s
 
 def mostrar_pagina():
     configurar_pagina("Gestão de Disciplinas", "📚")
@@ -28,28 +39,33 @@ def mostrar_pagina():
             if not nome_disc.strip():
                 st.error("O nome da disciplina é obrigatório.")
             else:
-                # Gerar ID sequencial (ex: D0001)
                 dados_atuais = sheet.get_all_records()
-                if not dados_atuais:
-                    proximo_id_num = 1
+                # Validar nome duplicado (ignorando maiúsculas/minúsculas e acentos)
+                nomes_existentes = [normalize_string(d.get('Nome da Disciplina', '')) for d in dados_atuais]
+                if normalize_string(nome_disc) in nomes_existentes:
+                    st.error(f"A disciplina '{nome_disc}' já existe. Por favor, escolha um nome diferente.")
                 else:
-                    max_id = 0
-                    for registo in dados_atuais:
-                        try:
-                            id_num = int(registo.get('id_disciplina', 'D0').split('D')[-1])
-                            if id_num > max_id:
-                                max_id = id_num
-                        except (ValueError, TypeError, IndexError):
-                            continue
-                    proximo_id_num = max_id + 1
-                
-                novo_id = f"D{proximo_id_num:04d}"
-                data_criacao = date.today().strftime('%d/%m/%Y')
-                
-                # Ordem: id_disciplina, Nome da Disciplina, Estado, Data de criacao, Descrição/Observacoes
-                sheet.append_row([novo_id, nome_disc, estado, data_criacao, observacoes])
-                st.success(f"Disciplina '{nome_disc}' adicionada com sucesso!")
-                st.rerun()
+                    # Gerar ID sequencial (ex: D0001)
+                    if not dados_atuais:
+                        proximo_id_num = 1
+                    else:
+                        max_id = 0
+                        for registo in dados_atuais:
+                            try:
+                                id_num = int(registo.get('id_disciplina', 'D0').split('D')[-1])
+                                if id_num > max_id:
+                                    max_id = id_num
+                            except (ValueError, TypeError, IndexError):
+                                continue
+                        proximo_id_num = max_id + 1
+                    
+                    novo_id = f"D{proximo_id_num:04d}"
+                    data_criacao = date.today().strftime('%d/%m/%Y')
+                    
+                    # Ordem: id_disciplina, Nome da Disciplina, Estado, Data de criacao, Descrição/Observacoes
+                    sheet.append_row([novo_id, nome_disc, estado, data_criacao, observacoes])
+                    st.success(f"Disciplina '{nome_disc}' adicionada com sucesso!")
+                    st.rerun()
 
     # -----------------------
     # Tab: Gerir
@@ -89,20 +105,31 @@ def mostrar_pagina():
                         if not novo_nome.strip():
                             st.error("O nome da disciplina é obrigatório.")
                         else:
-                            # Ordem na folha: id_disciplina, Nome da Disciplina, Estado, Data de criacao, Descrição/Observacoes
-                            # Atualizar da coluna B até E
-                            valores = [
-                                novo_nome,
-                                novo_estado,
-                                disciplina_atual.get('Data de criacao', ''), # Manter data original
-                                nova_obs
-                            ]
-                            sheet.update(f'B{idx + 2}:E{idx + 2}', [valores])
+                            dados_atuais = sheet.get_all_records()
+                            nome_duplicado = False
+                            # Validar nome duplicado, ignorando o registo atual
+                            for i, registo in enumerate(dados_atuais):
+                                if i != idx and normalize_string(registo.get('Nome da Disciplina', '')) == normalize_string(novo_nome):
+                                    nome_duplicado = True
+                                    break
+                            
+                            if nome_duplicado:
+                                st.error(f"A disciplina '{novo_nome}' já existe. Por favor, escolha um nome diferente.")
+                            else:
+                                # Ordem na folha: id_disciplina, Nome da Disciplina, Estado, Data de criacao, Descrição/Observacoes
+                                # Atualizar da coluna B até E
+                                valores = [
+                                    novo_nome,
+                                    novo_estado,
+                                    disciplina_atual.get('Data de criacao', ''), # Manter data original
+                                    nova_obs
+                                ]
+                                sheet.update(f'B{idx + 2}:E{idx + 2}', [valores])
 
-                            st.success(f"Disciplina '{novo_nome}' atualizada com sucesso!")
-                            del st.session_state['edit_disc_index']
-                            time.sleep(0.5)
-                            st.rerun()
+                                st.success(f"Disciplina '{novo_nome}' atualizada com sucesso!")
+                                del st.session_state['edit_disc_index']
+                                time.sleep(0.5)
+                                st.rerun()
 
             # --- VISTA DE APAGAR ---
             elif 'delete_disc_index' in st.session_state:
