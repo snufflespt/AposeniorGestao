@@ -83,12 +83,14 @@ def mostrar_pagina():
 
             botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
             with botoes_col1:
-                submit = st.form_submit_button("Guardar Utente", type="primary")
+                submit_guardar = st.form_submit_button("Guardar Utente", type="primary")
             with botoes_col2:
                 # A opção `clear_on_submit=True` do formulário trata de limpar os campos.
-                st.form_submit_button("Limpar")
+                submit_limpar = st.form_submit_button("Limpar")
 
-        if submit:
+        # A lógica só avança se o botão "Guardar" for premido.
+        # Se o botão "Limpar" for premido, o formulário é limpo devido ao `clear_on_submit=True` e a execução não entra neste bloco.
+        if submit_guardar:
             campos_obrigatorios = {
                 "Nome": nome,
                 "Data de nascimento": data_nascimento,
