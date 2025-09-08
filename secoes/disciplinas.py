@@ -18,9 +18,9 @@ def mostrar_pagina():
     with tab_adicionar:
         titulo_secao("Adicionar nova disciplina", "➕")
         with st.form("form_disciplina", clear_on_submit=True):
-            nome_disc = st.text_input("**Nome da disciplina**", help="Campo obrigatório")
-            estado = st.selectbox("Estado", ["Ativa", "Inativa"])
-            observacoes = st.text_area("Descrição/Observações")
+            nome_disc = st.text_input("**✍️ Nome da disciplina**", help="Campo obrigatório")
+            estado = st.selectbox("🚦 Estado", ["Ativa", "Inativa"])
+            observacoes = st.text_area("📋 Descrição/Observações")
             
             submit = st.form_submit_button("Guardar")
 
@@ -73,17 +73,17 @@ def mostrar_pagina():
 
                 st.subheader(f"Editar disciplina: {disciplina_atual['Nome da Disciplina']}")
                 with st.form("form_editar_disc"):
-                    st.text_input("ID da Disciplina", value=disciplina_atual.get('id_disciplina', ''), disabled=True)
-                    st.text_input("Data de Criação", value=disciplina_atual.get('Data de criacao', ''), disabled=True)
+                    st.text_input("🆔 ID da Disciplina", value=disciplina_atual.get('id_disciplina', ''), disabled=True)
+                    st.text_input("🗓️ Data de Criação", value=disciplina_atual.get('Data de criacao', ''), disabled=True)
                     
-                    novo_nome = st.text_input("**Nome da disciplina**", value=disciplina_atual.get('Nome da Disciplina', ''), help="Campo obrigatório")
+                    novo_nome = st.text_input("**✍️ Nome da disciplina**", value=disciplina_atual.get('Nome da Disciplina', ''), help="Campo obrigatório")
                     
                     estado_options = ["Ativa", "Inativa"]
                     estado_atual = disciplina_atual.get('Estado', 'Ativa')
                     estado_index = estado_options.index(estado_atual) if estado_atual in estado_options else 0
-                    novo_estado = st.selectbox("Estado", estado_options, index=estado_index)
+                    novo_estado = st.selectbox("🚦 Estado", estado_options, index=estado_index)
                     
-                    nova_obs = st.text_area("Descrição/Observações", value=disciplina_atual.get('Descrição/Observacoes', ''))
+                    nova_obs = st.text_area("📋 Descrição/Observações", value=disciplina_atual.get('Descrição/Observacoes', ''))
 
                     if st.form_submit_button("Guardar alterações"):
                         if not novo_nome.strip():
@@ -143,16 +143,16 @@ def mostrar_pagina():
                     df_filtrado = df
 
                 for i, row in df_filtrado.iterrows():
-                    expander_title = f"**{row.get('Nome da Disciplina', 'Sem Nome')}**"
+                    expander_title = f"📚 **{row.get('Nome da Disciplina', 'Sem Nome')}**"
                     with st.expander(expander_title):
                         col1, col2 = st.columns(2)
                         with col1:
-                            st.text_input("ID da Disciplina", value=row.get('id_disciplina', ''), key=f"disp_id_{i}", disabled=True)
-                            st.text_input("Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
+                            st.text_input("🆔 ID da Disciplina", value=row.get('id_disciplina', ''), key=f"disp_id_{i}", disabled=True)
+                            st.text_input("🚦 Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
                         with col2:
-                            st.text_input("Data de Criação", value=row.get('Data de criacao', ''), key=f"disp_data_{i}", disabled=True)
+                            st.text_input("🗓️ Data de Criação", value=row.get('Data de criacao', ''), key=f"disp_data_{i}", disabled=True)
                         
-                        st.text_area("Descrição/Observações", value=row.get('Descrição/Observacoes', ''), key=f"disp_obs_{i}", disabled=True)
+                        st.text_area("📋 Descrição/Observações", value=row.get('Descrição/Observacoes', ''), key=f"disp_obs_{i}", disabled=True)
 
                         st.write("---") 
 
