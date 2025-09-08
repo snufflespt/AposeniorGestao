@@ -307,7 +307,7 @@ def mostrar_pagina():
                                 st.text_input("📞 Telefone do Familiar", value=row.get('Telefone_Familiar', ''), key=f"disp_tel_familiar_{i}", disabled=True)
                             with col2:
                                 st.text_input("✍️ Data de inscrição", value=row.get('Data de inscrição', ''), key=f"disp_data_insc_{i}", disabled=True)
-                                st.text_inpt("🚦 Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
+                                st.text_input("🚦 Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
                         
                         st.text_area("📋 Observações", value=row.get('Observacoes', ''), key=f"disp_obs_{i}", disabled=True)
                         
