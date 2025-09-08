@@ -119,24 +119,25 @@ def mostrar_pagina():
 
         if submit_guardar:
             # --- Validação de Campos ---
-            campos_obrigatorios = {
-                "Nome": nome, "Data de nascimento": data_nascimento,
-                "Contacto telefónico": contacto_telefónico, "Morada": morada,
-                "Código Postal": codigo_postal, "NIF": nif
-            }
-            campos_em_falta = [campo for campo, valor in campos_obrigatorios.items() if not valor]
-            
             validation_errors = []
-            if not is_valid_phone(contacto_telefónico): validation_errors.append("Contacto telefónico inválido (deve ter 9 dígitos).")
+            
+            # Validações de obrigatoriedade e formato
+            if not nome or not nome.strip(): validation_errors.append("Nome do utente é obrigatório.")
+            if not data_nascimento: validation_errors.append("Data de nascimento é obrigatória.")
+            if not contacto_telefónico or not contacto_telefónico.strip(): validation_errors.append("Contacto telefónico é obrigatório.")
+            elif not is_valid_phone(contacto_telefónico): validation_errors.append("Contacto telefónico inválido (deve ter 9 dígitos).")
+            if not morada or not morada.strip(): validation_errors.append("Morada é obrigatória.")
+            if not codigo_postal or not codigo_postal.strip(): validation_errors.append("Código Postal é obrigatório.")
+            elif not is_valid_postal_code(codigo_postal): validation_errors.append("Código Postal inválido (formato esperado: XXXX-XXX).")
+            if not nif or not str(nif).strip(): validation_errors.append("NIF é obrigatório.")
+            elif not is_valid_nif(nif): validation_errors.append("NIF inválido (deve ter 9 dígitos).")
+
+            # Validações de formato para campos opcionais
             if not is_valid_phone(contacto_telefónico_2): validation_errors.append("Contacto telefónico 2 inválido (deve ter 9 dígitos).")
             if not is_valid_phone(telefone_familiar): validation_errors.append("Telefone do Familiar inválido (deve ter 9 dígitos).")
-            if not is_valid_nif(nif): validation_errors.append("NIF inválido (deve ter 9 dígitos).")
-            if not is_valid_postal_code(codigo_postal): validation_errors.append("Código Postal inválido (formato esperado: XXXX-XXX).")
             if not is_valid_email(email): validation_errors.append("Email com formato inválido.")
 
-            if campos_em_falta:
-                st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
-            elif validation_errors:
+            if validation_errors:
                 st.error("Por favor, corrija os seguintes erros:\n- " + "\n- ".join(validation_errors))
             else:
                 # Validar NIF duplicado
@@ -236,24 +237,25 @@ def mostrar_pagina():
                     
                     if st.form_submit_button("Guardar alterações"):
                         # --- Validação de Campos ---
-                        campos_obrigatorios = {
-                            "Nome": novo_nome, "Data de nascimento": nova_data_nascimento,
-                            "Contacto telefónico": novo_contacto_telefónico, "Morada": nova_morada,
-                            "Código Postal": novo_codigo_postal, "NIF": novo_nif
-                        }
-                        campos_em_falta = [campo for campo, valor in campos_obrigatorios.items() if not valor]
-
                         validation_errors = []
-                        if not is_valid_phone(novo_contacto_telefónico): validation_errors.append("Contacto telefónico inválido (deve ter 9 dígitos).")
+
+                        # Validações de obrigatoriedade e formato
+                        if not novo_nome or not novo_nome.strip(): validation_errors.append("Nome do utente é obrigatório.")
+                        if not nova_data_nascimento: validation_errors.append("Data de nascimento é obrigatória.")
+                        if not novo_contacto_telefónico or not novo_contacto_telefónico.strip(): validation_errors.append("Contacto telefónico é obrigatório.")
+                        elif not is_valid_phone(novo_contacto_telefónico): validation_errors.append("Contacto telefónico inválido (deve ter 9 dígitos).")
+                        if not nova_morada or not nova_morada.strip(): validation_errors.append("Morada é obrigatória.")
+                        if not novo_codigo_postal or not novo_codigo_postal.strip(): validation_errors.append("Código Postal é obrigatório.")
+                        elif not is_valid_postal_code(novo_codigo_postal): validation_errors.append("Código Postal inválido (formato esperado: XXXX-XXX).")
+                        if not novo_nif or not str(novo_nif).strip(): validation_errors.append("NIF é obrigatório.")
+                        elif not is_valid_nif(novo_nif): validation_errors.append("NIF inválido (deve ter 9 dígitos).")
+                        
+                        # Validações de formato para campos opcionais
                         if not is_valid_phone(novo_contacto_telefónico_2): validation_errors.append("Contacto telefónico 2 inválido (deve ter 9 dígitos).")
                         if not is_valid_phone(novo_telefone_familiar): validation_errors.append("Telefone do Familiar inválido (deve ter 9 dígitos).")
-                        if not is_valid_nif(novo_nif): validation_errors.append("NIF inválido (deve ter 9 dígitos).")
-                        if not is_valid_postal_code(novo_codigo_postal): validation_errors.append("Código Postal inválido (formato esperado: XXXX-XXX).")
                         if not is_valid_email(novo_email): validation_errors.append("Email com formato inválido.")
 
-                        if campos_em_falta:
-                            st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
-                        elif validation_errors:
+                        if validation_errors:
                             st.error("Por favor, corrija os seguintes erros:\n- " + "\n- ".join(validation_errors))
                         else:
                             # Validar NIF duplicado
