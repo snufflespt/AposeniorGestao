@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import time
+import uuid
 from utils.sheets import get_worksheet
 from utils.ui import configurar_pagina, titulo_secao
 from utils.components import (
@@ -115,6 +116,7 @@ def mostrar_pagina():
 
                 for i, row in df_filtrado.iterrows():
                     with st.container(border=True):
+                        st.text_input("ID", value=row.get('ID', ''), key=f"disp_id_{i}", disabled=True)
                         col1, col2 = st.columns(2)
                         with col1:
                             st.text_input("Nome do utente", value=row.get('Nome', ''), key=f"disp_nome_{i}", disabled=True)
@@ -143,7 +145,7 @@ def mostrar_pagina():
 # Funções auxiliares para operações CRUD
 def adicionar_utente(sheet, nome: str, contacto: str, morada: str = "", estado: str = "Ativo") -> bool:
     """
-    Adiciona um novo utente à planilha
+    Adiciona um novo utente à planilha, com um ID único.
 
     Args:
         sheet: Planilha do Google Sheets
@@ -156,7 +158,8 @@ def adicionar_utente(sheet, nome: str, contacto: str, morada: str = "", estado: 
         True se adicionado com sucesso, False caso contrário
     """
     try:
-        sheet.append_row([nome, contacto, morada, estado])
+        novo_id = str(uuid.uuid4())[:8]  # Gera um ID único de 8 caracteres
+        sheet.append_row([novo_id, nome, contacto, morada, estado])
         return True
     except Exception as e:
         st.error(f"Erro ao adicionar utente: {str(e)}")
@@ -175,15 +178,15 @@ def atualizar_utente(sheet, index: int, dados: dict) -> bool:
         True se atualizado com sucesso, False caso contrário
     """
     try:
-        # Criar lista de valores para atualizar a linha
+        # Criar lista de valores para atualizar a linha (ID não é atualizado)
         values = [
             dados.get('Nome', ''),
             dados.get('Contacto', ''),
             dados.get('Morada', ''),
             dados.get('Estado', 'Ativo')
         ]
-        # Atualizar a linha na planilha
-        sheet.update(f'A{index + 2}:D{index + 2}', [values])
+        # Atualizar a linha na planilha, começando da coluna B para não alterar o ID
+        sheet.update(f'B{index + 2}:E{index + 2}', [values])
         return True
     except Exception as e:
         st.error(f"Erro ao atualizar utente: {str(e)}")
