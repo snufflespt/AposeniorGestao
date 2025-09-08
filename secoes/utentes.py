@@ -104,7 +104,13 @@ def mostrar_pagina():
             if campos_em_falta:
                 st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
             else:
-                if adicionar_utente(
+                # Validar NIF duplicado
+                dados_atuais = sheet.get_all_records()
+                nifs_existentes = [str(registo.get('NIF', '')) for registo in dados_atuais if str(registo.get('NIF', ''))]
+                
+                if nif and str(nif) in nifs_existentes:
+                    st.error(f"O NIF '{nif}' já está associado a outro utente. Por favor, verifique os dados.")
+                elif adicionar_utente(
                     sheet, nome, data_nascimento, naturalidade, nacionalidade,
                     contacto_telefónico, contacto_telefónico_2, email, morada,
                     codigo_postal, localidade, cartao_cidadao, cc_validade, nif,
@@ -206,27 +212,39 @@ def mostrar_pagina():
                         if campos_em_falta:
                             st.error(f"Por favor, preencha os seguintes campos obrigatórios: {', '.join(campos_em_falta)}")
                         else:
-                            novos_dados = {
-                                'Nome': novo_nome, 'Data_de_nascimento': nova_data_nascimento,
-                                'Naturalidade': nova_naturalidade, 'Nacionalidade': nova_nacionalidade,
-                                'Contacto_telefónico': novo_contacto_telefónico,
-                                'Contacto_telefónico_2': novo_contacto_telefónico_2, 'Email': novo_email,
-                                'Morada': nova_morada, 'Codigo_Postal': novo_codigo_postal,
-                                'Localidade': nova_localidade, 'Cartao_Cidadao': novo_cartao_cidadao,
-                                'CC_Validade': nova_cc_validade, 'NIF': novo_nif, 'NISS': novo_niss,
-                                'Cartao_Utente': novo_cartao_utente,
-                                'Telefone_Familiar': novo_telefone_familiar, 'Familiar': novo_familiar,
-                                'Grau_Escolaridade': novo_grau_escolaridade, 'Profissao': nova_profissao,
-                                'Situacao_Profissional': nova_situacao_profissional,
-                                'Data de inscrição': nova_data_inscricao, 'Observacoes': novo_observacoes, 
-                                'Estado': novo_estado
-                            }
+                            # Validar NIF duplicado
+                            dados_atuais = sheet.get_all_records()
+                            nif_duplicado = False
+                            if novo_nif:
+                                for i_registo, registo in enumerate(dados_atuais):
+                                    # Verifica se o NIF existe e pertence a um utente diferente do que está a ser editado
+                                    if str(registo.get('NIF', '')) == str(novo_nif) and i_registo != idx:
+                                        st.error(f"O NIF '{novo_nif}' já está associado a outro utente. Por favor, verifique os dados.")
+                                        nif_duplicado = True
+                                        break
+                            
+                            if not nif_duplicado:
+                                novos_dados = {
+                                    'Nome': novo_nome, 'Data_de_nascimento': nova_data_nascimento,
+                                    'Naturalidade': nova_naturalidade, 'Nacionalidade': nova_nacionalidade,
+                                    'Contacto_telefónico': novo_contacto_telefónico,
+                                    'Contacto_telefónico_2': novo_contacto_telefónico_2, 'Email': novo_email,
+                                    'Morada': nova_morada, 'Codigo_Postal': novo_codigo_postal,
+                                    'Localidade': nova_localidade, 'Cartao_Cidadao': novo_cartao_cidadao,
+                                    'CC_Validade': nova_cc_validade, 'NIF': novo_nif, 'NISS': novo_niss,
+                                    'Cartao_Utente': novo_cartao_utente,
+                                    'Telefone_Familiar': novo_telefone_familiar, 'Familiar': novo_familiar,
+                                    'Grau_Escolaridade': novo_grau_escolaridade, 'Profissao': nova_profissao,
+                                    'Situacao_Profissional': nova_situacao_profissional,
+                                    'Data de inscrição': nova_data_inscricao, 'Observacoes': novo_observacoes, 
+                                    'Estado': novo_estado
+                                }
 
-                            if atualizar_utente(sheet, idx, novos_dados):
-                                st.success(f"Utente '{novo_nome}' atualizado com sucesso!")
-                                del st.session_state['edit_index']
-                                time.sleep(0.5)
-                                st.rerun()
+                                if atualizar_utente(sheet, idx, novos_dados):
+                                    st.success(f"Utente '{novo_nome}' atualizado com sucesso!")
+                                    del st.session_state['edit_index']
+                                    time.sleep(0.5)
+                                    st.rerun()
             
             # --- VISTA DE APAGAR ---
             elif 'delete_index' in st.session_state:
