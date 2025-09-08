@@ -19,6 +19,9 @@ def normalize_string(s):
 def mostrar_pagina():
     configurar_pagina("Gestão de Disciplinas", "📚")
 
+    if 'form_disc_key' not in st.session_state:
+        st.session_state.form_disc_key = 0
+
     sheet = get_worksheet("Disciplinas")
 
     tab_adicionar, tab_gerir = st.tabs(["➕ Adicionar disciplina", "📋 Gerir disciplinas"])
@@ -28,14 +31,22 @@ def mostrar_pagina():
     # -----------------------
     with tab_adicionar:
         titulo_secao("Adicionar nova disciplina", "➕")
-        with st.form("form_disciplina", clear_on_submit=True):
+        with st.form(f"form_disciplina_{st.session_state.form_disc_key}"):
             nome_disc = st.text_input("**✍️ Nome da disciplina**", help="Campo obrigatório")
             estado = st.selectbox("🚦 Estado", ["Ativa", "Inativa"])
             observacoes = st.text_area("📋 Descrição/Observações")
             
-            submit = st.form_submit_button("Guardar")
+            botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
+            with botoes_col1:
+                submit_guardar = st.form_submit_button("Guardar", type="primary")
+            with botoes_col2:
+                submit_limpar = st.form_submit_button("Limpar")
 
-        if submit:
+        if submit_limpar:
+            st.session_state.form_disc_key += 1
+            st.rerun()
+
+        if submit_guardar:
             if not nome_disc.strip():
                 st.error("O nome da disciplina é obrigatório.")
             else:
@@ -65,6 +76,7 @@ def mostrar_pagina():
                     # Ordem: id_disciplina, Nome da Disciplina, Estado, Data de criacao, Descrição/Observacoes
                     sheet.append_row([novo_id, nome_disc, estado, data_criacao, observacoes])
                     st.success(f"Disciplina '{nome_disc}' adicionada com sucesso!")
+                    st.session_state.form_disc_key += 1
                     st.rerun()
 
     # -----------------------
