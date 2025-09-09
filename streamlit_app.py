@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils.ui import aplicar_estilos
-from secoes import utentes, turmas, professores, disciplinas
+from secoes import utentes, turmas, professores, disciplinas, horarios
 from utils.sheets import get_worksheet
 
 @st.cache_data(ttl=60)
@@ -58,7 +58,7 @@ st.sidebar.markdown("---")
 # Menu principal
 opcao = st.sidebar.radio(
     "Escolhe a secção:",
-    ["🏠 Início", "📚 Disciplinas", "🧍 Utentes", "🏫 Turmas", "👨‍🏫 Professores"]
+    ["🏠 Início", "📚 Disciplinas", "🧍 Utentes", "🏫 Turmas", "🗓️ Horários", "👨‍🏫 Professores"]
 )
 
 # Conteúdo das páginas
@@ -87,6 +87,8 @@ elif opcao == "🧍 Utentes":
     utentes.mostrar_pagina()
 elif opcao == "🏫 Turmas":
     turmas.mostrar_pagina()
+elif opcao == "🗓️ Horários":
+    horarios.mostrar_pagina()
 elif opcao == "👨‍🏫 Professores":
     professores.mostrar_pagina()
 
