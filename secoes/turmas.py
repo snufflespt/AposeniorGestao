@@ -39,7 +39,7 @@ def mostrar_pagina():
     # Obter listas de opções
     try:
         disciplinas = ["-- Selecione --"] + sheet_disc.col_values(2)[1:]  # Coluna B: Nome da Disciplina
-        professores = ["-- Selecione --"] + sheet_prof.col_values(1)[1:] # Coluna A: Nome do Professor
+        professores = ["-- Selecione --"] + sheet_prof.col_values(2)[1:] # Coluna B: Nome Completo
     except Exception as e:
         st.error(f"Não foi possível carregar as listas de disciplinas ou professores: {e}")
         disciplinas = ["-- Selecione --"]
