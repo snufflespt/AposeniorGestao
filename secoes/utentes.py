@@ -4,7 +4,7 @@ import time
 import re
 from datetime import date, datetime
 from utils.sheets import get_worksheet
-from utils.ui import configurar_pagina, titulo_secao
+from utils.ui import titulo_secao
 from utils.components import (
     render_confirmation_dialog, render_action_buttons
 )
@@ -51,6 +51,7 @@ def parse_date(date_str: str):
         return None
 
 def mostrar_pagina():
+    st.title("🧍 Gestão de Utentes")
     if 'form_add_key' not in st.session_state:
         st.session_state.form_add_key = 0
 

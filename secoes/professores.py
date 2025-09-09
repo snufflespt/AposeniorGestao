@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import re
 from utils.sheets import get_worksheet
-from utils.ui import configurar_pagina, titulo_secao
+from utils.ui import titulo_secao
 from utils.components import render_confirmation_dialog
 
 def normalize_string(s: str) -> str:
@@ -23,6 +23,7 @@ def is_valid_email(email: str) -> bool:
     return re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email)
 
 def mostrar_pagina():
+    st.title("👨‍🏫 Gestão de Professores")
     sheet_prof = get_worksheet("Professores")
 
     tab_adicionar, tab_gerir = st.tabs(["➕ Adicionar professor", "📋 Gerir professores"])

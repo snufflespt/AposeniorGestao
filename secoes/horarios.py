@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils.sheets import get_worksheet
-from utils.ui import configurar_pagina, titulo_secao
+from utils.ui import titulo_secao
 
 # Ordem dos dias da semana para a visualização
 DIAS_SEMANA_ORDEM = [
@@ -41,7 +41,7 @@ def carregar_dados_turmas():
 
 def mostrar_pagina():
     """Renderiza a página de visualização de horários."""
-    titulo_secao("Horário Semanal das Turmas", "🗓️")
+    st.title("🗓️ Horário Semanal das Turmas")
 
     df_turmas = carregar_dados_turmas()
 

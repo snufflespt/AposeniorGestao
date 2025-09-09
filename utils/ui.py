@@ -1,12 +1,6 @@
 import streamlit as st
 import base64
 
-def configurar_pagina(titulo, icone="🧭"):
-    """Configura título, ícone e layout da página."""
-    st.set_page_config(page_title=titulo, page_icon=icone, layout="wide")
-    aplicar_estilos()
-    # Título discreto (sem barra grande)
-    st.markdown(f"### {icone} {titulo}")
 
 def imagem_base64(caminho):
     """Converte imagem para base64 para usar no CSS."""

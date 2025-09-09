@@ -4,7 +4,7 @@ import time
 import unicodedata
 from datetime import time as time_obj
 from utils.sheets import get_worksheet
-from utils.ui import configurar_pagina, titulo_secao
+from utils.ui import titulo_secao
 
 # --- Funções Auxiliares ---
 
@@ -27,6 +27,7 @@ NIVEL_OPCOES = ["Inicial", "Intermédio-Inicial", "Intermédio", "Intermédio-Av
 ESTADO_OPCOES = ["Ativa", "Inativa"]
 
 def mostrar_pagina():
+    st.title("🏫 Gestão de Turmas")
     if 'form_turma_key' not in st.session_state:
         st.session_state.form_turma_key = 0
 

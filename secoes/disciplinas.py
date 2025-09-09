@@ -4,7 +4,7 @@ import time
 import unicodedata
 from datetime import date
 from utils.sheets import get_worksheet
-from utils.ui import configurar_pagina, titulo_secao
+from utils.ui import titulo_secao
 
 def normalize_string(s):
     """Remove acentos e converte para minúsculas para comparação."""
@@ -17,6 +17,7 @@ def normalize_string(s):
     return s
 
 def mostrar_pagina():
+    st.title("📚 Gestão de Disciplinas")
     if 'form_disc_key' not in st.session_state:
         st.session_state.form_disc_key = 0
 
