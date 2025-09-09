@@ -42,7 +42,7 @@ def aplicar_estilos():
         
         html, body, [class*="css"] {{
             font-family: var(--font-family);
-            color: var(--color-text);
+            color: var(--color-text) !important;
             font-size: var(--fs-body);
         }}
         
@@ -75,7 +75,7 @@ def aplicar_estilos():
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
             background-color: var(--color-bg-start);
-            color: var(--color-text);
+            color: var(--color-text) !important;
         }}
         [data-testid="stTextInput"] input:disabled, [data-testid="stTextArea"] textarea:disabled {{
             -webkit-text-fill-color: #bdc3c7; /* Cinza mais claro */
@@ -109,7 +109,7 @@ def aplicar_estilos():
 
         /* Abas (Tabs) */
         button[role="tab"] {{
-            color: var(--color-text);
+            color: var(--color-text) !important;
         }}
         button[role="tab"][aria-selected="true"] {{
             font-weight: 600;
@@ -141,7 +141,7 @@ def aplicar_estilos():
         [data-testid="stExpander"] summary {{
             font-size: 1.1rem;
             font-weight: 600;
-            color: var(--color-text);
+            color: var(--color-text) !important;
         }}
 
         /* --- ELEMENTOS VISUAIS --- */
