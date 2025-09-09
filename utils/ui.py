@@ -18,19 +18,23 @@ def aplicar_estilos():
     mascote_b64 = imagem_base64("imagens/mascote.png")
     st.markdown(
         f"""
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+        
         <style>
         :root {{
-            --color-bg: #1e1e1e; /* Fundo escuro */
-            --color-sidebar-bg: #252526; /* Sidebar ligeiramente diferente */
-            --color-text: #e0e0e0; /* Texto claro */
-            --color-card: #2c2c2c; /* Fundo dos cards */
-            --color-brand: #F26A21; /* Laranja Fénix */
-            --color-brand-hover: #D9530A; /* Laranja mais escuro no hover */
-            --color-border: #444444; /* Borda subtil */
-            --font-family: 'Inter', 'Segoe UI', sans-serif;
+            --color-bg: #1a1a1a; /* Fundo carvão profundo */
+            --color-sidebar-bg: #101010; /* Sidebar quase preta */
+            --color-text: #f5f5f5; /* Texto branco suave */
+            --color-card: #2a2a2a; /* Fundo dos cards */
+            --color-brand-start: #D90429; /* Vermelho-fogo */
+            --color-brand-end: #FF930F; /* Laranja-dourado */
+            --color-border: #3a3a3a;
+            --font-family: 'Montserrat', sans-serif;
             --radius: 10px;
             --fs-body: 15px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra para tema escuro */
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
         }}
 
         /* --- CONFIGURAÇÕES GLOBAIS --- */
@@ -48,27 +52,29 @@ def aplicar_estilos():
 
         /* --- ESTILOS DE COMPONENTES --- */
 
-        /* Botão Geral */
+        /* Botão Geral com Gradiente */
         [data-testid="stButton"] > button {{
-            background-color: var(--color-brand);
+            background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end));
             color: white;
             border: none;
             border-radius: var(--radius);
             padding: 0.6rem 1.2rem;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 10px rgba(240, 90, 20, 0.3);
         }}
         [data-testid="stButton"] > button:hover {{
-            background-color: var(--color-brand-hover);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(240, 90, 20, 0.4);
         }}
 
         /* Inputs e TextAreas */
         [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea, [data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
-            background-color: #333333; /* Fundo escuro para inputs */
+            background-color: #333;
             color: var(--color-text);
         }}
         [data-testid="stTextInput"] input:disabled, [data-testid="stTextArea"] textarea:disabled {{
@@ -86,40 +92,30 @@ def aplicar_estilos():
         /* Estilos para o streamlit-option-menu */
         [data-testid="stSidebar"] .nav-link {{
             font-size: 1rem;
-            color: var(--color-text) !important; /* Cor do texto clara */
+            color: var(--color-text) !important;
             border-radius: var(--radius);
             margin: 4px 0;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            transition: all 0.2s ease;
         }}
         [data-testid="stSidebar"] .nav-link:hover {{
-            background-color: rgba(242, 106, 33, 0.15);
-            color: var(--color-brand) !important;
+            background-color: rgba(255, 255, 255, 0.05);
         }}
         [data-testid="stSidebar"] .nav-link-selected {{
-            background-color: var(--color-brand) !important;
+            background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end));
             color: white !important;
             font-weight: 600;
         }}
-        [data-testid="stSidebar"] .nav-link-selected:hover {{
-            background-color: var(--color-brand-hover) !important;
-        }}
 
-        /* Imagem do logo na sidebar */
-        [data-testid="stSidebar"] [data-testid="stImage"] img {{
-            padding: 0.5rem;
-            border-radius: var(--radius);
-        }}
-        
         /* Abas (Tabs) */
         button[role="tab"] {{
-            font-size: 1.05rem;
-            border-radius: var(--radius) var(--radius) 0 0;
             color: var(--color-text);
         }}
         button[role="tab"][aria-selected="true"] {{
-            font-weight: bold;
+            font-weight: 600;
             background-color: var(--color-card);
-            border-bottom: 3px solid var(--color-brand);
+            border-image: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end)) 1;
+            border-bottom-width: 3px;
+            border-bottom-style: solid;
         }}
 
         /* Métricas no Dashboard */
@@ -128,28 +124,22 @@ def aplicar_estilos():
             border-radius: var(--radius);
             padding: 1.5rem;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--color-brand);
+            border-left: 5px solid;
+            border-image: linear-gradient(to bottom, var(--color-brand-start), var(--color-brand-end)) 1;
         }}
 
-        /* Containers com borda (usados para listas) */
-        div[data-testid="stVerticalBlock"] > [data-testid="stVerticalBlockBorderWrapper"] {{
+        /* Containers e Expanders */
+        div[data-testid="stVerticalBlock"] > [data-testid="stVerticalBlockBorderWrapper"], [data-testid="stExpander"] {{
             background-color: var(--color-card);
-            border-radius: var(--radius);
+            border-radius: var(--radius) !important;
             box-shadow: var(--shadow);
             border: 1px solid var(--color-border);
             padding: 1rem;
-        }}
-        
-        /* Expanders */
-        [data-testid="stExpander"] {{
-            background-color: var(--color-card);
-            border-radius: var(--radius) !important;
-            border: 1px solid var(--color-border) !important;
             overflow: hidden;
         }}
         [data-testid="stExpander"] summary {{
-            font-size: 1.05rem;
-            font-weight: 500;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: var(--color-text);
         }}
 
@@ -171,7 +161,7 @@ def aplicar_estilos():
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.1; /* Um pouco mais visível no fundo escuro */
+            opacity: 0.15;
             pointer-events: none;
         }}
         </style>
