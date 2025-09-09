@@ -43,11 +43,11 @@ def get_dashboard_stats():
         
     return num_utentes, num_utentes_ativos, num_utentes_inativos, num_disciplinas, num_turmas
 
-# 🔹 Carregar CSS global logo no arranque
-aplicar_estilos()
-
 # Configuração global da página
 st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
+
+# 🔹 Carregar CSS global logo no arranque
+aplicar_estilos()
 
 
 # 🔹 Logótipo no menu lateral
@@ -97,5 +97,3 @@ elif opcao == "Horários":
     horarios.mostrar_pagina()
 elif opcao == "Professores":
     professores.mostrar_pagina()
-
-aplicar_estilos()
