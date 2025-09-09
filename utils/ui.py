@@ -78,11 +78,26 @@ def aplicar_estilos():
         [data-testid="stSidebar"] {{
             background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
         }}
-        [data-testid="stSidebar"] [role="radio"][aria-checked="true"] > div {{
-            background-color: var(--color-brand) !important;
+        
+        /* Estilos para o streamlit-option-menu */
+        [data-testid="stSidebar"] .nav-link {{
+            font-size: 1.05rem;
+            color: #4f4f4f !important;
             border-radius: var(--radius);
-            font-weight: bold !important;
+            margin: 4px 0;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }}
+        [data-testid="stSidebar"] .nav-link:hover {{
+            background-color: rgba(242, 106, 33, 0.15);
+            color: var(--color-brand) !important;
+        }}
+        [data-testid="stSidebar"] .nav-link-selected {{
+            background-color: var(--color-brand) !important;
             color: white !important;
+            font-weight: 600;
+        }}
+        [data-testid="stSidebar"] .nav-link-selected:hover {{
+            background-color: var(--color-brand-hover) !important;
         }}
 
         /* Estilo para a imagem do logo para garantir contraste no fundo claro */

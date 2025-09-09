@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from streamlit_option_menu import option_menu
 from utils.ui import aplicar_estilos
 from secoes import utentes, turmas, professores, disciplinas, horarios
 from utils.sheets import get_worksheet
@@ -56,13 +57,18 @@ st.sidebar.markdown("### Gestão IPSS")
 st.sidebar.markdown("---")
 
 # Menu principal
-opcao = st.sidebar.radio(
-    "Escolhe a secção:",
-    ["🏠 Início", "📚 Disciplinas", "🧍 Utentes", "🏫 Turmas", "🗓️ Horários", "👨‍🏫 Professores"]
-)
+with st.sidebar:
+    opcao = option_menu(
+        menu_title="Menu",
+        options=["Início", "Disciplinas", "Utentes", "Turmas", "Horários", "Professores"],
+        icons=["house-door", "book", "people", "building-gear", "calendar3", "person-badge"],
+        menu_icon="grid-1x2",
+        default_index=0,
+        orientation="vertical",
+    )
 
 # Conteúdo das páginas
-if opcao == "🏠 Início":
+if opcao == "Início":
     st.title("Bem-vindo à Gestão IPSS")
     st.write("Usa o menu à esquerda para navegar entre as secções.")
 
