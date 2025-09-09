@@ -20,19 +20,21 @@ def aplicar_estilos():
         f"""
         <style>
         :root {{
-            --color-bg: #f7f7f7;
-            --color-text: #2E2E2E;
-            --color-card: #FFFFFF;
+            --color-bg: #f0f2f6; /* Fundo geral mais claro e moderno */
+            --color-sidebar-bg: #ffffff;
+            --color-text: #333333;
+            --color-card: #ffffff;
             --color-brand: #F26A21;
             --color-brand-hover: #E94E1B;
+            --color-border: #e0e0e0;
             --font-family: 'Inter', 'Segoe UI', sans-serif;
-            --radius: 8px;
+            --radius: 10px; /* Bordas ligeiramente mais arredondadas */
             --fs-body: 15px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
         }}
 
         /* --- CONFIGURAÇÕES GLOBAIS --- */
         
-        /* Fundo e tipografia */
         html, body, [class*="css"] {{
             font-family: var(--font-family);
             background-color: var(--color-bg);
@@ -40,7 +42,6 @@ def aplicar_estilos():
             font-size: var(--fs-body);
         }}
         
-        /* Adiciona espaçamento no topo da página */
         .block-container {{
             padding-top: 2rem !important;
         }}
@@ -53,42 +54,45 @@ def aplicar_estilos():
             color: white;
             border: none;
             border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            font-size: 0.95rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }}
         [data-testid="stButton"] > button:hover {{
             background-color: var(--color-brand-hover);
+            transform: translateY(-2px); /* Efeito de elevação subtil */
         }}
 
-        /* Inputs de Texto (geral e desativado) */
-        [data-testid="stTextInput"] input {{
-            border: 1px solid #ccc;
+        /* Inputs e TextAreas */
+        [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea {{
+            border: 1px solid var(--color-border);
             border-radius: var(--radius);
+            background-color: #fafafa;
         }}
-        /* Garante que o texto em campos desativados seja legível */
-        [data-testid="stTextInput"] input:disabled {{
-            -webkit-text-fill-color: var(--color-text); /* Para Chrome/Safari */
-            color: var(--color-text); /* Para outros browsers */
-            background-color: #fafafa; /* Fundo cinza claro para indicar que está desativado */
+        [data-testid="stTextInput"] input:disabled, [data-testid="stTextArea"] textarea:disabled {{
+            -webkit-text-fill-color: var(--color-text);
+            color: var(--color-text);
+            background-color: #f0f0f0;
+            opacity: 0.8;
         }}
 
         /* Menu Lateral */
         [data-testid="stSidebar"] {{
-            background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
+            background-color: var(--color-sidebar-bg);
+            border-right: 1px solid var(--color-border);
         }}
         
         /* Estilos para o streamlit-option-menu */
         [data-testid="stSidebar"] .nav-link {{
-            font-size: 1.05rem;
+            font-size: 1rem; /* Tamanho da letra reduzido */
             color: #4f4f4f !important;
             border-radius: var(--radius);
             margin: 4px 0;
             transition: background-color 0.2s ease, color 0.2s ease;
         }}
         [data-testid="stSidebar"] .nav-link:hover {{
-            background-color: rgba(242, 106, 33, 0.15);
+            background-color: rgba(242, 106, 33, 0.1);
             color: var(--color-brand) !important;
         }}
         [data-testid="stSidebar"] .nav-link-selected {{
@@ -100,41 +104,58 @@ def aplicar_estilos():
             background-color: var(--color-brand-hover) !important;
         }}
 
-        /* Estilo para a imagem do logo para garantir contraste no fundo claro */
+        /* Imagem do logo na sidebar */
         [data-testid="stSidebar"] [data-testid="stImage"] img {{
-            background-color: #3a3a3a;
             padding: 0.5rem;
             border-radius: var(--radius);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }}
         
         /* Abas (Tabs) */
         button[role="tab"] {{
             font-size: 1.05rem;
+            border-radius: var(--radius) var(--radius) 0 0;
         }}
         button[role="tab"][aria-selected="true"] {{
             font-weight: bold;
+            background-color: var(--color-card);
             border-bottom: 3px solid var(--color-brand);
         }}
 
-        /* --- ESTILOS ESPECÍFICOS DE PÁGINAS --- */
-
-        /* Botões na página de Utentes (Editar/Apagar) para terem o mesmo tamanho */
-        div[data-testid="stExpander"] div[data-testid="column"] [data-testid="stButton"] > button {{
-            width: 100%; /* Força o botão a ocupar toda a largura da sua coluna */
-            margin-bottom: 0.5rem; /* Adiciona espaço vertical entre os botões */
+        /* Métricas no Dashboard */
+        [data-testid="stMetric"] {{
+            background-color: var(--color-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--color-brand);
         }}
-        /* Remove a margem do último botão para um alinhamento perfeito */
-        div[data-testid="stExpander"] div[data-testid="column"] > div:last-of-type [data-testid="stButton"] > button {{
-            margin-bottom: 0; 
+
+        /* Containers com borda (usados para listas) */
+        div[data-testid="stVerticalBlock"] > [data-testid="stVerticalBlockBorderWrapper"] {{
+            background-color: var(--color-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+        }}
+        
+        /* Expanders */
+        [data-testid="stExpander"] {{
+            background-color: #fafafa;
+            border-radius: var(--radius) !important;
+            border: 1px solid var(--color-border) !important;
+            overflow: hidden; /* Garante que os cantos arredondados sejam aplicados */
+        }}
+        [data-testid="stExpander"] summary {{
+            font-size: 1.05rem;
+            font-weight: 500;
         }}
 
         /* --- ELEMENTOS VISUAIS --- */
 
         /* Fundo da aplicação principal */
         [data-testid="stAppViewContainer"] {{
-            background: linear-gradient(135deg, #e8e1da 0%, #d8ccc2 100%);
-            background-attachment: fixed;
+            background-color: var(--color-bg);
         }}
 
         /* Marca de água da mascote */
@@ -143,12 +164,12 @@ def aplicar_estilos():
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 250px;
-            height: 250px;
+            width: 200px; /* Ligeiramente menor */
+            height: 200px;
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.15; /* Ligeiramente mais subtil para não distrair */
+            opacity: 0.08; /* Mais subtil */
             pointer-events: none;
         }}
         </style>
