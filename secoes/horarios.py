@@ -41,7 +41,6 @@ def carregar_dados_turmas():
 
 def mostrar_pagina():
     """Renderiza a página de visualização de horários."""
-    configurar_pagina("Horários", "🗓️")
     titulo_secao("Horário Semanal das Turmas", "🗓️")
 
     df_turmas = carregar_dados_turmas()

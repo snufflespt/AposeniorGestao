@@ -27,8 +27,6 @@ NIVEL_OPCOES = ["Inicial", "Intermédio-Inicial", "Intermédio", "Intermédio-Av
 ESTADO_OPCOES = ["Ativa", "Inativa"]
 
 def mostrar_pagina():
-    configurar_pagina("Gestão de Turmas", "🏫")
-
     if 'form_turma_key' not in st.session_state:
         st.session_state.form_turma_key = 0
 

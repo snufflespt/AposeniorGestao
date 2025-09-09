@@ -23,8 +23,6 @@ def is_valid_email(email: str) -> bool:
     return re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email)
 
 def mostrar_pagina():
-    configurar_pagina("Gestão de Professores", "👨‍🏫")
-
     sheet_prof = get_worksheet("Professores")
 
     tab_adicionar, tab_gerir = st.tabs(["➕ Adicionar professor", "📋 Gerir professores"])

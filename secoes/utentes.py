@@ -51,8 +51,6 @@ def parse_date(date_str: str):
         return None
 
 def mostrar_pagina():
-    configurar_pagina("Gestão de Utentes", "🧍")
-
     if 'form_add_key' not in st.session_state:
         st.session_state.form_add_key = 0
 

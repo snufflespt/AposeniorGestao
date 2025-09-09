@@ -17,8 +17,6 @@ def normalize_string(s):
     return s
 
 def mostrar_pagina():
-    configurar_pagina("Gestão de Disciplinas", "📚")
-
     if 'form_disc_key' not in st.session_state:
         st.session_state.form_disc_key = 0
 
