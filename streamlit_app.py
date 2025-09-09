@@ -87,15 +87,15 @@ if opcao == "Início":
         st.metric(label="📚 Disciplinas", value=num_disciplinas)
     with col5:
         st.metric(label="🏫 Turmas", value=num_turmas)
-elif opcao == "📚 Disciplinas":
+elif opcao == "Disciplinas":
     disciplinas.mostrar_pagina()
-elif opcao == "🧍 Utentes":
+elif opcao == "Utentes":
     utentes.mostrar_pagina()
-elif opcao == "🏫 Turmas":
+elif opcao == "Turmas":
     turmas.mostrar_pagina()
-elif opcao == "🗓️ Horários":
+elif opcao == "Horários":
     horarios.mostrar_pagina()
-elif opcao == "👨‍🏫 Professores":
+elif opcao == "Professores":
     professores.mostrar_pagina()
 
 aplicar_estilos()
