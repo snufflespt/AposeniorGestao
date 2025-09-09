@@ -30,18 +30,41 @@ def mostrar_pagina():
 
     with tab_adicionar:
         titulo_secao("Adicionar novo professor", "➕")
-        with st.form("form_professor", clear_on_submit=True):
-            nome_completo = st.text_input("👤 **Nome Completo***")
+
+        def clear_form_data():
+            """Limpa os dados do formulário na session_state."""
+            st.session_state.prof_nome = ""
+            st.session_state.prof_telefone = ""
+            st.session_state.prof_email = ""
+            st.session_state.prof_nib = ""
+            st.session_state.prof_valor_hora = 0.0
+            st.session_state.prof_observacoes = ""
+
+        with st.form("form_professor"):
+            nome_completo = st.text_input("👤 **Nome Completo***", key="prof_nome")
             col1, col2 = st.columns(2)
             with col1:
-                telefone = st.text_input("📞 **Telefone***")
-                nib = st.text_input("💳 NIB")
+                telefone = st.text_input("📞 **Telefone***", key="prof_telefone")
+                nib = st.text_input("💳 NIB", key="prof_nib")
             with col2:
-                email = st.text_input("📧 Email")
-                valor_hora = st.number_input("💶 Valor Hora (€)", min_value=0.0, step=0.5, format="%.2f")
+                email = st.text_input("📧 Email", key="prof_email")
+                valor_hora = st.number_input(
+                    "💶 Valor Hora (€)",
+                    min_value=0.0,
+                    step=0.5,
+                    format="%.2f",
+                    key="prof_valor_hora"
+                )
             
-            observacoes = st.text_area("📝 Observações")
-            submit = st.form_submit_button("Guardar")
+            observacoes = st.text_area("📝 Observações", key="prof_observacoes")
+
+            b_col1, b_col2, _ = st.columns([1, 1, 5])
+            with b_col1:
+                submit = st.form_submit_button("Guardar")
+            with b_col2:
+                if st.form_submit_button("Limpar"):
+                    clear_form_data()
+                    st.rerun()
 
         if submit:
             dados_professores = sheet_prof.get_all_records()
@@ -75,6 +98,7 @@ def mostrar_pagina():
                 nova_linha = [novo_id, nome_completo, telefone, email, nib, float(valor_hora), observacoes]
                 sheet_prof.append_row(nova_linha)
                 st.success(f"Professor '{nome_completo}' adicionado com sucesso!")
+                clear_form_data()
                 time.sleep(1)
                 st.rerun()
 
