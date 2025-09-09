@@ -20,17 +20,17 @@ def aplicar_estilos():
         f"""
         <style>
         :root {{
-            --color-bg: #f0f2f6; /* Fundo geral mais claro e moderno */
-            --color-sidebar-bg: #ffffff;
-            --color-text: #333333;
-            --color-card: #ffffff;
-            --color-brand: #F26A21;
-            --color-brand-hover: #E94E1B;
-            --color-border: #e0e0e0;
+            --color-bg: #1e1e1e; /* Fundo escuro */
+            --color-sidebar-bg: #252526; /* Sidebar ligeiramente diferente */
+            --color-text: #e0e0e0; /* Texto claro */
+            --color-card: #2c2c2c; /* Fundo dos cards */
+            --color-brand: #F26A21; /* Laranja Fénix */
+            --color-brand-hover: #D9530A; /* Laranja mais escuro no hover */
+            --color-border: #444444; /* Borda subtil */
             --font-family: 'Inter', 'Segoe UI', sans-serif;
-            --radius: 10px; /* Bordas ligeiramente mais arredondadas */
+            --radius: 10px;
             --fs-body: 15px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra para tema escuro */
         }}
 
         /* --- CONFIGURAÇÕES GLOBAIS --- */
@@ -61,20 +61,20 @@ def aplicar_estilos():
         }}
         [data-testid="stButton"] > button:hover {{
             background-color: var(--color-brand-hover);
-            transform: translateY(-2px); /* Efeito de elevação subtil */
+            transform: translateY(-2px);
         }}
 
         /* Inputs e TextAreas */
-        [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea {{
+        [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea, [data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
-            background-color: #fafafa;
+            background-color: #333333; /* Fundo escuro para inputs */
+            color: var(--color-text);
         }}
         [data-testid="stTextInput"] input:disabled, [data-testid="stTextArea"] textarea:disabled {{
-            -webkit-text-fill-color: var(--color-text);
-            color: var(--color-text);
-            background-color: #f0f0f0;
-            opacity: 0.8;
+            -webkit-text-fill-color: #a0a0a0;
+            color: #a0a0a0;
+            background-color: #2a2a2a;
         }}
 
         /* Menu Lateral */
@@ -85,14 +85,14 @@ def aplicar_estilos():
         
         /* Estilos para o streamlit-option-menu */
         [data-testid="stSidebar"] .nav-link {{
-            font-size: 1rem; /* Tamanho da letra reduzido */
-            color: #4f4f4f !important;
+            font-size: 1rem;
+            color: var(--color-text) !important; /* Cor do texto clara */
             border-radius: var(--radius);
             margin: 4px 0;
             transition: background-color 0.2s ease, color 0.2s ease;
         }}
         [data-testid="stSidebar"] .nav-link:hover {{
-            background-color: rgba(242, 106, 33, 0.1);
+            background-color: rgba(242, 106, 33, 0.15);
             color: var(--color-brand) !important;
         }}
         [data-testid="stSidebar"] .nav-link-selected {{
@@ -114,6 +114,7 @@ def aplicar_estilos():
         button[role="tab"] {{
             font-size: 1.05rem;
             border-radius: var(--radius) var(--radius) 0 0;
+            color: var(--color-text);
         }}
         button[role="tab"][aria-selected="true"] {{
             font-weight: bold;
@@ -141,14 +142,15 @@ def aplicar_estilos():
         
         /* Expanders */
         [data-testid="stExpander"] {{
-            background-color: #fafafa;
+            background-color: var(--color-card);
             border-radius: var(--radius) !important;
             border: 1px solid var(--color-border) !important;
-            overflow: hidden; /* Garante que os cantos arredondados sejam aplicados */
+            overflow: hidden;
         }}
         [data-testid="stExpander"] summary {{
             font-size: 1.05rem;
             font-weight: 500;
+            color: var(--color-text);
         }}
 
         /* --- ELEMENTOS VISUAIS --- */
@@ -164,12 +166,12 @@ def aplicar_estilos():
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 200px; /* Ligeiramente menor */
+            width: 200px;
             height: 200px;
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.08; /* Mais subtil */
+            opacity: 0.1; /* Um pouco mais visível no fundo escuro */
             pointer-events: none;
         }}
         </style>
