@@ -23,6 +23,8 @@ def check_time_overlap(start1, end1, start2, end2):
 
 SALA_OPCOES = ["Sala 1", "Sala 2", "Sala 3", "Sala de Artes", "Sala Exterior", "Outro"]
 DIAS_SEMANA = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"]
+NIVEL_OPCOES = ["Inicial", "Intermédio-Inicial", "Intermédio", "Intermédio-Avançado", "Avançado"]
+ESTADO_OPCOES = ["Ativa", "Inativa", "Planeada", "Concluída"]
 
 def mostrar_pagina():
     configurar_pagina("Gestão de Turmas", "🏫")
@@ -60,6 +62,10 @@ def mostrar_pagina():
                 hora_inicio = st.time_input("⏰ **Hora de Início**")
                 hora_fim = st.time_input("🏁 **Hora de Fim**")
                 vagas = st.number_input("👥 **Número de vagas**", min_value=1, step=1)
+
+            nivel = st.selectbox("📶 **Nível**", options=NIVEL_OPCOES)
+            estado = st.selectbox("📊 **Estado**", options=ESTADO_OPCOES)
+            observacoes = st.text_area("📝 **Observações**")
             
             b_col1, b_col2, _ = st.columns([1, 1, 5])
             with b_col1:
@@ -124,7 +130,8 @@ def mostrar_pagina():
                     nova_linha = [
                         novo_id, nome_turma, disciplina, professor, sala, 
                         outro_local if sala == "Outro" else "", dia_semana, 
-                        hora_inicio.strftime('%H:%M'), hora_fim.strftime('%H:%M'), vagas
+                        hora_inicio.strftime('%H:%M'), hora_fim.strftime('%H:%M'), vagas,
+                        nivel, estado, observacoes
                     ]
                     sheet_turmas.append_row(nova_linha)
                     st.success(f"Turma '{nome_turma}' adicionada com sucesso!")
@@ -176,6 +183,14 @@ def mostrar_pagina():
                         nova_hora_fim = st.time_input("🏁 **Hora de Fim**", value=hora_f)
                         novas_vagas = st.number_input("👥 **Número de vagas**", min_value=1, step=1, value=int(turma_atual.get('Numero de vagas', 1)))
 
+                    nivel_idx = NIVEL_OPCOES.index(turma_atual.get('Nivel')) if turma_atual.get('Nivel') in NIVEL_OPCOES else 0
+                    novo_nivel = st.selectbox("📶 **Nível**", options=NIVEL_OPCOES, index=nivel_idx)
+
+                    estado_idx = ESTADO_OPCOES.index(turma_atual.get('Estado')) if turma_atual.get('Estado') in ESTADO_OPCOES else 0
+                    novo_estado = st.selectbox("📊 **Estado**", options=ESTADO_OPCOES, index=estado_idx)
+
+                    novas_observacoes = st.text_area("📝 **Observações**", value=turma_atual.get('Observacoes', ''))
+
                     if st.form_submit_button("Guardar Alterações"):
                         erros = []
                         if not novo_nome.strip(): erros.append("Nome da turma é obrigatório.")
@@ -215,9 +230,10 @@ def mostrar_pagina():
                                     novo_nome, nova_disciplina, novo_professor, nova_sala,
                                     novo_outro_local if nova_sala == "Outro" else "",
                                     novo_dia_semana, nova_hora_inicio.strftime('%H:%M'),
-                                    nova_hora_fim.strftime('%H:%M'), novas_vagas
+                                    nova_hora_fim.strftime('%H:%M'), novas_vagas,
+                                    novo_nivel, novo_estado, novas_observacoes
                                 ]
-                                sheet_turmas.update(f'B{idx + 2}:J{idx + 2}', [valores])
+                                sheet_turmas.update(f'B{idx + 2}:M{idx + 2}', [valores])
                                 st.success(f"Turma '{novo_nome}' atualizada com sucesso!")
                                 del st.session_state['edit_turma_index']
                                 time.sleep(0.5)
@@ -269,11 +285,15 @@ def mostrar_pagina():
                             if sala_display == "Outro":
                                 sala_display = f"Outro: {row.get('Outro_Local', '')}"
                             st.text_input("🚪 Sala", value=sala_display, key=f"disp_sala_{i}", disabled=True)
+                            st.text_input("📶 Nível", value=row.get('Nivel', ''), key=f"disp_nivel_{i}", disabled=True)
                         with col2:
                             st.text_input("🗓️ Dia", value=row.get('Dia da Semana', ''), key=f"disp_dia_{i}", disabled=True)
                             st.text_input("⏰ Horário", value=f"{row.get('Hora de Inicio', '')} - {row.get('Hora de Fim', '')}", key=f"disp_hora_{i}", disabled=True)
                             st.text_input("👥 Vagas", value=str(row.get('Numero de vagas', '')), key=f"disp_vagas_{i}", disabled=True)
+                            st.text_input("📊 Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
                         
+                        st.text_area("📝 Observações", value=row.get('Observacoes', ''), key=f"disp_obs_{i}", disabled=True)
+
                         st.write("---")
                         b_col1, b_col2, _ = st.columns([1, 1, 5])
                         with b_col1:
