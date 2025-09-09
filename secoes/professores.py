@@ -31,16 +31,16 @@ def mostrar_pagina():
     with tab_adicionar:
         titulo_secao("Adicionar novo professor", "➕")
         with st.form("form_professor", clear_on_submit=True):
-            nome_completo = st.text_input("**Nome Completo***")
+            nome_completo = st.text_input("👤 **Nome Completo***")
             col1, col2 = st.columns(2)
             with col1:
-                telefone = st.text_input("**Telefone***")
-                nib = st.text_input("NIB")
+                telefone = st.text_input("📞 **Telefone***")
+                nib = st.text_input("💳 NIB")
             with col2:
-                email = st.text_input("Email")
-                valor_hora = st.number_input("Valor Hora (€)", min_value=0.0, step=0.5, format="%.2f")
+                email = st.text_input("📧 Email")
+                valor_hora = st.number_input("💶 Valor Hora (€)", min_value=0.0, step=0.5, format="%.2f")
             
-            observacoes = st.text_area("Observações")
+            observacoes = st.text_area("📝 Observações")
             submit = st.form_submit_button("Guardar")
 
         if submit:
@@ -97,16 +97,16 @@ def mostrar_pagina():
                 
                 st.subheader(f"Editar professor: {prof_atual['Nome Completo']}")
                 with st.form("form_editar_prof"):
-                    novo_nome = st.text_input("**Nome Completo***", value=prof_atual.get('Nome Completo', ''))
+                    novo_nome = st.text_input("👤 **Nome Completo***", value=prof_atual.get('Nome Completo', ''))
                     col1, col2 = st.columns(2)
                     with col1:
-                        novo_telefone = st.text_input("**Telefone***", value=str(prof_atual.get('Telefone', '')))
-                        novo_nib = st.text_input("NIB", value=str(prof_atual.get('NIB', '')))
+                        novo_telefone = st.text_input("📞 **Telefone***", value=str(prof_atual.get('Telefone', '')))
+                        novo_nib = st.text_input("💳 NIB", value=str(prof_atual.get('NIB', '')))
                     with col2:
-                        novo_email = st.text_input("Email", value=prof_atual.get('Email', ''))
-                        novo_valor_hora = st.number_input("Valor Hora (€)", min_value=0.0, step=0.5, format="%.2f", value=float(prof_atual.get('Valor Hora', 0.0)))
+                        novo_email = st.text_input("📧 Email", value=prof_atual.get('Email', ''))
+                        novo_valor_hora = st.number_input("💶 Valor Hora (€)", min_value=0.0, step=0.5, format="%.2f", value=float(prof_atual.get('Valor Hora', 0.0)))
                     
-                    novas_observacoes = st.text_area("Observações", value=prof_atual.get('Observacoes', ''))
+                    novas_observacoes = st.text_area("📝 Observações", value=prof_atual.get('Observacoes', ''))
 
                     if st.form_submit_button("Guardar alterações"):
                         erros = []
@@ -177,18 +177,18 @@ def mostrar_pagina():
                 for i, row in df_filtrado.iterrows():
                     with st.container(border=True):
                         c1, c2 = st.columns([1, 4])
-                        c1.text_input("ID", value=row.get('ID_professor', ''), key=f"disp_id_{i}", disabled=True)
-                        c2.text_input("Nome Completo", value=row.get('Nome Completo', ''), key=f"disp_nome_{i}", disabled=True)
+                        c1.text_input("🆔 ID", value=row.get('ID_professor', ''), key=f"disp_id_{i}", disabled=True)
+                        c2.text_input("👤 Nome Completo", value=row.get('Nome Completo', ''), key=f"disp_nome_{i}", disabled=True)
                         
                         col1, col2 = st.columns(2)
                         with col1:
-                            st.text_input("Telefone", value=str(row.get('Telefone', '')), key=f"disp_tel_{i}", disabled=True)
-                            st.text_input("NIB", value=str(row.get('NIB', '')), key=f"disp_nib_{i}", disabled=True)
+                            st.text_input("📞 Telefone", value=str(row.get('Telefone', '')), key=f"disp_tel_{i}", disabled=True)
+                            st.text_input("💳 NIB", value=str(row.get('NIB', '')), key=f"disp_nib_{i}", disabled=True)
                         with col2:
-                            st.text_input("Email", value=row.get('Email', ''), key=f"disp_email_{i}", disabled=True)
-                            st.text_input("Valor Hora (€)", value=str(row.get('Valor Hora', '0.0')), key=f"disp_valor_{i}", disabled=True)
+                            st.text_input("📧 Email", value=row.get('Email', ''), key=f"disp_email_{i}", disabled=True)
+                            st.text_input("💶 Valor Hora (€)", value=str(row.get('Valor Hora', '0.0')), key=f"disp_valor_{i}", disabled=True)
                         
-                        st.text_area("Observações", value=row.get('Observacoes', ''), key=f"disp_obs_{i}", disabled=True, height=100)
+                        st.text_area("📝 Observações", value=row.get('Observacoes', ''), key=f"disp_obs_{i}", disabled=True, height=100)
 
                         st.write("") # Espaçador
 
