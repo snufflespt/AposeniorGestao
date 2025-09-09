@@ -24,24 +24,22 @@ def aplicar_estilos():
         
         <style>
         :root {{
-            --color-bg: #1a1a1a; /* Fundo carvão profundo */
-            --color-sidebar-bg: #101010; /* Sidebar quase preta */
-            --color-text: #f5f5f5; /* Texto branco suave */
-            --color-card: #2a2a2a; /* Fundo dos cards */
+            --color-text: #4E443A; /* Castanho escuro para texto, bom contraste em fundos claros */
+            --color-card: rgba(255, 255, 255, 0.7); /* Efeito de vidro fosco */
+            --color-sidebar-bg: rgba(255, 255, 255, 0.6);
             --color-brand-start: #D90429; /* Vermelho-fogo */
             --color-brand-end: #FF930F; /* Laranja-dourado */
-            --color-border: #3a3a3a;
+            --color-border: rgba(255, 255, 255, 0.9); /* Borda muito subtil */
             --font-family: 'Montserrat', sans-serif;
-            --radius: 10px;
+            --radius: 12px; /* Um pouco mais arredondado */
             --fs-body: 15px;
-            --shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }}
 
         /* --- CONFIGURAÇÕES GLOBAIS --- */
         
         html, body, [class*="css"] {{
             font-family: var(--font-family);
-            background-color: var(--color-bg);
             color: var(--color-text);
             font-size: var(--fs-body);
         }}
@@ -74,19 +72,20 @@ def aplicar_estilos():
         [data-testid="stTextInput"] input, [data-testid="stTextArea"] textarea, [data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
-            background-color: #333;
+            background-color: rgba(255, 255, 255, 0.8);
             color: var(--color-text);
         }}
         [data-testid="stTextInput"] input:disabled, [data-testid="stTextArea"] textarea:disabled {{
-            -webkit-text-fill-color: #a0a0a0;
-            color: #a0a0a0;
-            background-color: #2a2a2a;
+            -webkit-text-fill-color: #888;
+            color: #888;
+            background-color: rgba(255, 255, 255, 0.5);
         }}
 
         /* Menu Lateral */
         [data-testid="stSidebar"] {{
             background-color: var(--color-sidebar-bg);
             border-right: 1px solid var(--color-border);
+            backdrop-filter: blur(10px); /* Efeito de vidro */
         }}
         
         /* Estilos para o streamlit-option-menu */
@@ -98,7 +97,7 @@ def aplicar_estilos():
             transition: all 0.2s ease;
         }}
         [data-testid="stSidebar"] .nav-link:hover {{
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.3);
         }}
         [data-testid="stSidebar"] .nav-link-selected {{
             background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end));
@@ -121,6 +120,7 @@ def aplicar_estilos():
         /* Métricas no Dashboard */
         [data-testid="stMetric"] {{
             background-color: var(--color-card);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius);
             padding: 1.5rem;
             box-shadow: var(--shadow);
@@ -131,6 +131,7 @@ def aplicar_estilos():
         /* Containers e Expanders */
         div[data-testid="stVerticalBlock"] > [data-testid="stVerticalBlockBorderWrapper"], [data-testid="stExpander"] {{
             background-color: var(--color-card);
+            backdrop-filter: blur(10px);
             border-radius: var(--radius) !important;
             box-shadow: var(--shadow);
             border: 1px solid var(--color-border);
@@ -145,9 +146,10 @@ def aplicar_estilos():
 
         /* --- ELEMENTOS VISUAIS --- */
 
-        /* Fundo da aplicação principal */
+        /* Fundo da aplicação principal com gradiente */
         [data-testid="stAppViewContainer"] {{
-            background-color: var(--color-bg);
+            background: linear-gradient(135deg, #FFDDC1 0%, #FFECB3 100%);
+            background-attachment: fixed;
         }}
 
         /* Marca de água da mascote */
@@ -161,7 +163,7 @@ def aplicar_estilos():
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.15;
+            opacity: 0.25; /* Mais visível no fundo claro */
             pointer-events: none;
         }}
         </style>
