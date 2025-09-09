@@ -27,7 +27,7 @@ def aplicar_estilos():
             --color-bg-start: #2c3e50; /* Azul-ardósia escuro */
             --color-bg-end: #1a2533; /* Azul quase preto */
             --color-sidebar-bg: #1f2c39;
-            --color-text: #ecf0f1; /* Cinza claro */
+            --color-text: #FFFFFF; /* Branco puro para máxima legibilidade */
             --color-card: #34495e; /* Azul-cinzento */
             --color-brand-start: #D90429; /* Vermelho-fogo */
             --color-brand-end: #FF930F; /* Laranja-dourado */
@@ -78,8 +78,8 @@ def aplicar_estilos():
             color: var(--color-text);
         }}
         [data-testid="stTextInput"] input:disabled, [data-testid="stTextArea"] textarea:disabled {{
-            -webkit-text-fill-color: #95a5a6;
-            color: #95a5a6;
+            -webkit-text-fill-color: #bdc3c7; /* Cinza mais claro */
+            color: #bdc3c7; /* Cinza mais claro */
             background-color: #2c3e50;
             opacity: 0.7;
         }}
@@ -163,7 +163,7 @@ def aplicar_estilos():
             background-image: url("data:image/png;base64,{mascote_b64}");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.1; /* Subtil no fundo escuro */
+            opacity: 0.2; /* Mais visível */
             pointer-events: none;
         }}
         </style>
