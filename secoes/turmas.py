@@ -23,8 +23,8 @@ def check_time_overlap(start1, end1, start2, end2):
 
 SALA_OPCOES = ["Sala 1", "Sala 2", "Sala 3", "Sala de Artes", "Sala Exterior", "Outro"]
 DIAS_SEMANA = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"]
-NIVEL_OPCOES = ["Inicial", "Intermédio-Inicial", "Intermédio", "Intermédio-Avançado", "Avançado"]
-ESTADO_OPCOES = ["Ativa", "Inativa", "Planeada", "Concluída"]
+NIVEL_OPCOES = ["Inicial", "Intermédio-Inicial", "Intermédio", "Intermédio-Avançado", "Avançado", "Outro"]
+ESTADO_OPCOES = ["Ativa", "Inativa"]
 
 def mostrar_pagina():
     configurar_pagina("Gestão de Turmas", "🏫")
