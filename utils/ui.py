@@ -419,7 +419,44 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
+        /* ESTILIZING FORÇADO DOS EXPANDERS COM AZUL-CLARO - Também no ui.py */
+        .professor-cards-container [data-testid="stExpander"] summary,
+        .pc-container [data-testid="stExpander"] summary,
+        .professor-cards-container details summary,
+        .pc-container details summary {{
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background-image: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background-color: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            padding: 16px 20px !important;
+            border-radius: 12px 12px 0 0 !important;
+            cursor: pointer !important;
+            border: none !important;
+            box-shadow: 0 4px 16px rgba(52, 73, 94, 0.2) !important;
+            display: block !important;
+            width: 100% !important;
+            text-align: left !important;
+            transition: all 0.3s ease !important;
+        }}
 
+        /* Hover para expanders */
+        .professor-cards-container [data-testid="stExpander"] summary:hover,
+        .pc-container [data-testid="stExpander"] summary:hover {{
+            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
+        }}
+
+        /* Conteúdo do expander expandido */
+        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
+            background: rgba(52, 73, 94, 0.06) !important;
+            padding: 20px !important;
+            border-radius: 0 0 12px 12px !important;
+            border: 1px solid #546e7a !important;
+            border-top: none !important;
+            color: white !important;
+        }}
 
         /* Divisórias mais visíveis */
         hr {{
