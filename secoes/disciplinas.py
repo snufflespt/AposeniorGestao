@@ -5,6 +5,7 @@ import unicodedata
 from datetime import date
 from utils.sheets import get_worksheet
 from utils.ui import titulo_secao
+from utils.components import render_confirmation_dialog
 
 def normalize_string(s):
     """Remove acentos e converte para minúsculas para comparação."""
@@ -152,20 +153,19 @@ def mostrar_pagina():
                     st.rerun()
 
                 st.subheader("Apagar disciplina")
-                st.warning(f"Tens a certeza que queres apagar a disciplina: {entity_name}?")
                 
-                col1, col2, _ = st.columns([1, 1, 5])
-                with col1:
-                    if st.button("Sim, apagar", type="primary"):
-                        sheet.delete_rows(idx + 2)
-                        st.success(f"Disciplina '{entity_name}' apagada com sucesso!")
-                        del st.session_state['delete_disc_index']
-                        time.sleep(0.5)
-                        st.rerun()
-                with col2:
-                    if st.button("Cancelar"):
-                        del st.session_state['delete_disc_index']
-                        st.rerun()
+                def confirm_delete():
+                    sheet.delete_rows(idx + 2)
+                    st.success(f"Disciplina '{entity_name}' apagada com sucesso!")
+                    del st.session_state['delete_disc_index']
+                    time.sleep(0.5)
+                    st.rerun()
+
+                def cancel_delete():
+                    del st.session_state['delete_disc_index']
+                    st.rerun()
+
+                render_confirmation_dialog('disciplina', entity_name, confirm_delete, cancel_delete)
 
             # --- VISTA DE LISTA ---
             else:
