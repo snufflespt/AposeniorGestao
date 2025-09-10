@@ -420,7 +420,7 @@ def aplicar_estilos():
         }}
 
         /* Cabeçalho do expander */
-        summary.st-emotion-cache-p5msec {{
+        div[data-testid="stExpanderHeader"] {{
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             color: white !important;
             font-weight: 600 !important;
@@ -430,12 +430,12 @@ def aplicar_estilos():
         }}
 
         /* Hover no cabeçalho */
-        summary.st-emotion-cache-p5msec:hover {{
+        div[data-testid="stExpanderHeader"]:hover {{
             background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
         }}
 
         /* Quando o expander está aberto */
-        div[data-testid="stExpander"][aria-expanded="true"] summary.st-emotion-cache-p5msec {{
+        div[data-testid="stExpander"][aria-expanded="true"] > div[data-testid="stExpanderHeader"] {{
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
             border-radius: 12px 12px 0 0 !important;
         }}
