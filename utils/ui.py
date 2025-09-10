@@ -438,7 +438,7 @@ def aplicar_estilos():
 
         /* Conteúdo expandido com fundo sutil em azul */
         [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
-            background: rgba(52, 73, 94, 0.08) !important;
+            background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
             padding: 20px !important;
             border-radius: 0 0 var(--radius) var(--radius) !important;
             border-top: 1px solid #546e7a !important;
