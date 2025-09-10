@@ -187,6 +187,8 @@ def mostrar_pagina():
 
                 for i, row in df_filtrado.iterrows():
                     expander_title = f"📚 **{row.get('Nome da Disciplina', 'Sem Nome')}**"
+                    # Container com destaque azul para disciplinar
+                    st.markdown('<div class="card-container">', unsafe_allow_html=True)
                     with st.expander(expander_title):
                         col1, col2 = st.columns(2)
                         with col1:
@@ -194,10 +196,10 @@ def mostrar_pagina():
                             st.text_input("🚦 Estado", value=row.get('Estado', ''), key=f"disp_estado_{i}", disabled=True)
                         with col2:
                             st.text_input("🗓️ Data de Criação", value=row.get('Data de criacao', ''), key=f"disp_data_{i}", disabled=True)
-                        
+
                         st.text_area("📋 Descrição/Observações", value=row.get('Descrição/Observacoes', ''), key=f"disp_obs_{i}", disabled=True)
 
-                        st.write("---") 
+                        st.write("---")
 
                         botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
                         with botoes_col1:
@@ -208,3 +210,5 @@ def mostrar_pagina():
                             if st.button("🗑️ Apagar", key=f"delete_disc_{i}", use_container_width=True):
                                 st.session_state['delete_disc_index'] = i
                                 st.rerun()
+                    # Fechar o container destaque
+                    st.markdown('</div>', unsafe_allow_html=True)

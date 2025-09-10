@@ -405,6 +405,8 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
     nome_completo = professor_data.get('Nome Completo', 'Sem nome')
     id_professor = professor_data.get('ID_professor', f'idx_{index}')
 
+    # Container com fundo azul-claro para destacar
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
     with st.container():
         # Usar expander para melhor organização
         with st.expander(f"👨‍🏫 **{nome_completo}** ({id_professor})", expanded=False):
@@ -444,3 +446,6 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
                     st.rerun()
 
             st.divider()
+
+    # Fechar o container destaque do card
+    st.markdown('</div>', unsafe_allow_html=True)
