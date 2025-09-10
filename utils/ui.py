@@ -419,43 +419,51 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
-        /* ESTILIZING FORÇADO DOS EXPANDERS COM AZUL-CLARO - Também no ui.py */
+        /* ESTILIZING FORÇADO DOS EXPANDERS COM AMARELO TESTE */
         .professor-cards-container [data-testid="stExpander"] summary,
         .pc-container [data-testid="stExpander"] summary,
         .professor-cards-container details summary,
-        .pc-container details summary {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            background-image: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            background-color: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            color: white !important;
+        .pc-container details summary,
+        div[data-testid="stExpander"] summary {{
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
+            background-image: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
+            background-color: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
+            color: #2c3e50 !important;
             font-weight: 600 !important;
             padding: 16px 20px !important;
             border-radius: 12px 12px 0 0 !important;
             cursor: pointer !important;
             border: none !important;
-            box-shadow: 0 4px 16px rgba(52, 73, 94, 0.2) !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
             display: block !important;
             width: 100% !important;
             text-align: left !important;
             transition: all 0.3s ease !important;
+            font-size: 18px !important;
+            border: 2px solid #e67e22 !important;
         }}
 
         /* Hover para expanders */
         .professor-cards-container [data-testid="stExpander"] summary:hover,
-        .pc-container [data-testid="stExpander"] summary:hover {{
-            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
-            transform: translateY(-1px) !important;
-            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
+        .pc-container [data-testid="stExpander"] summary:hover,
+        div[data-testid="stExpander"] summary:hover {{
+            background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+            border-color: #c0392b !important;
         }}
 
         /* Conteúdo do expander expandido */
-        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
-            background: rgba(52, 73, 94, 0.06) !important;
+        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"],
+        div[data-testid="stExpander"]:not([aria-expanded="false"]) .stVerticalBlock {{
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%) !important;
+            background-color: #ffeaa7 !important;
             padding: 20px !important;
             border-radius: 0 0 12px 12px !important;
-            border: 1px solid #546e7a !important;
+            border: 2px solid #e67e22 !important;
             border-top: none !important;
-            color: white !important;
+            color: #2c3e50 !important;
+            border-top: 3px solid #f39c12 !important;
         }}
 
         /* Divisórias mais visíveis */
