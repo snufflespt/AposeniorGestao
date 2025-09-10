@@ -1,2 +1,6 @@
-model: qwen/qwen3-coder:free
+# Modelo a usar
+model: deepseek/deepseek-v3-1:free
+
+# Chave de API do OpenRouter
 api-key: openrouter=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
+
