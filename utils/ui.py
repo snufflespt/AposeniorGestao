@@ -407,7 +407,19 @@ def aplicar_estilos():
             border-image: linear-gradient(to bottom, var(--color-brand-start), var(--color-brand-end)) 1;
         }}
 
-        /* EXPANDERS AZUL-CLARO MAIS SIMPLES E FUNCIONAL */
+        /* CARTÕES DE PROFESSORES - AZUL CLARO FUNCIONAL */
+        /* Aplicar fundo azul-claro diretamente no HTML dos summaries */
+        details summary {{
+            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            padding: 16px 20px !important;
+            border-radius: var(--radius) var(--radius) 0 0 !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+        }}
+
+        /* Garantir que streamlit summary também pegue */
         [data-testid="stExpander"] summary {{
             background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
             color: white !important;
@@ -415,20 +427,21 @@ def aplicar_estilos():
             padding: 16px 20px !important;
             border-radius: var(--radius) var(--radius) 0 0 !important;
             cursor: pointer !important;
+            transition: all 0.2s ease !important;
         }}
 
-        /* Hover azul mais claro */
-        [data-testid="stExpander"] summary:hover {{
+        /* Efeito hover azul ainda mais claro */
+        details summary:hover, [data-testid="stExpander"] summary:hover {{
             background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
             transform: translateY(-1px) !important;
         }}
 
-        /* Conteúdo expandido com fundo sutil */
+        /* Conteúdo expandido com fundo sutil em azul */
         [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
             background: rgba(52, 73, 94, 0.08) !important;
             padding: 20px !important;
-            border-top: 1px solid #546e7a !important;
             border-radius: 0 0 var(--radius) var(--radius) !important;
+            border-top: 1px solid #546e7a !important;
         }}
 
         /* Divisórias mais visíveis */

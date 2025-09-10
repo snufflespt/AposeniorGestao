@@ -407,39 +407,90 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
     nome_completo = professor_data.get('Nome Completo', 'Sem nome')
     id_professor = professor_data.get('ID_professor', f'idx_{index}')
 
-    # Usar expander para melhor organização com destaque
-    with st.expander(f"👨‍🏫 **{nome_completo}** ({id_professor})", expanded=False):
+    # CSS inline personalizado para o cartão específico
+    css_cartao = f"""
+    /* ESTILO PARA CARTÃO DE PROFESSOR {index} */
+    #cartao-professor-{index} {{
+        background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+        border: 2px solid #546e7a !important;
+        border-radius: 12px 12px 0 0 !important;
+        color: white !important;
+        font-weight: bold !important;
+        padding: 18px 22px !important;
+        margin: 10px 0 0 0 !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        text-align: left !important;
+        transition: all 0.3s ease !important;
+        border: none !important;
+        background-color: transparent !important;
+    }}
 
-        # Layout com colunas para informação
-        col_info, col_actions = st.columns([4, 1])
+    #cartao-professor-{index}:hover {{
+        background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
+        transform: translateY(-2px) !important;
+    }}
 
-        with col_info:
-            # Informações principais
-            st.write(f"**🆔 ID:** {id_professor}")
-            st.write(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
-            if professor_data.get('Email'):
-                st.write(f"**📧 Email:** {professor_data.get('Email')}")
+    #cartao-content-{index} {{
+        background: rgba(52, 73, 94, 0.08) !important;
+        padding: 20px !important;
+        border: 2px solid #546e7a !important;
+        border-top: none !important;
+        border-radius: 0 0 12px 12px !important;
+        margin: 0 0 10px 0 !important;
+        display: none;
+        color: white !important;
+    }}
+    """
 
-            col1, col2 = st.columns(2)
-            with col1:
-                if professor_data.get('NIB'):
-                    st.write(f"**💳 NIB:** {professor_data.get('NIB')}")
-            with col2:
-                if professor_data.get('Valor Hora'):
-                    valor_hora = float(professor_data.get('Valor Hora', 0))
-                    if valor_hora > 0:
-                        st.write(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
+    st.markdown(f"<style>{css_cartao}</style>", unsafe_allow_html=True)
 
-            if professor_data.get('Observacoes'):
-                st.write("**📝 Observações:**")
-                st.write(professor_data.get('Observacoes'))
+    # HTML personalizado com ID único para cada cartão
+    st.markdown(f"""
+    <button id="cartao-professor-{index}"
+            onclick="document.getElementById('cartao-content-{index}').style.display =
+                    document.getElementById('cartao-content-{index}').style.display === 'none' ? 'block' : 'none'">
+        👨‍🏫 <strong>{nome_completo}</strong> ({id_professor})
+    </button>
+    <div id="cartao-content-{index}">
+    """, unsafe_allow_html=True)
 
-        with col_actions:
-            # Botões de ação vertical
-            if st.button("✏️ Editar", key=f"edit_prof_{index}", use_container_width=True):
-                st.session_state['edit_prof_index'] = index
-                st.rerun()
+    # Layout com colunas para informação (conteúdo)
+    col_info, col_actions = st.columns([4, 1])
 
-            if st.button("🗑️ Apagar", key=f"delete_prof_{index}", use_container_width=True):
-                st.session_state['delete_prof_index'] = index
-                st.rerun()
+    with col_info:
+        # Informações principais
+        st.write(f"**🆔 ID:** {id_professor}")
+        st.write(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
+        if professor_data.get('Email'):
+            st.write(f"**📧 Email:** {professor_data.get('Email')}")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if professor_data.get('NIB'):
+                st.write(f"**💳 NIB:** {professor_data.get('NIB')}")
+        with col2:
+            if professor_data.get('Valor Hora'):
+                valor_hora = float(professor_data.get('Valor Hora', 0))
+                if valor_hora > 0:
+                    st.write(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
+
+        if professor_data.get('Observacoes'):
+            st.write("**📝 Observações:**")
+            st.write(professor_data.get('Observacoes'))
+
+    with col_actions:
+        # Botões de ação vertical
+        if st.button("✏️ Editar", key=f"edit_prof_{index}", use_container_width=True):
+            st.session_state['edit_prof_index'] = index
+            st.rerun()
+
+        if st.button("🗑️ Apagar", key=f"delete_prof_{index}", use_container_width=True):
+            st.session_state['delete_prof_index'] = index
+            st.rerun()
+
+    # Fechar div personalizada
+    st.markdown("""
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
