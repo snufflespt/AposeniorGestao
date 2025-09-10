@@ -1,6 +1,3 @@
-# Modelo a usar
 model: deepseek/deepseek-chat-v3.1:free
-
-# Chave de API do OpenRouter
-# Nota: DeepSeek exige a variável de ambiente DEEPSEEK_API_KEY, mas vamos colocar aqui para referência
-api-key: openrouter=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
+output_format: whole
+no-show-model-warnings: true
