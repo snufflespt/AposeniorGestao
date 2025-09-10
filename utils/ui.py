@@ -447,12 +447,12 @@ def aplicar_estilos():
         }}
 
         /* DETECTAR EXPANDER EXPANDIDO E APLICAR FUNDO AZUL CLARO */
-        div[aria-expanded="true"] {{
+        details[open] {{
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
         }}
 
         /* FORÇAR FUNDO EM QUALQUER DIV FILHO DE EXPANDER EXPANDIDO */
-        div[aria-expanded="true"] > div {{
+        details[open] > div {{
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             background-color: #3498db !important;
             color: white !important;
