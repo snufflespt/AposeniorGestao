@@ -436,7 +436,7 @@ def aplicar_estilos():
             transform: translateY(-1px) !important;
         }}
 
-        /* Conteúdo expandido com fundo sutil em azul */
+        /* Conteúdo expandido com fundo azul */
         [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
             background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
             padding: 20px !important;
