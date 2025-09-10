@@ -18,18 +18,22 @@ def aplicar_estilos():
 
         <style>
         :root {{
-            --color-bg-start: #2c3e50; /* Azul-ardósia escuro */
-            --color-bg-end: #1a2533; /* Azul quase preto */
+            --color-bg-start: #34495e; /* Azul médio para melhor legibilidade */
+            --color-bg-end: #2c3e50; /* Tom mais claro do gradiente */
             --color-sidebar-bg: #1f2c39;
-            --color-text: #FFFFFF; /* Branco puro para máxima legibilidade */
-            --color-card: #34495e; /* Azul-cinzento */
-            --color-brand-start: #D90429; /* Vermelho-fogo */
-            --color-brand-end: #FF930F; /* Laranja-dourado */
-            --color-border: #4a627a; /* Borda azul-cinza subtil */
+            --color-text: #ecf0f1; /* Branco-nuvem para contraste perfeito */
+            --color-card: #5d6d7e; /* Cinza-azulado claro para cards */
+            --color-card-contrast: #566473; /* Fundo branco-sujo para contraste alto */
+            --color-brand-start: #e74c3c; /* Vermelho mais vibrante */
+            --color-brand-end: #f39c12; /* Laranja mais brilhante */
+            --color-border: #85929e; /* Borda mais clara para contraste */
+            --color-success: #27ae60; /* Verde de sucesso mais claro */
+            --color-warning: #f1c40f; /* Amarelo de aviso mais vibrante */
+            --color-error: #e74c3c; /* Vermelho de erro mais claro */
             --font-family: 'Montserrat', sans-serif;
             --radius: 12px;
             --fs-body: 15px;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }}
 
         /* --- CONFIGURAÇÕES GLOBAIS --- */
@@ -47,8 +51,30 @@ def aplicar_estilos():
         /* --- ESTILOS DE COMPONENTES --- */
 
         /* Alertas (st.warning, st.info, etc.) */
+        [data-testid="stAlert"] {{
+            background-color: var(--color-card-contrast) !important;
+            color: #2c3e50 !important; /* Cor de texto escura para contraste */
+            border-radius: var(--radius);
+            border-left: 4px solid;
+        }}
         [data-testid="stAlert"] p {{
-            color: #1a2533 !important; /* Cor de texto escura para contraste em fundos claros */
+            color: #2c3e50 !important; /* Texto escuro para melhor leitura */
+            font-weight: 500;
+        }}
+
+        /* Messages de sucesso, erro e informações */
+        div[role="alert"], .css-1gr6cnr {{
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border: 1px solid var(--color-border) !important;
+            border-radius: var(--radius);
+            color: #2c3e50 !important;
+        }}
+
+        /* Textos importantes com fundo xácido */
+        .element-container div:has([data-testid*="TextArea"]), .element-container div:has([data-testid*="TextInput"]) {{
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-radius: var(--radius);
+            padding: 0.5rem;
         }}
 
         /* Botão Geral com Gradiente */

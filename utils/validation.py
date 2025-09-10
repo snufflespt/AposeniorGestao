@@ -413,32 +413,34 @@ def format_display_name(name: str, max_length: int = 50) -> str:
 
 
 def format_status_badge(status: str, active_value: str = "Ativo") -> str:
-    """Formata um status como badge HTML.
+    """Formata um status como badge HTML com alta legibilidade.
 
     Args:
         status (str): Status a formatar
         active_value (str): Valor que indica status ativo
 
     Returns:
-        str: HTML do badge
+        str: HTML do badge com alto contraste
     """
     if not status:
-        return '<span style="background-color: #f8d7da; color: #721c24; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● DESCONHECIDO</span>'
+        return '<span style="background-color: #ffffff; color: #2c3e50; padding: 3px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; border: 1px solid #34495e;">● DESCONHECIDO</span>'
 
     is_active = normalize_string(status).startswith(normalize_string(active_value))
 
     if is_active:
-        color = "#28a745"  # Verde
-        bg_color = "#d4edda"
-        text_color = "#155724"
+        # Verde escuro com fundo mais claro para alto contraste
+        bg_color = "#e8f5e8"
+        text_color = "#0d4d0d"
+        border_color = "#27ae60"
     else:
-        color = "#dc3545"  # Vermelho
-        bg_color = "#f8d7da"
-        text_color = "#721c24"
+        # Vermelho escuro com fundo mais claro para alto contraste
+        bg_color = "#feeaea"
+        text_color = "#8b1515"
+        border_color = "#e74c3c"
 
     status_text = status.upper()
 
-    return f'<span style="background-color: {bg_color}; color: {text_color}; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● {status_text}</span>'
+    return f'<span style="background-color: {bg_color}; color: {text_color}; border: 2px solid {border_color}; padding: 3px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; display: inline-block;">● {status_text}</span>'
 
 
 def format_currency(value: Any, currency: str = "€") -> str:
