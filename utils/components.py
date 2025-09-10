@@ -55,7 +55,7 @@ def render_action_buttons(index: int,
     sub_col1, sub_col2 = st.columns(2)
 
     with sub_col1:
-        if st.button("✏️ Editar", key=f"edit_{entity_type}_{index}", use_container_width=True):
+        if st.button("✏️ Editar", key=f"edit_{entity_type}_{index}"):
             if on_edit:
                 on_edit(index)
             else:
@@ -63,7 +63,7 @@ def render_action_buttons(index: int,
                 st.rerun()
 
     with sub_col2:
-        if st.button("🗑️ Apagar", key=f"delete_{entity_type}_{index}", use_container_width=True):
+        if st.button("🗑️ Apagar", key=f"delete_{entity_type}_{index}"):
             if on_delete:
                 on_delete(index)
             else:

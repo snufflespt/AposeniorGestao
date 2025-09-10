@@ -51,7 +51,7 @@ aplicar_estilos()
 
 
 # 🔹 Logótipo no menu lateral
-st.sidebar.image("imagens/logo.png", use_container_width=True)
+st.sidebar.image("imagens/logo.png")
 st.sidebar.markdown("### Gestão IPSS")
 
 st.sidebar.markdown("---")
