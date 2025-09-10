@@ -420,29 +420,28 @@ def aplicar_estilos():
         }}
 
         /* Cabeçalho do expander */
-        details > summary {{
+        summary.st-emotion-cache-p5msec {{
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             color: white !important;
             font-weight: 600 !important;
             padding: 12px 16px !important;
             border-radius: 12px !important;
             cursor: pointer !important;
-            list-style: none !important; /* remove o triângulo default */
         }}
 
-        /* Hover do cabeçalho */
-        details > summary:hover {{
+        /* Hover no cabeçalho */
+        summary.st-emotion-cache-p5msec:hover {{
             background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
         }}
 
         /* Quando o expander está aberto */
-        details[open] > summary {{
+        div[data-testid="stExpander"][aria-expanded="true"] summary.st-emotion-cache-p5msec {{
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
             border-radius: 12px 12px 0 0 !important;
         }}
 
-        /* Conteúdo interno do expander */
-        details[open] > div {{
+        /* Conteúdo do expander */
+        div[data-testid="stExpanderContent"] {{
             background: rgba(255, 255, 255, 0.05) !important;
             color: white !important;
             padding: 16px !important;
