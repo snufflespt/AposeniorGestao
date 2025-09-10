@@ -407,39 +407,35 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
     nome_completo = professor_data.get('Nome Completo', 'Sem nome')
     id_professor = professor_data.get('ID_professor', f'idx_{index}')
 
-    # Usar expander simples com classe personalizada
-    st.markdown(f'<div class="cartao-professor-{index}">', unsafe_allow_html=True)
+    # Expander nativo do Streamlit para melhor compatibilidade
+    with st.expander(f"👨‍🏫 **{nome_completo}** ({id_professor})", expanded=False):
 
-    # Expander com informações em negrito para melhor contraste
-    with st.expander(f"**👨‍🏫 {nome_completo} ({id_professor})**", expanded=False):
-
-        # Layout com colunas para informação
+        # Layout organizado
         col_info, col_actions = st.columns([4, 1])
 
         with col_info:
-            # Informações principais em negrito para melhor leitura
-            st.markdown(f"**🆔 ID:** {id_professor}")
-            st.markdown(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
+            # Informações com formatação clara
+            st.write(f"**🆔 ID:** {id_professor}")
+            st.write(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
             if professor_data.get('Email'):
-                st.markdown(f"**📧 Email:** {professor_data.get('Email')}")
+                st.write(f"**📧 Email:** {professor_data.get('Email')}")
 
             col1, col2 = st.columns(2)
             with col1:
                 if professor_data.get('NIB'):
-                    st.markdown(f"**💳 NIB:** {professor_data.get('NIB')}")
+                    st.write(f"**💳 NIB:** {professor_data.get('NIB')}")
             with col2:
                 if professor_data.get('Valor Hora'):
                     valor_hora = float(professor_data.get('Valor Hora', 0))
                     if valor_hora > 0:
-                        st.markdown(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
+                        st.write(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
 
             if professor_data.get('Observacoes'):
-                st.markdown("**📝 Observações:**")
-                st.markdown("*" + professor_data.get('Observacoes') + "*")
+                st.write("**📝 Observações:**")
+                st.write(professor_data.get('Observacoes'))
 
-    with col_actions:
-        # Botões de ação - só aparecem quando expander aberto
-        with st.container():
+        with col_actions:
+            # Botões funcionais
             if st.button("✏️ Editar", key=f"edit_prof_{index}", use_container_width=True):
                 st.session_state['edit_prof_index'] = index
                 st.rerun()
@@ -447,6 +443,3 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
             if st.button("🗑️ Apagar", key=f"delete_prof_{index}", use_container_width=True):
                 st.session_state['delete_prof_index'] = index
                 st.rerun()
-
-    # Fechar container do cartão
-    st.markdown('</div>', unsafe_allow_html=True)
