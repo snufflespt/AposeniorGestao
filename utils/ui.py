@@ -93,6 +93,38 @@ def aplicar_estilos():
             font-weight: 600 !important;
         }}
 
+        /* TEXTO GERAL BRANCO - Texto comum que ainda não está coberto */
+        p, span, div, label {{
+            color: white !important;
+        }}
+
+        /* Texto específica em tabelas e listas */
+        [data-testid="stDataFrame"], [data-testid="stTable"] {{
+            color: #2c3e50 !important;
+        }}
+
+        /* Override específico para tabelas - fundo branco, texto preto */
+        [data-testid="stDataFrame"] tbody tr, [data-testid="stTable"] tbody tr {{
+            background-color: white !important;
+            color: #2c3e50 !important;
+        }}
+
+        /* Texto de paginação e status - como "Mostrando X de X" */
+        .stSelectbox, .stMultiSelect, [data-testid*="stText"] {{
+            color: white !important;
+        }}
+
+        /* Texto em containers especiais */
+        .element-container p, .element-container span, .element-container div {{
+            color: white !important;
+        }}
+
+        /* Exceção para conteúdo dentro de formulários que já foi tratado */
+        .element-container div:has([data-testid*="stTextInput"]),
+        .element-container div:has([data-testid*="stNumberInput"]) {{
+            color: var(--color-text) !important;
+        }}
+
         /* --- ESTILOS DE COMPONENTES --- */
 
         /* Alertas (st.warning, st.info, etc.) */
