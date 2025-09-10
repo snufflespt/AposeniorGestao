@@ -409,9 +409,9 @@ def aplicar_estilos():
 
         /* Containers e Expanders */
         div[data-testid="stVerticalBlock"] > [data-testid="stVerticalBlockBorderWrapper"], [data-testid="stExpander"] {{
-            background-color: var(--color-card) !important;
+            background-color: rgba(255, 255, 255, 0.02) !important;
             border-radius: var(--radius) !important;
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid var(--color-border);
             padding: 1rem;
             overflow: hidden;
@@ -420,20 +420,17 @@ def aplicar_estilos():
             font-size: 1.1rem !important;
             font-weight: 600 !important;
             color: var(--color-text) !important;
-        }}
-
-        /* Destaque azul-claro especial para Expanders de Professores e Disciplinas */
-        [data-testid="stExpander"] {{
             background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
             border: 1px solid #546e7a !important;
             box-shadow: 0 6px 24px rgba(52, 73, 94, 0.3) !important;
-            margin: 8px 0 !important;
             border-radius: var(--radius) !important;
+            padding: 12px 16px !important;
+            margin: 8px 0 !important;
         }}
 
         /* Fundo do conteúdo expandido */
         [data-testid="stExpander"] [data-testid*="stVerticalBlock"] {{
-            background: rgba(52, 73, 94, 0.1) !important;
+            background: rgba(52, 73, 94, 0.05) !important;
             border-radius: var(--radius) !important;
             margin: 10px 0 !important;
             padding: 15px !important;
