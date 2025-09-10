@@ -26,15 +26,7 @@ def render_user_card(user_data: Dict[str, Any],
                      index: int,
                      on_edit: Optional[Callable] = None,
                      on_delete: Optional[Callable] = None) -> None:
-    """
-    Renderiza um card de utente com informações e botões de ação.
-
-    Args:
-        user_data (Dict[str, Any]): Dicionário com dados do utente.
-        index (int): Índice do utente na lista.
-        on_edit (Optional[Callable]): Callback para ação de editar. Padrão None.
-        on_delete (Optional[Callable]): Callback para ação de apagar. Padrão None.
-    """
+    """Renderiza um card de utente com informações e botões de ação."""
     nome = user_data.get('Nome', '')
     contacto = user_data.get('Contacto', '')
     morada = user_data.get('Morada', '')
@@ -59,15 +51,7 @@ def render_action_buttons(index: int,
                          on_edit: Optional[Callable] = None,
                          on_delete: Optional[Callable] = None,
                          entity_type: str = "item") -> None:
-    """
-    Renderiza botões de ação padronizados (Editar/Apagar).
-
-    Args:
-        index (int): Índice do item para chaves únicas.
-        on_edit (Optional[Callable]): Função callback para editar. Padrão None.
-        on_delete (Optional[Callable]): Função callback para apagar. Padrão None.
-        entity_type (str): Tipo de entidade para chaves de session_state. Padrão "item".
-    """
+    """Renderiza botões de ação padronizados (Editar/Apagar)."""
     sub_col1, sub_col2 = st.columns(2)
 
     with sub_col1:
@@ -91,15 +75,7 @@ def render_edit_form(entity_type: str,
                      fields: Dict[str, Dict[str, Any]],
                      current_data: Dict[str, Any],
                      on_save: Callable) -> None:
-    """
-    Renderiza um formulário de edição padronizado.
-
-    Args:
-        entity_type (str): Tipo da entidade (ex: "utente", "professor").
-        fields (Dict[str, Dict[str, Any]]): Configuração dos campos do formulário.
-        current_data (Dict[str, Any]): Dados atuais para preencher o formulário.
-        on_save (Callable): Função callback para salvar alterações.
-    """
+    """Renderiza um formulário de edição padronizado."""
     entity_name = current_data.get('Nome', current_data.get('Nome Completo', 'Item'))
     st.subheader(f"Editar {entity_type}")
 
@@ -133,16 +109,7 @@ def render_edit_form(entity_type: str,
 
 def _render_form_field(field_config: Dict[str, Any],
                       current_data: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Renderiza um campo individual do formulário.
-
-    Args:
-        field_config (Dict[str, Any]): Configuração do campo.
-        current_data (Dict[str, Any]): Dados atuais.
-
-    Returns:
-        Dict[str, Any]: Dados do campo preenchido.
-    """
+    """Renderiza um campo individual do formulário."""
     field_name = field_config['name']
     field_type = field_config.get('type', 'text_input')
     label = field_config['label']
@@ -181,15 +148,7 @@ def render_confirmation_dialog(entity_type: str,
                               entity_name: str,
                               on_confirm: Callable,
                               on_cancel: Callable) -> None:
-    """
-    Renderiza um diálogo de confirmação padronizado.
-
-    Args:
-        entity_type (str): Tipo da entidade.
-        entity_name (str): Nome da entidade.
-        on_confirm (Callable): Callback para confirmação.
-        on_cancel (Callable): Callback para cancelamento.
-    """
+    """Renderiza um diálogo de confirmação padronizado."""
     st.warning(f"Tens a certeza que queres apagar o {entity_type}: {entity_name}?")
 
     col1, col2, _ = st.columns([1, 1, 5])
@@ -206,7 +165,7 @@ def render_confirmation_dialog(entity_type: str,
             on_cancel()
 
 
-# ===== CONFIGURAÇÕES PRÉ-DEFINIDAS PARA ENTIDADES =====
+# ===== PRE-DEFINED CONFIGURATIONS FOR ENTITIES =====
 
 USER_FIELDS_CONFIG = {
     'layout': 'columns',
@@ -242,8 +201,8 @@ PROFESSOR_FIELDS_CONFIG = {
 TURMA_FIELDS_CONFIG = {
     'fields': [
         {'name': 'nome_turma', 'type': 'text_input', 'label': 'Nome da turma', 'required': True},
-        {'name': 'disciplina', 'type': 'selectbox', 'label': 'Disciplina', 'options': [], 'required': True},  # Será preenchido dinamicamente
-        {'name': 'professor', 'type': 'selectbox', 'label': 'Professor', 'options': [], 'required': True},   # Será preenchido dinamicamente
+        {'name': 'disciplina', 'type': 'selectbox', 'label': 'Disciplina', 'options': [], 'required': True},
+        {'name': 'professor', 'type': 'selectbox', 'label': 'Professor', 'options': [], 'required': True},
         {'name': 'sala', 'type': 'selectbox', 'label': 'Sala', 'options': SALA_OPCOES},
         {'name': 'dia_semana', 'type': 'selectbox', 'label': 'Dia da semana', 'options': DIAS_SEMANA, 'required': True},
         {'name': 'hora_inicio', 'type': 'time_input', 'label': 'Hora de início', 'required': True},
@@ -257,7 +216,7 @@ TURMA_FIELDS_CONFIG = {
 }
 
 
-# ===== FUNÇÕES DE CONVENIÊNCIA =====
+# ===== CONVENIENCE FUNCTIONS =====
 
 def render_user_edit_form(current_data: Dict[str, Any],
                          on_save: Callable) -> None:
@@ -277,21 +236,13 @@ def render_turma_edit_form(current_data: Dict[str, Any],
     render_edit_form("turma", TURMA_FIELDS_CONFIG, current_data, on_save)
 
 
-# ===== COMPONENTES DE EXIBIÇÃO =====
+# ===== DISPLAY COMPONENTS =====
 
 def render_data_display_card(title: str,
                            data: Dict[str, Any],
                            field_mapping: Dict[str, str],
                            key_prefix: str = "display") -> None:
-    """
-    Renderiza um card padronizado para exibição de dados.
-
-    Args:
-        title (str): Título do card.
-        data (Dict[str, Any]): Dados a exibir.
-        field_mapping (Dict[str, str]): Mapeamento campo -> label.
-        key_prefix (str): Prefixo para chaves únicas.
-    """
+    """Renderiza um card padronizado para exibição de dados."""
     with st.expander(title):
         for field_key, field_label in field_mapping.items():
             if field_key in data and data[field_key]:
@@ -313,49 +264,23 @@ def render_data_display_card(title: str,
 
 def render_search_and_filter(search_placeholder: str = "Pesquisar...",
                            filter_dict: Optional[Dict[str, Any]] = None) -> str:
-    """
-    Renderiza componente de pesquisa e filtros padronizados.
-
-    Args:
-        search_placeholder (str): Texto placeholder para busca.
-        filter_dict (Optional[Dict[str, Any]]): Dicionário de filtros.
-
-    Returns:
-        str: Texto de pesquisa inserido.
-    """
+    """Renderiza componente de pesquisa e filtros padronizados."""
     col_search, *filter_cols = st.columns([2] + [1] * len(filter_dict) if filter_dict else [1])
 
     with col_search:
         search_text = st.text_input(search_placeholder, key="search_input")
 
-    if filter_dict:
-        for i, (filter_label, filter_info) in enumerate(filter_dict.items()):
-            if i < len(filter_cols):
-                with filter_cols[i]:
-                    # Implementar filtros específicos conforme necessário
-
     return search_text
 
 
 def render_loading_indicator(message: str = "A processar dados..."):
-    """
-    Renderiza um indicador de carregamento padronizado.
-
-    Args:
-        message (str): Mensagem a exibir.
-    """
+    """Renderiza um indicador de carregamento padronizado."""
     with st.spinner(message):
         pass
 
 
 def render_success_message(message: str, duration: int = 3):
-    """
-    Renderiza uma mensagem de sucesso temporária.
-
-    Args:
-        message (str): Mensagem de sucesso.
-        duration (int): Duração em segundos.
-    """
+    """Renderiza uma mensagem de sucesso temporária."""
     success_placeholder = st.empty()
     success_placeholder.success(message)
 
@@ -366,13 +291,7 @@ def render_success_message(message: str, duration: int = 3):
 
 
 def render_error_message(message: str, errors: Optional[List[str]] = None):
-    """
-    Renderiza uma mensagem de erro com detalhes.
-
-    Args:
-        message (str): Mensagem de erro principal.
-        errors (Optional[List[str]]): Lista de erros específicos.
-    """
+    """Renderiza uma mensagem de erro com detalhes."""
     st.error(message)
     if errors:
         st.error("**Detalhes dos erros:**")
@@ -381,13 +300,7 @@ def render_error_message(message: str, errors: Optional[List[str]] = None):
 
 
 def render_info_message(message: str, icon: str = "ℹ️"):
-    """
-    Renderiza uma mensagem informativa com ícone.
-
-    Args:
-        message (str): Mensagem a exibir.
-        icon (str): Ícone a usar.
-    """
+    """Renderiza uma mensagem informativa com ícone."""
     st.info(f"{icon} {message}")
 
 
@@ -395,15 +308,7 @@ def render_metric_card(title: str,
                       value: Any,
                       category: str = "info",
                       help_text: Optional[str] = None):
-    """
-    Renderiza um card métrico padronizado.
-
-    Args:
-        title (str): Título do métrico.
-        value (Any): Valor a exibir.
-        category (str): Categoria (success, warning, error, info).
-        help_text (Optional[str]): Texto de ajuda.
-    """
+    """Renderiza um card métrico padronizado."""
     if help_text:
         st.metric(label=title, value=str(value), help=help_text)
     else:
