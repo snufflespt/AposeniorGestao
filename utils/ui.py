@@ -407,15 +407,12 @@ def aplicar_estilos():
             border-image: linear-gradient(to bottom, var(--color-brand-start), var(--color-brand-end)) 1;
         }}
 
-        /* Containers e Expanders */
-        div[data-testid="stVerticalBlock"] > [data-testid="stVerticalBlockBorderWrapper"], [data-testid="stExpander"] {{
-            background-color: rgba(255, 255, 255, 0.02) !important;
-            border-radius: var(--radius) !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--color-border);
-            padding: 1rem;
-            overflow: hidden;
+        /* CARTÕES DE PROFESSORES/DISCIPLINAS - AZUL CLARO TOTALMENTE SI */
+        [data-testid="stExpander"] {{
+            border: none !important;
+            margin-bottom: 8px !important;
         }}
+
         [data-testid="stExpander"] summary {{
             font-size: 1.1rem !important;
             font-weight: 600 !important;
@@ -424,17 +421,34 @@ def aplicar_estilos():
             border: 1px solid #546e7a !important;
             box-shadow: 0 6px 24px rgba(52, 73, 94, 0.3) !important;
             border-radius: var(--radius) !important;
-            padding: 12px 16px !important;
-            margin: 8px 0 !important;
+            padding: 16px 20px !important;
+            margin: 8px 0 4px 0 !important;
+            width: 100% !important;
+            display: block !important;
+            cursor: pointer !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }}
 
-        /* Fundo do conteúdo expandido */
-        [data-testid="stExpander"] [data-testid*="stVerticalBlock"] {{
-            background: rgba(52, 73, 94, 0.05) !important;
-            border-radius: var(--radius) !important;
-            margin: 10px 0 !important;
-            padding: 15px !important;
-            border-left: 2px solid rgba(52, 73, 94, 0.3) !important;
+        /* Hover no cabeçalho do expander */
+        [data-testid="stExpander"] summary:hover {{
+            transform: translateY(-1px) !important;
+            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
+        }}
+
+        /* Fundo do conteúdo expandido - QUANDO ABERTO */
+        [data-testid="stExpander"]:not([aria-expanded="false"]) [data-testid*="stVerticalBlock"] {{
+            background: rgba(52, 73, 94, 0.08) !important;
+            border-radius: 0 0 var(--radius) var(--radius) !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            border: 1px solid #546e7a !important;
+            border-top: none !important;
+            border-radius: 0 0 var(--radius) var(--radius) !important;
+        }}
+
+        /* Garantir que NENHUM expander tenha fundo estranho */
+        [data-testid="stExpander"][aria-expanded="false"] [data-testid*="stVerticalBlock"] {{
+            display: none !important;
         }}
 
         /* Divisórias mais visíveis */
