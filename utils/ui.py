@@ -410,7 +410,7 @@ def aplicar_estilos():
         /* CARTÕES DE PROFESSORES - AZUL CLARO FUNCIONAL */
         /* Aplicar fundo azul-claro diretamente no HTML dos summaries */
         details summary {{
-            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             color: white !important;
             font-weight: 600 !important;
             padding: 16px 20px !important;
@@ -421,7 +421,7 @@ def aplicar_estilos():
 
         /* Garantir que streamlit summary também pegue */
         [data-testid="stExpander"] summary {{
-            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             color: white !important;
             font-weight: 600 !important;
             padding: 16px 20px !important;
@@ -432,7 +432,7 @@ def aplicar_estilos():
 
         /* Efeito hover azul ainda mais claro */
         details summary:hover, [data-testid="stExpander"] summary:hover {{
-            background: linear-gradient(135deg, #bbd9ff 0%, #85c1e9 100%) !important;
+            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
             transform: translateY(-1px) !important;
         }}
 
