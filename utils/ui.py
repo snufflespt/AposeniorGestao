@@ -49,7 +49,7 @@ def aplicar_estilos():
         }}
 
         /* DESTAQUE AZUL CLARO PARA FORMULÁRIOS */
-        [data-testid="stForm"] {{
+        [data-testid="stForm"], .form-container {{
             background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
             border-radius: var(--radius) !important;
             padding: 20px !important;

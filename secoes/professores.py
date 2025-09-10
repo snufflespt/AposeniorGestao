@@ -94,6 +94,8 @@ def render_add_form(professor_df: pd.DataFrame) -> None:
     if 'form_prof_key' not in st.session_state:
         st.session_state.form_prof_key = 0
 
+    # Container com classe para destacar
+    st.markdown('<div class="form-container">', unsafe_allow_html=True)
     with st.form(f"form_professor_{st.session_state.form_prof_key}"):
         form_data = {}
 
@@ -126,19 +128,22 @@ def render_add_form(professor_df: pd.DataFrame) -> None:
         with col_limpar:
             limpar = st.form_submit_button("🗑️ Limpar Formulário")
 
-    # using the same working approach from disciplinas.py
-    if limpar:
-        st.session_state.form_prof_key += 1
-        st.rerun()
-
-    if submetido:
-        if salvar_professor(form_data, professor_df):
-            # Limpar formulário após sucesso
-            for key in st.session_state:
-                if key.startswith('form_professor') or key in form_data:
-                    if key in st.session_state:
-                        del st.session_state[key]
+        # using the same working approach from disciplinas.py
+        if limpar:
+            st.session_state.form_prof_key += 1
             st.rerun()
+
+        if submetido:
+            if salvar_professor(form_data, professor_df):
+                # Limpar formulário após sucesso
+                for key in st.session_state:
+                    if key.startswith('form_professor') or key in form_data:
+                        if key in st.session_state:
+                            del st.session_state[key]
+                st.rerun()
+
+    # Fechar o container destaque
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def salvar_professor(form_data: Dict[str, Any], professor_df: pd.DataFrame) -> bool:

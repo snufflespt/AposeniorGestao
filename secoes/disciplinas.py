@@ -31,6 +31,8 @@ def mostrar_pagina():
     # -----------------------
     with tab_adicionar:
         titulo_secao("Adicionar nova disciplina", "➕")
+        # Container com classe para destacar
+        st.markdown('<div class="form-container">', unsafe_allow_html=True)
         with st.form(f"form_disciplina_{st.session_state.form_disc_key}"):
             nome_disc = st.text_input("**✍️ Nome da disciplina**", help="Campo obrigatório")
             estado = st.selectbox("🚦 Estado", ["Ativa", "Inativa"])
@@ -69,15 +71,18 @@ def mostrar_pagina():
                             except (ValueError, TypeError, IndexError):
                                 continue
                         proximo_id_num = max_id + 1
-                    
+
                     novo_id = f"D{proximo_id_num:04d}"
                     data_criacao = date.today().strftime('%d/%m/%Y')
-                    
+
                     # Ordem: id_disciplina, Nome da Disciplina, Estado, Data de criacao, Descrição/Observacoes
                     sheet.append_row([novo_id, nome_disc, estado, data_criacao, observacoes])
                     st.success(f"Disciplina '{nome_disc}' adicionada com sucesso!")
                     st.session_state.form_disc_key += 1
                     st.rerun()
+
+        # Fechar o container destaque
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # -----------------------
     # Tab: Gerir
