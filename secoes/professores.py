@@ -116,7 +116,18 @@ def render_add_form(professor_df: pd.DataFrame) -> None:
             else:
                 form_data[campo['name']] = st.text_input(campo['label'])
 
-        submetido = st.form_submit_button("✅ Guardar Professor", type="primary")
+        col_guardar, col_limpar = st.columns(2)
+        with col_guardar:
+            submetido = st.form_submit_button("✅ Guardar Professor", type="primary")
+        with col_limpar:
+            limpar = st.form_submit_button("🗑️ Limpar Formulário")
+
+    if limpar:
+        for key in st.session_state:
+            if key.startswith('form_professor') or key in ['submetido', 'limpar']:
+                if key in st.session_state:
+                    del st.session_state[key]
+        st.rerun()
 
     if submetido:
         if salvar_professor(form_data, professor_df):
@@ -251,9 +262,21 @@ def render_edit_form_professor(professor_data: pd.Series, index: int) -> None:
                 value=professor_data.get('Observacoes', '')
             )
 
-        if st.form_submit_button("✅ Guardar Alterações", type="primary"):
-            if atualizar_professor(form_data, index):
-                del st.session_state['edit_prof_index']
+        col_guardar_alteracoes, col_limpar_alteracoes = st.columns(2)
+        with col_guardar_alteracoes:
+            if st.form_submit_button("✅ Guardar Alterações", type="primary"):
+                if atualizar_professor(form_data, index):
+                    del st.session_state['edit_prof_index']
+                    st.rerun()
+
+        with col_limpar_alteracoes:
+            if st.form_submit_button("🗑️ Limpar Alterações"):
+                # Restaurar valores originais
+                form_data.clear()
+                for key in st.session_state:
+                    if key.startswith('form_editar_prof'):
+                        if key in st.session_state:
+                            del st.session_state[key]
                 st.rerun()
 
 
