@@ -397,14 +397,26 @@ def aplicar_estilos():
             border-bottom-style: solid;
         }}
 
-        /* Métricas no Dashboard */
+        /* Métricas no Dashboard - Azul Claro Consistente */
         [data-testid="stMetric"] {{
-            background-color: var(--color-card);
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             border-radius: var(--radius);
             padding: 1.5rem;
-            box-shadow: var(--shadow);
-            border-left: 5px solid;
-            border-image: linear-gradient(to bottom, var(--color-brand-start), var(--color-brand-end)) 1;
+            box-shadow: 0 8px 24px rgba(52, 73, 94, 0.4) !important;
+            border: 1px solid #546e7a !important;
+            color: white !important;
+        }}
+        [data-testid="stMetric"] .metric-label {{
+            color: white !important;
+            font-weight: 600 !important;
+        }}
+        [data-testid="stMetric"] .metric-value {{
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 1.2em !important;
+        }}
+        [data-testid="stMetric"] .metric-delta {{
+            color: rgba(255, 255, 255, 0.9) !important;
         }}
 
         /* CARTÕES DE PROFESSORES - AZUL CLARO FUNCIONAL */
