@@ -419,41 +419,14 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
-        /* CARTÕES DE PROFESSORES - AZUL CLARO FUNCIONAL */
-        /* Aplicar fundo azul-claro diretamente no HTML dos summaries */
-        details summary {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            color: white !important;
-            font-weight: 600 !important;
-            padding: 16px 20px !important;
-            border-radius: var(--radius) var(--radius) 0 0 !important;
-            cursor: pointer !important;
-            transition: all 0.2s ease !important;
-        }}
-
-        /* Garantir que streamlit summary também pegue */
-        [data-testid="stExpander"] summary {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            color: white !important;
-            font-weight: 600 !important;
-            padding: 16px 20px !important;
-            border-radius: var(--radius) var(--radius) 0 0 !important;
-            cursor: pointer !important;
-            transition: all 0.2s ease !important;
-        }}
-
-        /* Efeito hover azul ainda mais claro */
-        details summary:hover, [data-testid="stExpander"] summary:hover {{
-            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
-            transform: translateY(-1px) !important;
-        }}
-
-        /* Conteúdo expandido com fundo azul */
+        /* Conteúdo expandido com ajuste sutil do fundo */
         [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background: rgba(52, 73, 94, 0.02) !important;
             padding: 20px !important;
-            border-radius: 0 0 var(--radius) var(--radius) !important;
-            border-top: 1px solid #546e7a !important;
+            border-radius: 0 0 12px 12px !important;
+            border: 1px solid #546e7a !important;
+            border-top: none !important;
+            color: white !important;
         }}
 
         /* Divisórias mais visíveis */
