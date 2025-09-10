@@ -66,9 +66,9 @@ html, body, [class*="css"] {
 .professor-cards-container [data-testid="stExpander"] summary,
 .professor-cards-container details summary,
 .professor-cards-container .streamlit-expander summary {
-    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
-    background-image: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
-    background-color: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+    background-image: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+    background-color: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
     color: white !important;
     font-weight: 600 !important;
     padding: 16px 20px !important;
@@ -81,7 +81,7 @@ html, body, [class*="css"] {
 
 .professor-cards-container [data-testid="stExpander"] summary:hover,
 .professor-cards-container details summary:hover {
-    background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
+    background: linear-gradient(135deg, #bbd9ff 0%, #85c1e9 100%) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
 }
@@ -89,19 +89,19 @@ html, body, [class*="css"] {
 /* Garantir ULTRA FORÇADO - todos os expanders */
 .pc-container [data-testid="stExpander"] summary,
 .pc-container details summary {
-    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
-    background-image: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+    background-image: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
     color: white !important;
     font-weight: bold !important;
     padding: 18px 22px !important;
 }
 
 .pc-container [data-testid="stExpander"] summary:hover {
-    background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
+    background: linear-gradient(135deg, #bbd9ff 0%, #85c1e9 100%) !important;
 }
 
 .professor-cards-container [data-testid="stExpander"] [data-testid*="stVerticalBlock"] {
-    background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
 }
 </style>
 """, unsafe_allow_html=True)

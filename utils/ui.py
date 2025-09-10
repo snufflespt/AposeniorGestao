@@ -50,7 +50,7 @@ def aplicar_estilos():
 
         /* DESTAQUE AZUL CLARO PARA FORMULÁRIOS E CARDS */
         [data-testid="stForm"], .form-container {{
-            background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             border-radius: var(--radius) !important;
             padding: 20px !important;
             margin: 20px 0 !important;
@@ -58,7 +58,7 @@ def aplicar_estilos():
             box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
         }}
         .card-container {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             border-radius: var(--radius) !important;
             padding: 15px !important;
             margin: 10px 0 !important;
@@ -68,7 +68,7 @@ def aplicar_estilos():
 
         /* Containers de abas com destaque azul */
         [data-testid*="stTabs"] > div > div {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             border-radius: 12px 12px 0 0 !important;
             margin-bottom: 0 !important;
         }}
@@ -410,7 +410,7 @@ def aplicar_estilos():
         /* CARTÕES DE PROFESSORES - AZUL CLARO FUNCIONAL */
         /* Aplicar fundo azul-claro diretamente no HTML dos summaries */
         details summary {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             color: white !important;
             font-weight: 600 !important;
             padding: 16px 20px !important;
@@ -421,7 +421,7 @@ def aplicar_estilos():
 
         /* Garantir que streamlit summary também pegue */
         [data-testid="stExpander"] summary {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             color: white !important;
             font-weight: 600 !important;
             padding: 16px 20px !important;
@@ -432,13 +432,13 @@ def aplicar_estilos():
 
         /* Efeito hover azul ainda mais claro */
         details summary:hover, [data-testid="stExpander"] summary:hover {{
-            background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
+            background: linear-gradient(135deg, #bbd9ff 0%, #85c1e9 100%) !important;
             transform: translateY(-1px) !important;
         }}
 
         /* Conteúdo expandido com fundo azul */
         [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
-            background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             padding: 20px !important;
             border-radius: 0 0 var(--radius) var(--radius) !important;
             border-top: 1px solid #546e7a !important;
