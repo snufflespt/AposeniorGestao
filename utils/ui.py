@@ -51,6 +51,48 @@ def aplicar_estilos():
             padding-top: 2rem !important;
         }}
 
+        /* TÍTULOS BRANCOS - Correção específica */
+        [data-testid="stMarkdownContainer"] h1,
+        [data-testid="stMarkdownContainer"] h2,
+        [data-testid="stMarkdownContainer"] h3,
+        [data-testid="stMarkdownContainer"] h4,
+        [data-testid="stMarkdownContainer"] h5,
+        [data-testid="stMarkdownContainer"] h6 {{
+            color: white !important;
+            font-weight: 600 !important;
+        }}
+
+        /* Títulos específicos das páginas */
+        [data-testid="stText"] h1,
+        [data-testid="stText"] h2,
+        [data-testid="stText"] h3 {{
+            color: white !important;
+        }}
+
+        /* TÍTULOS BRANCOS - Todos os títulos e subtítulos */
+        h1, h2, h3, h4, h5, h6 {{
+            color: white !important;
+            font-weight: 600 !important;
+        }}
+
+        /* Títulos em markdown containers */
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3,
+        .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {{
+            color: white !important;
+            font-weight: 600 !important;
+        }}
+
+        /* Títulos específicos das seções */
+        [data-testid*="stMarkdownContainer"] h1,
+        [data-testid*="stMarkdownContainer"] h2,
+        [data-testid*="stMarkdownContainer"] h3,
+        [data-testid*="stMarkdownContainer"] h4,
+        [data-testid*="stMarkdownContainer"] h5,
+        [data-testid*="stMarkdownContainer"] h6 {{
+            color: white !important;
+            font-weight: 600 !important;
+        }}
+
         /* --- ESTILOS DE COMPONENTES --- */
 
         /* Alertas (st.warning, st.info, etc.) */
@@ -110,6 +152,37 @@ def aplicar_estilos():
             color: #bdc3c7; /* Cinza mais claro */
             background-color: #2c3e50;
             opacity: 0.7;
+        }}
+
+        /* FORMULÁRIOS BRANCOS - Fundo branco para melhor legibilidade */
+        [data-testid="stNumberInput"] input {{
+            background-color: white !important;
+            color: #2c3e50 !important;
+            border: 1px solid #ddd !important;
+        }}
+
+        /* Campos numéricos específicos (como valor hora nos professores) */
+        [data-testid="stNumberInput"] input[type="number"] {{
+            background-color: white !important;
+            color: #2c3e50 !important;
+            border: 1px solid #ddd !important;
+            font-weight: 500 !important;
+        }}
+
+        /* GARANTIR BOTÕES COM GRADIENTE - Todos os botões */
+        button[data-testid*="baseButton"], .stButton > button {{
+            background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end)) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: var(--radius) !important;
+            padding: 0.6rem 1.2rem !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 10px rgba(240, 90, 20, 0.3) !important;
+        }}
+
+        /* Botão "Guardar professor" específico */
+        button[kind="primary"], button:contains("Guardar"), button:contains("Submit") {{
+            background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end)) !important;
         }}
 
         /* Menu Lateral */
