@@ -61,6 +61,44 @@ st.markdown("""
 html, body, [class*="css"] {
     background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
 }
+
+/* FORÇADO: TODOS os EXPANDERS claritybrig with AZUL CLARO */
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] summary::before,
+[data-testid="stExpander"] summary button,
+[data-testid="stExpander"] summary * {
+    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    border: 1px solid #546e7a !important;
+    background-repeat: no-repeat !important;
+    background-attachment: local !important;
+}
+
+/* SUPER FORÇADO - SOBREPOR QUALQUER OUTRO ESTILO */
+section > div > div > div > details > summary,
+main > div > div > div > details > summary,
+div[data-stale=""] > details > summary {
+    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background-color: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background-image: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+}
+
+div[data-testid*="stExpander"] > summary {
+    background: linear-gradient(225deg, #4a6fa5, #415a77) !important;
+}
+
+.CUSTOM-EXPANDER-BLUE-NO-1 {
+    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    border: 1px solid #546e7a !important;
+    border-radius: 12px !important;
+    padding: 16px 20px !important;
+    margin: 8px 0 4px 0 !important;
+    width: 100% !important;
+    display: block !important;
+    cursor: pointer !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
