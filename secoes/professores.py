@@ -1,238 +1,417 @@
+"""
+Gestão de Professores - Aplicação AposeniorGestao
+
+Este módulo fornece funcionalidade completa para gestão de professores,
+incluindo criação, edição, visualização e remoção de registos de professores.
+Utiliza as utilities centralizadas para manter consistência e reduzir duplicação de código.
+"""
+
 import streamlit as st
 import pandas as pd
-import time
-import re
-from utils.sheets import get_worksheet
+from typing import Dict, Any
+
+# Importações das utilities centralizadas
 from utils.ui import titulo_secao
-from utils.components import render_confirmation_dialog
+from utils.crud import (
+    get_sheet_data,
+    SheetConfig,
+    create_record,
+    update_record,
+    delete_record as delete_record_crud,
+    search_and_filter_dataframe
+)
+from utils.validation import (
+    validate_form_data,
+    is_valid_phone,
+    is_valid_email,
+    normalize_string
+)
+from utils.components import (
+    render_confirmation_dialog,
+    render_data_display_card,
+    render_search_and_filter,
+    render_error_message
+)
 
-def normalize_string(s: str) -> str:
-    """Normaliza uma string para comparação, removendo espaços e convertendo para minúsculas."""
-    return str(s).strip().lower()
+# ===== CONFIGURAÇÃO DA ENTIDADE =====
 
-def is_valid_phone(phone: str) -> bool:
-    """Verifica se um número de telefone é válido (9 dígitos)."""
-    if not phone:
-        return True  # Permite campos vazios, a obrigatoriedade é validada à parte
-    return re.match(r'^\d{9}$', phone)
+PROFESSOR_CONFIG = SheetConfig(
+    name="Professores",
+    id_column="ID_professor",
+    id_prefix="P",
+    required_columns=['Nome Completo', 'Telefone'],
+    unique_columns=['Nome Completo'],
+    conflict_rules={}
+)
 
-def is_valid_email(email: str) -> bool:
-    """Verifica se um email tem um formato válido."""
-    if not email:
-        return True  # Permite campos vazios
-    return re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email)
+PROFESSOR_VALIDATION_RULES = {
+    'Nome Completo': {'required': True, 'label': 'Nome Completo'},
+    'Telefone': {'type': 'phone', 'required': True, 'label': 'Telefone'},
+    'Email': {'type': 'email', 'label': 'Email'}
+}
 
-def mostrar_pagina():
+PROFESSOR_FIELD_NAMES = {
+    'Nome Completo': 'Nome Completo',
+    'Telefone': 'Telefone',
+    'Email': 'Email',
+    'NIB': 'NIB',
+    'Valor Hora': '💰 Valor Hora (€)',
+    'Observacoes': 'Observações'
+}
+
+
+def mostrar_pagina() -> None:
+    """
+    Renderiza a página principal de gestão de professores.
+
+    Inclui formulários para adicionar/editar e listagem com funcionalidades
+    de pesquisa e ações CRUD padronizadas.
+    """
     st.title("👨‍🏫 Gestão de Professores")
-    sheet_prof = get_worksheet("Professores")
+
+    # Obter dados com cache
+    professor_df = get_sheet_data("Professores")
 
     tab_adicionar, tab_gerir = st.tabs(["➕ Adicionar professor", "📋 Gerir professores"])
 
     with tab_adicionar:
-        titulo_secao("Adicionar novo professor", "➕")
-
-        def clear_form_data():
-            """Limpa os dados do formulário na session_state."""
-            st.session_state.prof_nome = ""
-            st.session_state.prof_telefone = ""
-            st.session_state.prof_email = ""
-            st.session_state.prof_nib = ""
-            st.session_state.prof_valor_hora = 0.0
-            st.session_state.prof_observacoes = ""
-
-        with st.form("form_professor"):
-            nome_completo = st.text_input("👤 **Nome Completo***", key="prof_nome")
-            col1, col2 = st.columns(2)
-            with col1:
-                telefone = st.text_input("📞 **Telefone***", key="prof_telefone")
-                nib = st.text_input("💳 NIB", key="prof_nib")
-            with col2:
-                email = st.text_input("📧 Email", key="prof_email")
-                valor_hora = st.number_input(
-                    "💶 Valor Hora (€)",
-                    min_value=0.0,
-                    step=0.5,
-                    format="%.2f",
-                    key="prof_valor_hora"
-                )
-            
-            observacoes = st.text_area("📝 Observações", key="prof_observacoes")
-
-            b_col1, b_col2, _ = st.columns([1, 1, 5])
-            with b_col1:
-                submit = st.form_submit_button("Guardar")
-            with b_col2:
-                if st.form_submit_button("Limpar"):
-                    clear_form_data()
-                    st.rerun()
-
-        if submit:
-            dados_professores = sheet_prof.get_all_records()
-            df_prof = pd.DataFrame(dados_professores)
-            
-            erros = []
-            if not nome_completo.strip():
-                erros.append("O campo 'Nome Completo' é obrigatório.")
-            if not telefone.strip():
-                erros.append("O campo 'Telefone' é obrigatório.")
-            if not is_valid_phone(telefone.strip()):
-                erros.append("O formato do telefone é inválido (deve ter 9 dígitos).")
-            if not is_valid_email(email.strip()):
-                erros.append("O formato do email é inválido.")
-            
-            if not df_prof.empty and 'Nome Completo' in df_prof.columns and normalize_string(nome_completo) in df_prof['Nome Completo'].apply(normalize_string).values:
-                erros.append(f"Já existe um professor com o nome '{nome_completo}'.")
-
-            if erros:
-                for erro in erros:
-                    st.error(erro)
-            else:
-                if df_prof.empty or 'ID_professor' not in df_prof.columns or df_prof['ID_professor'].dropna().empty:
-                    novo_id = "P0001"
-                else:
-                    ultimo_id = df_prof['ID_professor'].dropna().max()
-                    ultimo_num = int(re.sub(r'\D', '', str(ultimo_id)))
-                    novo_id_num = ultimo_num + 1
-                    novo_id = f"P{novo_id_num:04d}"
-                
-                nova_linha = [novo_id, nome_completo, telefone, email, nib, float(valor_hora), observacoes]
-                sheet_prof.append_row(nova_linha)
-                st.success(f"Professor '{nome_completo}' adicionado com sucesso!")
-                clear_form_data()
-                time.sleep(1)
-                st.rerun()
+        render_add_form(professor_df)
 
     with tab_gerir:
-        dados = sheet_prof.get_all_records()
+        render_management_section(professor_df)
 
-        if not dados:
-            st.info("Ainda não existem professores registados.")
-        else:
-            df = pd.DataFrame(dados)
 
-            # --- VISTA DE EDIÇÃO ---
-            if 'edit_prof_index' in st.session_state:
-                idx = st.session_state['edit_prof_index']
-                prof_atual = df.loc[idx]
+def render_add_form(professor_df: pd.DataFrame) -> None:
+    """
+    Renderiza formulário para adicionar novo professor.
 
-                if st.button("⬅️ Voltar à lista"):
-                    del st.session_state['edit_prof_index']
-                    st.rerun()
-                
-                st.subheader(f"Editar professor: {prof_atual['Nome Completo']}")
-                with st.form("form_editar_prof"):
-                    with st.expander("ℹ️ Informação Principal", expanded=True):
-                        novo_nome = st.text_input("👤 **Nome Completo***", value=prof_atual.get('Nome Completo', ''))
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            novo_telefone = st.text_input("📞 **Telefone***", value=str(prof_atual.get('Telefone', '')))
-                        with col2:
-                            novo_email = st.text_input("📧 Email", value=prof_atual.get('Email', ''))
-                    
-                    with st.expander("💶 Informação Financeira e Outras"):
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            novo_nib = st.text_input("💳 NIB", value=str(prof_atual.get('NIB', '')))
-                        with col2:
-                            novo_valor_hora = st.number_input("💶 Valor Hora (€)", min_value=0.0, step=0.5, format="%.2f", value=float(prof_atual.get('Valor Hora', 0.0)))
-                        novas_observacoes = st.text_area("📝 Observações", value=prof_atual.get('Observacoes', ''))
+    Args:
+        professor_df (pd.DataFrame): Dados existentes dos professores para validações.
+    """
+    titulo_secao("Adicionar novo professor", "➕")
 
-                    if st.form_submit_button("Guardar alterações"):
-                        erros = []
-                        if not novo_nome.strip():
-                            erros.append("O campo 'Nome Completo' é obrigatório.")
-                        if not novo_telefone.strip():
-                            erros.append("O campo 'Telefone' é obrigatório.")
-                        if not is_valid_phone(novo_telefone.strip()):
-                            erros.append("O formato do telefone é inválido (deve ter 9 dígitos).")
-                        if not is_valid_email(novo_email.strip()):
-                            erros.append("O formato do email é inválido.")
+    with st.form("form_professor"):
+        form_data = {}
 
-                        df_outros = df.drop(index=idx)
-                        if not df_outros.empty and 'Nome Completo' in df_outros.columns and normalize_string(novo_nome) in df_outros['Nome Completo'].apply(normalize_string).values:
-                            erros.append(f"Já existe um professor com o nome '{novo_nome}'.")
+        # Configuração de campos com validações
+        campos = [
+            {'name': 'Nome Completo', 'label': '👤 Nome Completo', 'type': 'text_input', 'required': True},
+            {'name': 'Telefone', 'label': '📞 Telefone', 'type': 'text_input', 'required': True},
+            {'name': 'Email', 'label': '📧 Email', 'type': 'text_input'},
+            {'name': 'NIB', 'label': '💳 NIB', 'type': 'text_input'},
+            {'name': 'Valor Hora', 'label': '💰 Valor hora (€)', 'type': 'number_input',
+             'min_value': 0.0, 'step': 0.5, 'format': '%.2f'},
+            {'name': 'Observacoes', 'label': '📝 Observações', 'type': 'text_area'}
+        ]
 
-                        if erros:
-                            for erro in erros:
-                                st.error(erro)
-                        else:
-                            # ID (col A) não é atualizado.
-                            valores_a_atualizar = [
-                                novo_nome, novo_telefone, novo_email, novo_nib, 
-                                float(novo_valor_hora), novas_observacoes
-                            ]
-                            sheet_prof.update(f'B{idx + 2}:G{idx + 2}', [valores_a_atualizar])
-                            
-                            st.success(f"Professor '{novo_nome}' atualizado com sucesso!")
-                            del st.session_state['edit_prof_index']
-                            time.sleep(0.5)
-                            st.rerun()
-
-            # --- VISTA DE APAGAR ---
-            elif 'delete_prof_index' in st.session_state:
-                idx = st.session_state['delete_prof_index']
-                entity_name = df.loc[idx, 'Nome Completo']
-
-                if st.button("⬅️ Voltar à lista"):
-                    del st.session_state['delete_prof_index']
-                    st.rerun()
-
-                st.subheader("Apagar professor")
-                
-                def confirm_delete():
-                    sheet_prof.delete_rows(idx + 2)
-                    st.success(f"Professor '{entity_name}' apagado com sucesso!")
-                    del st.session_state['delete_prof_index']
-                    time.sleep(0.5)
-                    st.rerun()
-
-                def cancel_delete():
-                    del st.session_state['delete_prof_index']
-                    st.rerun()
-
-                render_confirmation_dialog('professor', entity_name, confirm_delete, cancel_delete)
-
-            # --- VISTA DE LISTA ---
+        for campo in campos:
+            if campo['type'] == 'number_input':
+                form_data[campo['name']] = st.number_input(
+                    campo['label'],
+                    value=0.0,
+                    **{k: v for k, v in campo.items() if k not in ['name', 'label', 'type']}
+                )
+            elif campo['type'] == 'text_area':
+                form_data[campo['name']] = st.text_area(campo['label'])
             else:
-                titulo_secao("Lista de professores", "📋")
-                pesquisa = st.text_input("Pesquisar por nome, telefone, email, etc.:")
+                form_data[campo['name']] = st.text_input(campo['label'])
 
-                if pesquisa:
-                    df_filtrado = df[df.apply(lambda row: any(pesquisa.lower() in str(x).lower() for x in row), axis=1)]
-                else:
-                    df_filtrado = df
+        submetido = st.form_submit_button("✅ Guardar Professor", type="primary")
 
-                for i, row in df_filtrado.iterrows():
-                    expander_title = f"👨‍🏫 **{row.get('Nome Completo', 'Sem Nome')}**"
-                    with st.expander(expander_title):
-                        st.text_input("🆔 ID", value=row.get('ID_professor', ''), key=f"disp_id_{i}", disabled=True)
+    if submetido:
+        if salvar_professor(form_data, professor_df):
+            # Limpar formulário após sucesso
+            for key in st.session_state:
+                if key.startswith('form_professor') or key in form_data:
+                    if key in st.session_state:
+                        del st.session_state[key]
+            st.rerun()
 
-                        with st.expander("ℹ️ Informação de Contacto"):
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                st.text_input("📞 Telefone", value=str(row.get('Telefone', '')), key=f"disp_tel_{i}", disabled=True)
-                            with col2:
-                                st.text_input("📧 Email", value=row.get('Email', ''), key=f"disp_email_{i}", disabled=True)
-                        
-                        with st.expander("💶 Informação Financeira"):
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                st.text_input("💳 NIB", value=str(row.get('NIB', '')), key=f"disp_nib_{i}", disabled=True)
-                            with col2:
-                                st.text_input("💶 Valor Hora (€)", value=str(row.get('Valor Hora', '0.0')), key=f"disp_valor_{i}", disabled=True)
-                        
-                        with st.expander("📝 Observações"):
-                            st.text_area("Observações", value=row.get('Observacoes', ''), key=f"disp_obs_{i}", disabled=True, height=100, label_visibility="collapsed")
-                        
-                        st.write("---")
 
-                        # Botões de ação
-                        botoes_col1, botoes_col2, _ = st.columns([1, 1, 5])
-                        with botoes_col1:
-                            if st.button("✏️ Editar", key=f"edit_prof_{i}", use_container_width=True):
-                                st.session_state['edit_prof_index'] = i
-                                st.rerun()
-                        with botoes_col2:
-                            if st.button("🗑️ Apagar", key=f"delete_prof_{i}", use_container_width=True):
-                                st.session_state['delete_prof_index'] = i
-                                st.rerun()
+def salvar_professor(form_data: Dict[str, Any], professor_df: pd.DataFrame) -> bool:
+    """
+    Processa e salva novo professor após validações.
+
+    Args:
+        form_data (Dict[str, Any]): Dados do formulário.
+        professor_df (pd.DataFrame): Dados existentes para validações.
+
+    Returns:
+        bool: True se salvo com sucesso, False caso contrário.
+    """
+    # Validar formulário
+    validation_errors = validate_form_data(form_data, PROFESSOR_VALIDATION_RULES)
+
+    # Validar unicidade do nome
+    if form_data.get('Nome Completo'):
+        nome_normalizado = normalize_string(form_data['Nome Completo'])
+        nomes_existentes = professor_df['Nome Completo'].apply(normalize_string).values
+
+        if nome_normalizado in nomes_existentes:
+            validation_errors.append("Já existe um professor com este nome.")
+
+    if validation_errors:
+        render_error_message("Por favor, corrija os erros abaixo:", validation_errors)
+        return False
+
+    # Tentar criar registo
+    success = create_record(PROFESSOR_CONFIG, form_data,
+                           success_message=f"Professor '{form_data['Nome Completo']}' adicionado com sucesso!")
+
+    return success
+
+
+def render_management_section(professor_df: pd.DataFrame) -> None:
+    """
+    Renderiza seção de gestão dos professores existentes.
+
+    Args:
+        professor_df (pd.DataFrame): Dados dos professores para exibição.
+    """
+    # Verificar vistas específicas (edição/apagamento)
+    if verificar_vista_edicao(professor_df):
+        return
+
+    if verificar_vista_apagamento(professor_df):
+        return
+
+    # Vista de lista padrão
+    render_lista_professores(professor_df)
+
+
+def verificar_vista_edicao(professor_df: pd.DataFrame) -> bool:
+    """
+    Verifica e renderiza vista de edição se ativada.
+
+    Args:
+        professor_df (pd.DataFrame): Dados dos professores.
+
+    Returns:
+        bool: True se vista de edição foi renderizada.
+    """
+    if 'edit_prof_index' not in st.session_state:
+        return False
+
+    idx = st.session_state['edit_prof_index']
+    if idx >= len(professor_df):
+        del st.session_state['edit_prof_index']
+        return False
+
+    if st.button("⬅️ Voltar à lista", key="voltar_lista_prof"):
+        del st.session_state['edit_prof_index']
+        st.rerun()
+        return True
+
+    professor_atual = professor_df.iloc[idx]
+    render_edit_form_professor(professor_atual, idx)
+    return True
+
+
+def render_edit_form_professor(professor_data: pd.Series, index: int) -> None:
+    """
+    Renderiza formulário de edição para professor específico.
+
+    Args:
+        professor_data (pd.Series): Dados do professor a editar.
+        index (int): Índice do professor no DataFrame.
+    """
+    st.subheader(f"Editar professor: {professor_data['Nome Completo']}")
+
+    with st.form("form_editar_prof"):
+        form_data = {}
+
+        col1, col2 = st.columns(2)
+        with col1:
+            form_data['Nome Completo'] = st.text_input(
+                "👤 Nome Completo *",
+                value=professor_data.get('Nome Completo', '')
+            )
+            form_data['Telefone'] = st.text_input(
+                "📞 Telefone *",
+                value=str(professor_data.get('Telefone', ''))
+            )
+            form_data['Email'] = st.text_input(
+                "📧 Email",
+                value=professor_data.get('Email', '')
+            )
+        with col2:
+            form_data['NIB'] = st.text_input(
+                "💳 NIB",
+                value=str(professor_data.get('NIB', ''))
+            )
+            form_data['Valor Hora'] = st.number_input(
+                "💰 Valor hora (€)",
+                value=float(professor_data.get('Valor Hora', 0.0)),
+                min_value=0.0,
+                step=0.5,
+                format="%.2f"
+            )
+            form_data['Observacoes'] = st.text_area(
+                "📝 Observações",
+                value=professor_data.get('Observacoes', '')
+            )
+
+        if st.form_submit_button("✅ Guardar Alterações", type="primary"):
+            if atualizar_professor(form_data, index):
+                del st.session_state['edit_prof_index']
+                st.rerun()
+
+
+def atualizar_professor(form_data: Dict[str, Any], index: int) -> bool:
+    """
+    Atualiza dados do professor após validações.
+
+    Args:
+        form_data (Dict[str, Any]): Novos dados do professor.
+        index (int): Índice do professor no DataFrame.
+
+    Returns:
+        bool: True se atualizado com sucesso, False caso contrário.
+    """
+    # Validar formulário
+    validation_errors = validate_form_data(form_data, PROFESSOR_VALIDATION_RULES)
+
+    if validation_errors:
+        render_error_message("Por favor, corrija os erros abaixo:", validation_errors)
+        return False
+
+    # Tentar atualizar registo (excluindo este registo das validações únicas)
+    success = update_record(PROFESSOR_CONFIG, index, form_data,
+                           success_message=f"Professor '{form_data['Nome Completo']}' atualizado com sucesso!")
+
+    return success
+
+
+def verificar_vista_apagamento(professor_df: pd.DataFrame) -> bool:
+    """
+    Verifica e renderiza vista de apagamento se ativada.
+
+    Args:
+        professor_df (pd.DataFrame): Dados dos professores.
+
+    Returns:
+        bool: True se vista de apagamento foi renderizada.
+    """
+    if 'delete_prof_index' not in st.session_state:
+        return False
+
+    idx = st.session_state['delete_prof_index']
+    if idx >= len(professor_df):
+        del st.session_state['delete_prof_index']
+        return False
+
+    professor_atual = professor_df.iloc[idx]
+
+    if st.button("⬅️ Voltar à lista", key="voltar_lista_prof_delete"):
+        del st.session_state['delete_prof_index']
+        st.rerun()
+        return True
+
+    st.subheader("Apagar professor")
+
+    def confirm_delete():
+        sucesso = delete_record_crud(PROFESSOR_CONFIG, idx,
+                                   success_message=f"Professor '{professor_atual['Nome Completo']}' apagado com sucesso!")
+        if sucesso:
+            del st.session_state['delete_prof_index']
+        return sucesso
+
+    def cancel_delete():
+        del st.session_state['delete_prof_index']
+        st.rerun()
+
+    confirm_message = f"Tens a certeza que queres apagar o professor **{professor_atual['Nome Completo']}**?\n\nEsta ação não pode ser desfeita."
+    render_confirmation_dialog('professor', str(professor_atual['Nome Completo']),
+                              confirm_delete, cancel_delete)
+
+    return True
+
+
+def render_lista_professores(professor_df: pd.DataFrame) -> None:
+    """
+    Renderiza lista de professores com pesquisa e filtros.
+
+    Args:
+        professor_df (pd.DataFrame): Dados dos professores para exibir.
+    """
+    if professor_df.empty:
+        st.info("👍 Ainda não existem professores registados.")
+        st.markdown("**Dica:** Clique na aba '*Adicionar professor*' para criar o primeiro registo.")
+        return
+
+    titulo_secao("Lista de professores", "📋")
+
+    # Pesquisa e filtro
+    search_text = render_search_and_filter("Pesquisar por nome, telefone, email ou NIB...")
+
+    # Aplicar filtros
+    if search_text:
+        masked_professor_df = professor_df.applymap(str)  # Para permitir string search
+        mask = masked_professor_df.apply(lambda row: any(search_text.lower() in cell.lower() for cell in row),
+                                        axis=1)
+        filtered_df = professor_df[mask]
+    else:
+        filtered_df = professor_df
+
+    if filtered_df.empty:
+        st.info("Nenhum professor encontrado com os critérios de pesquisa.")
+        return
+
+    # Mostrar resultados
+    st.write(f"**Mostrando {len(filtered_df)} de {len(professor_df)} professor(es)**")
+
+    # Renderizar cartões de professores
+    for i, professor_row in filtered_df.iterrows():
+        render_professor_card(professor_row, i)
+
+
+def render_professor_card(professor_data: pd.Series, index: int) -> None:
+    """
+    Renderiza cartão individual de professor com ações.
+
+    Args:
+        professor_data (pd.Series): Dados do professor.
+        index (int): Índice original no DataFrame para ações.
+    """
+    nome_completo = professor_data.get('Nome Completo', 'Sem nome')
+    id_professor = professor_data.get('ID_professor', f'idx_{index}')
+
+    with st.container():
+        # Usar expander para melhor organização
+        with st.expander(f"👨‍🏫 **{nome_completo}** ({id_professor})", expanded=False):
+
+            # Layout com colunas para informação
+            col_info, col_actions = st.columns([4, 1])
+
+            with col_info:
+                # Informações principais
+                st.write(f"**🆔 ID:** {id_professor}")
+                st.write(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
+                if professor_data.get('Email'):
+                    st.write(f"**📧 Email:** {professor_data.get('Email')}")
+
+                col1, col2 = st.columns(2)
+                with col1:
+                    if professor_data.get('NIB'):
+                        st.write(f"**💳 NIB:** {professor_data.get('NIB')}")
+                with col2:
+                    if professor_data.get('Valor Hora'):
+                        valor_hora = float(professor_data.get('Valor Hora', 0))
+                        if valor_hora > 0:
+                            st.write(",.2f"f"**💰 Valor/Hora:** {valor_hora:.2f}€")
+
+                if professor_data.get('Observacoes'):
+                    st.write("**📝 Observações:**")
+                    st.write(professor_data.get('Observacoes'))
+
+            with col_actions:
+                # Botões de ação vertical
+                if st.button("✏️ Editar", key=f"edit_prof_{index}", use_container_width=True):
+                    st.session_state['edit_prof_index'] = index
+                    st.rerun()
+
+                if st.button("🗑️ Apagar", key=f"delete_prof_{index}", use_container_width=True):
+                    st.session_state['delete_prof_index'] = index
+                    st.rerun()
+
+            st.divider()

@@ -1,65 +1,73 @@
 """
-Biblioteca de componentes reutilizáveis para a aplicação Streamlit. Centraliza lógica comum para exibição de dados e interações.
+Biblioteca de Componentes Reutilizáveis para Streamlit
+
+Este módulo providencia componentes padronizados e reutilizáveis
+para a aplicação Streamlit, incluindo formulários, cards, botões de ação,
+e outros elementos de UI comuns para melhorar a manutenção e consistência.
 """
 
 import streamlit as st
-from typing import Dict, Any, Optional, Callable
+from typing import Dict, Any, Optional, Callable, List
+from utils.validation import (
+    GRAU_ESCOLARIDADE_OPCOES,
+    SITUACAO_PROFISSIONAL_OPCOES,
+    DIAS_SEMANA,
+    SALA_OPCOES,
+    NIVEL_OPCOES,
+    ESTADO_OPCOES,
+    format_status_badge,
+    format_currency,
+    format_date_for_display,
+    format_time_for_display
+)
 
 
-def render_user_card(user_data: Dict[str, Any], index: int, on_edit: Optional[Callable] = None, on_delete: Optional[Callable] = None) -> None:
+def render_user_card(user_data: Dict[str, Any],
+                     index: int,
+                     on_edit: Optional[Callable] = None,
+                     on_delete: Optional[Callable] = None) -> None:
     """
     Renderiza um card de utente com informações e botões de ação.
 
     Args:
         user_data (Dict[str, Any]): Dicionário com dados do utente.
         index (int): Índice do utente na lista.
-        on_edit (Optional[Callable], optional): Callback para ação de editar. Defaults to None.
-        on_delete (Optional[Callable], optional): Callback para ação de apagar. Defaults to None.
+        on_edit (Optional[Callable]): Callback para ação de editar. Padrão None.
+        on_delete (Optional[Callable]): Callback para ação de apagar. Padrão None.
     """
     nome = user_data.get('Nome', '')
-
     contacto = user_data.get('Contacto', '')
     morada = user_data.get('Morada', '')
     estado = user_data.get('Estado', '')
 
-    # Container para agrupar elementos
     with st.container():
-        # Layout em colunas para informação e botões
         col_info, col_actions = st.columns([4, 1])
 
         with col_info:
-            # Nome e contacto
             st.markdown(f"**{nome}** — {contacto}")
-
-            # Morada se existir
             if morada:
                 st.markdown(f"🏠 {morada}")
-
-            # Status badge colorido
-            if estado == 'Ativo':
-                st.markdown('<span style="background-color: #d4edda; color: #155724; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● ATIVO</span>', unsafe_allow_html=True)
-            else:
-                st.markdown('<span style="background-color: #f8d7da; color: #721c24; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">● INATIVO</span>', unsafe_allow_html=True)
+            st.markdown(format_status_badge(estado, 'Ativo'), unsafe_allow_html=True)
 
         with col_actions:
-            render_action_buttons(index, on_edit, on_delete)
+            render_action_buttons(index, on_edit, on_delete, 'utente')
 
         st.divider()
 
 
-def render_action_buttons(index: int, on_edit: Optional[Callable] = None, on_delete: Optional[Callable] = None, entity_type: str = "item") -> None:
-    """Renderiza botões de ação padronizados (Editar/Apagar).
+def render_action_buttons(index: int,
+                         on_edit: Optional[Callable] = None,
+                         on_delete: Optional[Callable] = None,
+                         entity_type: str = "item") -> None:
+    """
+    Renderiza botões de ação padronizados (Editar/Apagar).
 
     Args:
         index (int): Índice do item para chaves únicas.
-        on_edit (Optional[Callable], optional): Função callback para editar. Defaults to None.
-        on_delete (Optional[Callable], optional): Função callback para apagar. Defaults to None.
-        entity_type (str, optional): Tipo de entidade (para chaves de session_state). Defaults to "item".
+        on_edit (Optional[Callable]): Função callback para editar. Padrão None.
+        on_delete (Optional[Callable]): Função callback para apagar. Padrão None.
+        entity_type (str): Tipo de entidade para chaves de session_state. Padrão "item".
     """
-
-
-
-    # Sub-colunas para os dois botões
     sub_col1, sub_col2 = st.columns(2)
 
     with sub_col1:
@@ -67,7 +75,6 @@ def render_action_buttons(index: int, on_edit: Optional[Callable] = None, on_del
             if on_edit:
                 on_edit(index)
             else:
-                # Fallback padrão
                 st.session_state[f'edit_{entity_type}_index'] = index
                 st.rerun()
 
@@ -76,31 +83,30 @@ def render_action_buttons(index: int, on_edit: Optional[Callable] = None, on_del
             if on_delete:
                 on_delete(index)
             else:
-                # Fallback padrão
                 st.session_state[f'delete_{entity_type}_index'] = index
                 st.rerun()
 
 
-def render_edit_form(entity_type: str, fields: Dict[str, Dict[str, Any]], current_data: Dict[str, Any], on_save: Callable) -> None:
+def render_edit_form(entity_type: str,
+                     fields: Dict[str, Dict[str, Any]],
+                     current_data: Dict[str, Any],
+                     on_save: Callable) -> None:
     """
-    Renderiza um formulário de edição padronizado
+    Renderiza um formulário de edição padronizado.
 
-    Args:w
+    Args:
         entity_type (str): Tipo da entidade (ex: "utente", "professor").
         fields (Dict[str, Dict[str, Any]]): Configuração dos campos do formulário.
         current_data (Dict[str, Any]): Dados atuais para preencher o formulário.
         on_save (Callable): Função callback para salvar alterações.
     """
-    entity_name = current_data.get('Nome', current_data.get('Nome do Professor', 'Item'))
-
+    entity_name = current_data.get('Nome', current_data.get('Nome Completo', 'Item'))
     st.subheader(f"Editar {entity_type}")
 
     with st.form(f"form_editar_{entity_type}"):
         form_data = {}
 
-        # Criar campos baseado na configuração
         if 'layout' in fields and fields['layout'] == 'columns':
-            # Layout em colunas
             col1, col2 = st.columns(2)
 
             left_fields = fields.get('left', [])
@@ -114,31 +120,28 @@ def render_edit_form(entity_type: str, fields: Dict[str, Dict[str, Any]], curren
                 for field_config in right_fields:
                     form_data.update(_render_form_field(field_config, current_data))
         else:
-            # Campos individuais
             for field_config in fields.get('fields', []):
                 form_data.update(_render_form_field(field_config, current_data))
 
-        # Botão de salvar
-        submit_label = fields.get('submit_label', f"Guardar alterações")
+        submit_label = fields.get('submit_label', "Guardar alterações")
         if st.form_submit_button(submit_label):
             if on_save(form_data):
                 st.success(f"{entity_type.title()} '{entity_name}' atualizado com sucesso!")
-                # Limpar estado de edição
-                if f'edit_{entity_type}_index' in st.session_state:
-                    del st.session_state[f'edit_{entity_type}_index']
+                st.session_state[f'edit_{entity_type}_index'] = None
                 st.rerun()
 
 
-def _render_form_field(field_config: Dict[str, Any], current_data: Dict[str, Any]) -> Dict[str, Any]:
+def _render_form_field(field_config: Dict[str, Any],
+                      current_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Renderiza um campo individual do formulário
+    Renderiza um campo individual do formulário.
 
     Args:
-        field_config: Configuração do campo
-        current_data: Dados atuais
+        field_config (Dict[str, Any]): Configuração do campo.
+        current_data (Dict[str, Any]): Dados atuais.
 
     Returns:
-        Dict com dados do campo
+        Dict[str, Any]: Dados do campo preenchido.
     """
     field_name = field_config['name']
     field_type = field_config.get('type', 'text_input')
@@ -150,7 +153,6 @@ def _render_form_field(field_config: Dict[str, Any], current_data: Dict[str, Any
         return {field_name: st.text_input(label, value=value)}
     elif field_type == 'selectbox':
         options = field_config.get('options', [])
-        # Encontrar índice do valor atual
         try:
             index = options.index(value) if value in options else 0
         except (ValueError, TypeError):
@@ -158,48 +160,251 @@ def _render_form_field(field_config: Dict[str, Any], current_data: Dict[str, Any
         return {field_name: st.selectbox(label, options, index=index)}
     elif field_type == 'text_area':
         return {field_name: st.text_area(label, value=value)}
+    elif field_type == 'number_input':
+        min_val = field_config.get('min_value', 0.0)
+        max_val = field_config.get('max_value', 1000.0)
+        step = field_config.get('step', 1.0)
+        return {field_name: st.number_input(label, value=float(value) if value else min_val,
+                                             min_value=min_val, max_value=max_val, step=step)}
+    elif field_type == 'date_input':
+        min_date = field_config.get('min_value')
+        max_date = field_config.get('max_value')
+        return {field_name: st.date_input(label, value=value if value else None,
+                                          min_value=min_date, max_value=max_date)}
+    elif field_type == 'time_input':
+        return {field_name: st.time_input(label, value=value if value else None)}
 
-    return {}
+    return {field_name: st.text_input(label, value=value)}
 
 
-def render_confirmation_dialog(entity_type: str, entity_name: str, on_confirm: Callable, on_cancel: Callable) -> None:
+def render_confirmation_dialog(entity_type: str,
+                              entity_name: str,
+                              on_confirm: Callable,
+                              on_cancel: Callable) -> None:
     """
-    Renderiza um diálogo de confirmação padronizado
+    Renderiza um diálogo de confirmação padronizado.
+
     Args:
         entity_type (str): Tipo da entidade.
         entity_name (str): Nome da entidade.
-        on_confirm: Callback para confirmação
-        on_cancel: Callback para cancelamento
+        on_confirm (Callable): Callback para confirmação.
+        on_cancel (Callable): Callback para cancelamento.
     """
     st.warning(f"Tens a certeza que queres apagar o {entity_type}: {entity_name}?")
 
-    col1, col2, _ = st.columns([1, 1, 5])  # Colunas mais pequenas para botões mais juntos
+    col1, col2, _ = st.columns([1, 1, 5])
 
     with col1:
-        if st.button("✅ Sim, apagar"):
+        if st.button("✅ Sim, apagar", key=f"confirm_delete_{entity_type}"):
             if on_confirm():
                 st.success(f"{entity_type.title()} '{entity_name}' apagado com sucesso!")
             else:
-                st.error("Erro ao apagar o item.")
+                st.error(f"Erro ao apagar o {entity_type}.")
 
     with col2:
-        if st.button("❌ Cancelar"):
+        if st.button("❌ Cancelar", key=f"cancel_delete_{entity_type}"):
             on_cancel()
 
 
-# Configurações pré-definidas para entidades comuns
+# ===== CONFIGURAÇÕES PRÉ-DEFINIDAS PARA ENTIDADES =====
+
 USER_FIELDS_CONFIG = {
     'layout': 'columns',
     'left': [
         {'name': 'Nome', 'type': 'text_input', 'label': 'Nome do utente', 'required': True},
-        {'name': 'Contacto', 'type': 'text_input', 'label': 'Contacto', 'required': True}
+        {'name': 'Contacto', 'type': 'text_input', 'label': 'Contacto telefónico', 'required': True},
+        {'name': 'Contacto_telefónico_2', 'type': 'text_input', 'label': 'Contacto telefónico 2'}
     ],
     'right': [
-        {'name': 'Morada', 'type': 'text_input', 'label': 'Morada'},
+        {'name': 'Morada', 'type': 'text_input', 'label': 'Morada', 'required': True},
+        {'name': 'Codigo_Postal', 'type': 'text_input', 'label': 'Código Postal (XXXX-XXX)', 'required': True},
+        {'name': 'Localidade', 'type': 'text_input', 'label': 'Localidade'},
         {'name': 'Estado', 'type': 'selectbox', 'label': 'Estado', 'options': ['Ativo', 'Inativo']}
-    ]
+    ],
+    'submit_label': "Guardar alterações"
 }
 
-def render_user_edit_form(current_data: Dict[str, Any], on_save: Callable) -> None:
-    """Conveniência para formulário de edição de utente"""
+PROFESSOR_FIELDS_CONFIG = {
+    'layout': 'columns',
+    'left': [
+        {'name': 'Nome Completo', 'type': 'text_input', 'label': 'Nome Completo', 'required': True},
+        {'name': 'Telefone', 'type': 'text_input', 'label': 'Telefone', 'required': True},
+        {'name': 'Email', 'type': 'text_input', 'label': 'Email'}
+    ],
+    'right': [
+        {'name': 'NIB', 'type': 'text_input', 'label': 'NIB'},
+        {'name': 'Valor Hora', 'type': 'number_input', 'label': 'Valor hora (€)', 'min_value': 0.0, 'step': 0.5},
+        {'name': 'Observacoes', 'type': 'text_area', 'label': 'Observações'}
+    ],
+    'submit_label': "Guardar alterações"
+}
+
+TURMA_FIELDS_CONFIG = {
+    'fields': [
+        {'name': 'nome_turma', 'type': 'text_input', 'label': 'Nome da turma', 'required': True},
+        {'name': 'disciplina', 'type': 'selectbox', 'label': 'Disciplina', 'options': [], 'required': True},  # Será preenchido dinamicamente
+        {'name': 'professor', 'type': 'selectbox', 'label': 'Professor', 'options': [], 'required': True},   # Será preenchido dinamicamente
+        {'name': 'sala', 'type': 'selectbox', 'label': 'Sala', 'options': SALA_OPCOES},
+        {'name': 'dia_semana', 'type': 'selectbox', 'label': 'Dia da semana', 'options': DIAS_SEMANA, 'required': True},
+        {'name': 'hora_inicio', 'type': 'time_input', 'label': 'Hora de início', 'required': True},
+        {'name': 'hora_fim', 'type': 'time_input', 'label': 'Hora de fim', 'required': True},
+        {'name': 'nivel', 'type': 'selectbox', 'label': 'Nível', 'options': NIVEL_OPCOES},
+        {'name': 'vagas', 'type': 'number_input', 'label': 'Número de vagas', 'min_value': 1, 'max_value': 50},
+        {'name': 'estado', 'type': 'selectbox', 'label': 'Estado', 'options': ESTADO_OPCOES},
+        {'name': 'observacoes', 'type': 'text_area', 'label': 'Observações'}
+    ],
+    'submit_label': "Guardar alterações"
+}
+
+
+# ===== FUNÇÕES DE CONVENIÊNCIA =====
+
+def render_user_edit_form(current_data: Dict[str, Any],
+                         on_save: Callable) -> None:
+    """Conveniência para formulário de edição de utente."""
     render_edit_form("utente", USER_FIELDS_CONFIG, current_data, on_save)
+
+
+def render_professor_edit_form(current_data: Dict[str, Any],
+                              on_save: Callable) -> None:
+    """Conveniência para formulário de edição de professor."""
+    render_edit_form("professor", PROFESSOR_FIELDS_CONFIG, current_data, on_save)
+
+
+def render_turma_edit_form(current_data: Dict[str, Any],
+                          on_save: Callable) -> None:
+    """Conveniência para formulário de edição de turma."""
+    render_edit_form("turma", TURMA_FIELDS_CONFIG, current_data, on_save)
+
+
+# ===== COMPONENTES DE EXIBIÇÃO =====
+
+def render_data_display_card(title: str,
+                           data: Dict[str, Any],
+                           field_mapping: Dict[str, str],
+                           key_prefix: str = "display") -> None:
+    """
+    Renderiza um card padronizado para exibição de dados.
+
+    Args:
+        title (str): Título do card.
+        data (Dict[str, Any]): Dados a exibir.
+        field_mapping (Dict[str, str]): Mapeamento campo -> label.
+        key_prefix (str): Prefixo para chaves únicas.
+    """
+    with st.expander(title):
+        for field_key, field_label in field_mapping.items():
+            if field_key in data and data[field_key]:
+                value = data[field_key]
+
+                # Formatação específica por campo
+                if field_label.lower().startswith('valor hora') or field_label.lower().startswith('hora'):
+                    formatted_value = format_currency(value)
+                elif field_label.lower().startswith('nível') or field_label.lower().startswith('estado'):
+                    formatted_value = value.title()
+                elif field_label.lower().startswith('data'):
+                    formatted_value = format_date_for_display(value)
+                else:
+                    formatted_value = str(value)
+
+                st.text_input(field_label, value=formatted_value,
+                             key=f"{key_prefix}_{field_key}", disabled=True)
+
+
+def render_search_and_filter(search_placeholder: str = "Pesquisar...",
+                           filter_dict: Optional[Dict[str, Any]] = None) -> str:
+    """
+    Renderiza componente de pesquisa e filtros padronizados.
+
+    Args:
+        search_placeholder (str): Texto placeholder para busca.
+        filter_dict (Optional[Dict[str, Any]]): Dicionário de filtros.
+
+    Returns:
+        str: Texto de pesquisa inserido.
+    """
+    col_search, *filter_cols = st.columns([2] + [1] * len(filter_dict) if filter_dict else [1])
+
+    with col_search:
+        search_text = st.text_input(search_placeholder, key="search_input")
+
+    if filter_dict:
+        for i, (filter_label, filter_info) in enumerate(filter_dict.items()):
+            if i < len(filter_cols):
+                with filter_cols[i]:
+                    # Implementar filtros específicos conforme necessário
+
+    return search_text
+
+
+def render_loading_indicator(message: str = "A processar dados..."):
+    """
+    Renderiza um indicador de carregamento padronizado.
+
+    Args:
+        message (str): Mensagem a exibir.
+    """
+    with st.spinner(message):
+        pass
+
+
+def render_success_message(message: str, duration: int = 3):
+    """
+    Renderiza uma mensagem de sucesso temporária.
+
+    Args:
+        message (str): Mensagem de sucesso.
+        duration (int): Duração em segundos.
+    """
+    success_placeholder = st.empty()
+    success_placeholder.success(message)
+
+    if duration > 0:
+        import time
+        time.sleep(duration)
+        success_placeholder.empty()
+
+
+def render_error_message(message: str, errors: Optional[List[str]] = None):
+    """
+    Renderiza uma mensagem de erro com detalhes.
+
+    Args:
+        message (str): Mensagem de erro principal.
+        errors (Optional[List[str]]): Lista de erros específicos.
+    """
+    st.error(message)
+    if errors:
+        st.error("**Detalhes dos erros:**")
+        for error in errors:
+            st.error(f"• {error}")
+
+
+def render_info_message(message: str, icon: str = "ℹ️"):
+    """
+    Renderiza uma mensagem informativa com ícone.
+
+    Args:
+        message (str): Mensagem a exibir.
+        icon (str): Ícone a usar.
+    """
+    st.info(f"{icon} {message}")
+
+
+def render_metric_card(title: str,
+                      value: Any,
+                      category: str = "info",
+                      help_text: Optional[str] = None):
+    """
+    Renderiza um card métrico padronizado.
+
+    Args:
+        title (str): Título do métrico.
+        value (Any): Valor a exibir.
+        category (str): Categoria (success, warning, error, info).
+        help_text (Optional[str]): Texto de ajuda.
+    """
+    if help_text:
+        st.metric(label=title, value=str(value), help=help_text)
+    else:
+        st.metric(label=title, value=str(value))
