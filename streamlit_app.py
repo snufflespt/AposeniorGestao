@@ -99,6 +99,10 @@ html, body, [class*="css"] {
 .pc-container [data-testid="stExpander"] summary:hover {
     background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
 }
+
+.professor-cards-container [data-testid="stExpander"] [data-testid*="stVerticalBlock"] {
+    background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
