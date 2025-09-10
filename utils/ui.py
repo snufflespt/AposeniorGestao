@@ -21,19 +21,22 @@ def aplicar_estilos():
             --color-bg-start: #34495e; /* Azul médio para melhor legibilidade */
             --color-bg-end: #2c3e50; /* Tom mais claro do gradiente */
             --color-sidebar-bg: #1f2c39;
-            --color-text: #ecf0f1; /* Branco-nuvem para contraste perfeito */
-            --color-card: #5d6d7e; /* Cinza-azulado claro para cards */
-            --color-card-contrast: #566473; /* Fundo branco-sujo para contraste alto */
+            --color-text: #FFFFFF; /* Branco 100% puro para máxima legibilidade */
+            --color-card: #6c7b8d; /* Cinza-azulado médio para melhor contraste */
+            --color-card-contrast: #ecf0f1; /* Branco-nuvem para máximo contraste */
             --color-brand-start: #e74c3c; /* Vermelho mais vibrante */
             --color-brand-end: #f39c12; /* Laranja mais brilhante */
-            --color-border: #85929e; /* Borda mais clara para contraste */
-            --color-success: #27ae60; /* Verde de sucesso mais claro */
-            --color-warning: #f1c40f; /* Amarelo de aviso mais vibrante */
-            --color-error: #e74c3c; /* Vermelho de erro mais claro */
+            --color-border: #95a5a6; /* Borda muito clara e visível */
+            --color-border-strong: #bdc3c7; /* Borda ainda mais clara para divisórias */
+            --color-divider: #7f8c8d; /* Cinza médio forte para divisórias */
+            --color-success: #27ae60; /* Verde sucesso */
+            --color-warning: #f1c40f; /* Amarelo aviso */
+            --color-error: #e74c3c; /* Vermelho erro */
             --font-family: 'Montserrat', sans-serif;
             --radius: 12px;
             --fs-body: 15px;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            --divider-height: 3px; /* Divisórias mais grossas */
         }}
 
         /* --- CONFIGURAÇÕES GLOBAIS --- */
@@ -167,6 +170,30 @@ def aplicar_estilos():
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--color-text) !important;
+        }}
+
+        /* Divisórias mais visíveis */
+        hr {{
+            border: none;
+            height: var(--divider-height);
+            background: var(--color-divider);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin: 1.5rem 0;
+        }}
+
+        /* Linhas divisoras em elementos Streamlit */
+        [data-testid="stVerticalBlockBorderWrapper"]::before {{
+            content: "";
+            display: block;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-border-strong), var(--color-divider), var(--color-border-strong));
+            margin: 1rem 0;
+            border-radius: 1px;
+        }}
+
+        /* Separadores entre cards */
+        .element-container {{
+            border-bottom: 1px solid var(--color-border) !important;
         }}
 
         /* --- ELEMENTOS VISUAIS --- */
