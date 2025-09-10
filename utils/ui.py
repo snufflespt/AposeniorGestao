@@ -419,15 +419,7 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
-        /* Conteúdo expandido com ajuste sutil do fundo */
-        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
-            background: rgba(52, 73, 94, 0.02) !important;
-            padding: 20px !important;
-            border-radius: 0 0 12px 12px !important;
-            border: 1px solid #546e7a !important;
-            border-top: none !important;
-            color: white !important;
-        }}
+
 
         /* Divisórias mais visíveis */
         hr {{
