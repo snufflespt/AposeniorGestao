@@ -154,19 +154,49 @@ def aplicar_estilos():
             opacity: 0.7;
         }}
 
-        /* FORMULÁRIOS BRANCOS - Fundo branco para melhor legibilidade */
-        [data-testid="stNumberInput"] input {{
+        /* FORMULÁRIOS COMPLETOS - Labels brancos + fundo branco */
+        [data-testid="stTextInput"] label,
+        [data-testid="stNumberInput"] label,
+        [data-testid="stTextArea"] label,
+        [data-testid="stSelectbox"] label,
+        [data-testid="stDateInput"] label,
+        [data-testid="stTimeInput"] label {{
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+        }}
+
+        /* Todos os campos de entrada com fundo branco */
+        [data-testid="stTextInput"] input,
+        [data-testid="stTextArea"] textarea,
+        [data-testid="stNumberInput"] input,
+        [data-testid="stNumberInput"] input[type="number"],
+        [data-testid="stSelectbox"] input,
+        [data-testid="stSelectbox"] div[data-baseweb="select"] input {{
+            background-color: white !important;
+            color: #2c3e50 !important;
+            border: 1px solid #ddd !important;
+            border-radius: var(--radius) !important;
+            font-weight: 500 !important;
+        }}
+
+        /* Campos de data e tempo */
+        [data-testid="stDateInput"] input,
+        [data-testid="stTimeInput"] input {{
             background-color: white !important;
             color: #2c3e50 !important;
             border: 1px solid #ddd !important;
         }}
 
-        /* Campos numéricos específicos (como valor hora nos professores) */
-        [data-testid="stNumberInput"] input[type="number"] {{
+        /* Campos de seleção (dropdowns) */
+        [data-testid="stSelectbox"] div[data-baseweb="select"] {{
             background-color: white !important;
-            color: #2c3e50 !important;
             border: 1px solid #ddd !important;
-            font-weight: 500 !important;
+            border-radius: var(--radius) !important;
+        }}
+
+        [data-testid="stSelectbox"] div[data-baseweb="select"] div {{
+            color: #2c3e50 !important;
         }}
 
         /* GARANTIR BOTÕES COM GRADIENTE - Todos os botões */
