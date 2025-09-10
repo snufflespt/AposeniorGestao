@@ -45,6 +45,7 @@ def aplicar_estilos():
             font-family: var(--font-family);
             color: var(--color-text) !important;
             font-size: var(--fs-body);
+            background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
         }}
 
         .block-container {{
