@@ -389,11 +389,17 @@ def render_lista_professores(professor_df: pd.DataFrame) -> None:
     # Mostrar resultados
     st.write(f"**Mostrando {len(filtered_df)} de {len(professor_df)} professor(es)**")
 
+    # Wrapper especial para ativar estilos azul-claro dos cartões
+    st.markdown('<div class="professor-cards-container pc-container">', unsafe_allow_html=True)
+
     # Renderizar cartões de professores
     for i, professor_row in filtered_df.iterrows():
         # Usar container para destacar cada cartão
         with st.container():
             render_professor_card(professor_row, i)
+
+    # Fechar wrapper especial
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_professor_card(professor_data: pd.Series, index: int) -> None:

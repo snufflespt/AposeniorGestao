@@ -49,7 +49,7 @@ st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 # 🔹 Carregar CSS global logo no arranque
 aplicar_estilos()
 
-# 🔹 Aplicar fundo azul diretamente para garantir prioridade máxima
+# 🔹 Aplicar fundo azul e estilos dos cartões de professores
 st.markdown("""
 <style>
 .stApp {
@@ -60,6 +60,44 @@ st.markdown("""
 }
 html, body, [class*="css"] {
     background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
+}
+
+/* CARTÕES AZUL-CLARO PARA PROFESSORES - FORÇA TOTAIS */
+.professor-cards-container [data-testid="stExpander"] summary,
+.professor-cards-container details summary,
+.professor-cards-container .streamlit-expander summary {
+    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background-image: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background-color: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 16px 20px !important;
+    border-radius: 12px 12px 0 0 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    box-shadow: 0 4px 16px rgba(52, 73, 94, 0.2) !important;
+}
+
+.professor-cards-container [data-testid="stExpander"] summary:hover,
+.professor-cards-container details summary:hover {
+    background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
+}
+
+/* Garantir ULTRA FORÇADO - todos os expanders */
+.pc-container [data-testid="stExpander"] summary,
+.pc-container details summary {
+    background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    background-image: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+    color: white !important;
+    font-weight: bold !important;
+    padding: 18px 22px !important;
+}
+
+.pc-container [data-testid="stExpander"] summary:hover {
+    background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
 }
 </style>
 """, unsafe_allow_html=True)
