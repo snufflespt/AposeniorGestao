@@ -46,6 +46,11 @@ def aplicar_estilos():
 
         /* --- ESTILOS DE COMPONENTES --- */
 
+        /* Alertas (st.warning, st.info, etc.) */
+        [data-testid="stAlert"] p {
+            color: #1a2533 !important; /* Cor de texto escura para contraste em fundos claros */
+        }
+
         /* Botão Geral com Gradiente */
         [data-testid="stButton"] > button {{
             background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end));
