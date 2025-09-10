@@ -398,7 +398,7 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
                     if professor_data.get('Valor Hora'):
                         valor_hora = float(professor_data.get('Valor Hora', 0))
                         if valor_hora > 0:
-                            st.write(",.2f"f"**💰 Valor/Hora:** {valor_hora:.2f}€")
+                            st.write(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
 
                 if professor_data.get('Observacoes'):
                     st.write("**📝 Observações:**")
