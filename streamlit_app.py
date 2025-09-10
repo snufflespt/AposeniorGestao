@@ -49,6 +49,21 @@ st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 # 🔹 Carregar CSS global logo no arranque
 aplicar_estilos()
 
+# 🔹 Aplicar fundo azul diretamente para garantir prioridade máxima
+st.markdown("""
+<style>
+.stApp {
+    background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
+}
+[data-testid="stAppViewContainer"] {
+    background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
+}
+html, body, [class*="css"] {
+    background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 # 🔹 Logótipo no menu lateral
 st.sidebar.image("imagens/logo.png")
