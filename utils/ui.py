@@ -247,27 +247,109 @@ def aplicar_estilos():
             background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end)) !important;
         }}
 
-        /* Menu Lateral */
+        /* MENU LATERAL MELHORADO */
         [data-testid="stSidebar"] {{
-            background-color: var(--color-sidebar-bg);
-            border-right: 1px solid var(--color-border);
+            background: linear-gradient(180deg, var(--color-bg-start), var(--color-bg-end)) !important;
+            border-right: 2px solid var(--color-border);
+            box-shadow: 6px 0 20px rgba(0, 0, 0, 0.25), 0 0 60px rgba(231, 76, 60, 0.1) !important;
+            border-radius: 0 10px 10px 0 !important;
         }}
 
-        /* Estilos para o streamlit-option-menu */
+        /* MENU LATERAL - STREAMLIT OPTION MENU */
+        [data-testid="stSidebar"] .css-1quwbsr {{"""
+    """}}
+
+        /* Seleção com gradiente consistente Streamlit Option Menu */
+        [data-testid="stSidebar"] ul li div[data-testid="stVerticalBlock"] div.record-header {{"""
+    """}}
+        [data-testid="stSidebar"] .nav-link, [data-testid="stSidebar"] a {{"""
+    """}}
+
+        /* Streamlit Option Menu - pilares principais */
+        [data-testid="stSidebar"] ._option-menu-container .option-menu-container .option-menu-item {{"""
+    """}}
+
+        /* Estilização correta do Streamlit Option Menu */
+        [data-testid="stSidebar"] button[data-v-b9058cd2] {{"""
+    """}}
+
+        /* MENU ESTILIZADO PARA STREAMLIT-OPTION-MENU */
         [data-testid="stSidebar"] .nav-link {{
-            font-size: 1rem;
+            font-size: 1.1rem !important;
             color: var(--color-text) !important;
-            border-radius: var(--radius);
-            margin: 4px 0;
-            transition: all 0.2s ease;
+            border-radius: var(--radius) !important;
+            margin: 6px 8px !important;
+            padding: 14px 18px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            border-left: 4px solid transparent !important;
+            font-weight: 500 !important;
+            text-decoration: none !important;
+            background: rgba(255, 255, 255, 0.02) !important;
+            backdrop-filter: blur(8px) !important;
+            position: relative !important;
+            overflow: hidden !important;
         }}
+
+        /* Efeito de brilho no hover */
+        [data-testid="stSidebar"] .nav-link::before {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }}
+
+        /* Hover effect mais elegante com brilho */
         [data-testid="stSidebar"] .nav-link:hover {{
-            background-color: rgba(255, 255, 255, 0.05);
-        }}
-        [data-testid="stSidebar"] .nav-link-selected {{
-            background: linear-gradient(90deg, var(--color-brand-start), var(--color-brand-end));
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-left-color: rgba(255, 255, 255, 0.8) !important;
+            transform: translateX(6px) scale(1.02) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(231, 76, 60, 0.2) !important;
             color: white !important;
-            font-weight: 600;
+        }}
+
+        [data-testid="stSidebar"] .nav-link:hover::before {{
+            left: 100%;
+        }}
+
+        /* Seleção com gradiente consistente e micro-animação */
+        [data-testid="stSidebar"] .nav-link-selected {{
+            background: linear-gradient(135deg, var(--color-brand-start) 0%, var(--color-brand-end) 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border-left-color: white !important;
+            box-shadow: 0 6px 25px rgba(231, 76, 60, 0.4), 0 0 50px rgba(243, 156, 18, 0.2) !important;
+            transform: translateX(8px) scale(1.02) !important;
+            border-radius: 12px !important;
+            position: relative !important;
+            animation: pulse-selected 2s infinite !important;
+        }}
+
+        /* Animação sutil para item selecionado */
+        @keyframes pulse-selected {{
+            0%, 100% {{
+                box-shadow: 0 6px 25px rgba(231, 76, 60, 0.4), 0 0 30px rgba(243, 156, 18, 0.1);
+            }}
+            50% {{
+                box-shadow: 0 6px 25px rgba(231, 76, 60, 0.6), 0 0 40px rgba(243, 156, 18, 0.2);
+            }}
+        }}
+
+        /* Ícones dos menus com melhor espaçamento */
+        [data-testid="stSidebar"] .nav-link i,
+        [data-testid="stSidebar"] .nav-link svg {{"""
+    """}}
+
+        /* Título do sidebar */
+        [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {{
+            color: white !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            margin-bottom: 20px !important;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2) !important;
         }}
 
         /* Abas (Tabs) */
