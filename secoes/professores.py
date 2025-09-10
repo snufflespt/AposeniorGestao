@@ -90,7 +90,11 @@ def render_add_form(professor_df: pd.DataFrame) -> None:
     """
     titulo_secao("Adicionar novo professor", "➕")
 
-    with st.form("form_professor"):
+    # Initialize form key if it doesn't exist
+    if 'form_prof_key' not in st.session_state:
+        st.session_state.form_prof_key = 0
+
+    with st.form(f"form_professor_{st.session_state.form_prof_key}"):
         form_data = {}
 
         # Configuração de campos com validações
@@ -122,11 +126,9 @@ def render_add_form(professor_df: pd.DataFrame) -> None:
         with col_limpar:
             limpar = st.form_submit_button("🗑️ Limpar Formulário")
 
-    # Limpar formulário de forma simples e segura
+    # using the same working approach from disciplinas.py
     if limpar:
-        # Solução simples: recarregar a página para reset completo
-        st.success("✅ Formulário limpo! Todos os campos foram resetados.")
-        time.sleep(0.8)  # Pequena pausa para mostrar feedback
+        st.session_state.form_prof_key += 1
         st.rerun()
 
     if submetido:
@@ -213,6 +215,10 @@ def verificar_vista_edicao(professor_df: pd.DataFrame) -> bool:
         st.rerun()
         return True
 
+    # Add form key initialization for edition form too
+    if 'form_editar_prof_key' not in st.session_state:
+        st.session_state.form_editar_prof_key = 0
+
     professor_atual = professor_df.iloc[idx]
     render_edit_form_professor(professor_atual, idx)
     return True
@@ -228,7 +234,7 @@ def render_edit_form_professor(professor_data: pd.Series, index: int) -> None:
     """
     st.subheader(f"Editar professor: {professor_data['Nome Completo']}")
 
-    with st.form("form_editar_prof"):
+    with st.form(f"form_editar_prof_{st.session_state.form_editar_prof_key}"):
         form_data = {}
 
         col1, col2 = st.columns(2)
@@ -271,9 +277,7 @@ def render_edit_form_professor(professor_data: pd.Series, index: int) -> None:
 
         with col_limpar_alteracoes:
             if st.form_submit_button("🗑️ Limpar Alterações"):
-                # Feedback simples e recarregar para reset
-                st.info("🔄 Retornando à edição para resetar o formulário...")
-                time.sleep(0.5)  # Pequena pausa para feedback
+                st.session_state.form_editar_prof_key += 1
                 st.rerun()
 
 
