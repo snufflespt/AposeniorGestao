@@ -1,3 +1,2 @@
 model: openrouter/qwen/qwen3-coder:free
-api-key:
-  - openrouter=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
+api_key: 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
