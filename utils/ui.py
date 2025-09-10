@@ -48,6 +48,31 @@ def aplicar_estilos():
             background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
         }}
 
+        /* DESTAQUE AZUL CLARO PARA FORMULÁRIOS */
+        [data-testid="stForm"] {{
+            background: linear-gradient(135deg, #415a77 0%, #34495e 100%) !important;
+            border-radius: var(--radius) !important;
+            padding: 20px !important;
+            margin: 20px 0 !important;
+            border: 1px solid #546e7a !important;
+            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
+        }}
+
+        /* Containers de abas com destaque azul */
+        [data-testid*="stTabs"] > div > div {{
+            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
+            border-radius: 12px 12px 0 0 !important;
+            margin-bottom: 0 !important;
+        }}
+
+        /* Área de formulário mais escura para contraste */
+        .element-container:has([data-testid="stForm"]) {{
+            background: rgba(65, 90, 119, 0.6) !important;
+            border-radius: var(--radius) !important;
+            padding: 15px !important;
+            margin: 10px 0 !important;
+        }}
+
         .block-container {{
             padding-top: 2rem !important;
         }}
