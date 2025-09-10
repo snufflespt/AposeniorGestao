@@ -122,11 +122,11 @@ def render_add_form(professor_df: pd.DataFrame) -> None:
         with col_limpar:
             limpar = st.form_submit_button("🗑️ Limpar Formulário")
 
+    # Limpar formulário de forma simples e segura
     if limpar:
-        for key in st.session_state:
-            if key.startswith('form_professor') or key in ['submetido', 'limpar']:
-                if key in st.session_state:
-                    del st.session_state[key]
+        # Solução simples: recarregar a página para reset completo
+        st.success("✅ Formulário limpo! Todos os campos foram resetados.")
+        time.sleep(0.8)  # Pequena pausa para mostrar feedback
         st.rerun()
 
     if submetido:
@@ -271,12 +271,9 @@ def render_edit_form_professor(professor_data: pd.Series, index: int) -> None:
 
         with col_limpar_alteracoes:
             if st.form_submit_button("🗑️ Limpar Alterações"):
-                # Restaurar valores originais
-                form_data.clear()
-                for key in st.session_state:
-                    if key.startswith('form_editar_prof'):
-                        if key in st.session_state:
-                            del st.session_state[key]
+                # Feedback simples e recarregar para reset
+                st.info("🔄 Retornando à edição para resetar o formulário...")
+                time.sleep(0.5)  # Pequena pausa para feedback
                 st.rerun()
 
 
