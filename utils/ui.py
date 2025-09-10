@@ -419,12 +419,8 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
-        /* ESTILIZING FORÇADO DOS EXPANDERS COM AMARELO TESTE */
-        .professor-cards-container [data-testid="stExpander"] summary,
-        .pc-container [data-testid="stExpander"] summary,
-        .professor-cards-container details summary,
-        .pc-container details summary,
-        div[data-testid="stExpander"] summary {{
+        /* ESTILIZING COM SELECTORES MAIS BÁSICOS E FORÇADOS */
+        summary {{
             background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
             background-image: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
             background-color: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
@@ -433,37 +429,43 @@ def aplicar_estilos():
             padding: 16px 20px !important;
             border-radius: 12px 12px 0 0 !important;
             cursor: pointer !important;
-            border: none !important;
+            border: 2px solid #e67e22 !important;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
             display: block !important;
             width: 100% !important;
             text-align: left !important;
             transition: all 0.3s ease !important;
             font-size: 18px !important;
-            border: 2px solid #e67e22 !important;
+            margin: 8px 0 2px 0 !important;
         }}
 
-        /* Hover para expanders */
-        .professor-cards-container [data-testid="stExpander"] summary:hover,
-        .pc-container [data-testid="stExpander"] summary:hover,
-        div[data-testid="stExpander"] summary:hover {{
+        /* Hover para todos os summaries */
+        summary:hover {{
             background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%) !important;
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
             border-color: #c0392b !important;
         }}
 
-        /* Conteúdo do expander expandido */
-        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"],
-        div[data-testid="stExpander"]:not([aria-expanded="false"]) .stVerticalBlock {{
+        /* DETECTAR EXPANDER EXPANDIDO E APLICAR FUNDO AMARELO */
+        div[aria-expanded="true"] {{
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%) !important;
+        }}
+
+        /* FORÇAR FUNDO EM QUALQUER DIV FILHO DE EXPANDER EXPANDIDO */
+        div[aria-expanded="true"] > div {{
             background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%) !important;
             background-color: #ffeaa7 !important;
+            color: #2c3e50 !important;
             padding: 20px !important;
             border-radius: 0 0 12px 12px !important;
             border: 2px solid #e67e22 !important;
             border-top: none !important;
-            color: #2c3e50 !important;
-            border-top: 3px solid #f39c12 !important;
+        }}
+
+        /* SELETOR ESPECÍFICO PARA STREAMLIT */
+        .st-emotion-cache-1st99hm {{
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
         }}
 
         /* Divisórias mais visíveis */
