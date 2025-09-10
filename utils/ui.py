@@ -302,12 +302,11 @@ def aplicar_estilos():
             transition: left 0.5s;
         }}
 
-        /* Hover effect mais elegante com brilho */
+        /* Hover effect simples e elegante */
         [data-testid="stSidebar"] .nav-link:hover {{
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-left-color: rgba(255, 255, 255, 0.8) !important;
-            transform: translateX(6px) scale(1.02) !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(231, 76, 60, 0.2) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            transform: translateX(4px) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
             color: white !important;
         }}
 
@@ -417,7 +416,7 @@ def aplicar_estilos():
 
         /* Fundo da aplicação principal com gradiente */
         [data-testid="stAppViewContainer"] {{
-            background: radial-gradient(circle, var(--color-bg-start) 0%, var(--color-bg-end) 100%);
+            background: radial-gradient(circle, #34495e 0%, #2c3e50 100%);
             background-attachment: fixed;
         }}
 
