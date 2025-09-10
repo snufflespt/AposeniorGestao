@@ -391,7 +391,9 @@ def render_lista_professores(professor_df: pd.DataFrame) -> None:
 
     # Renderizar cartões de professores
     for i, professor_row in filtered_df.iterrows():
-        render_professor_card(professor_row, i)
+        # Usar container para destacar cada cartão
+        with st.container():
+            render_professor_card(professor_row, i)
 
 
 def render_professor_card(professor_data: pd.Series, index: int) -> None:
@@ -405,47 +407,39 @@ def render_professor_card(professor_data: pd.Series, index: int) -> None:
     nome_completo = professor_data.get('Nome Completo', 'Sem nome')
     id_professor = professor_data.get('ID_professor', f'idx_{index}')
 
-    # Container com fundo azul-claro para destacar
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    with st.container():
-        # Usar expander para melhor organização
-        with st.expander(f"👨‍🏫 **{nome_completo}** ({id_professor})", expanded=False):
+    # Usar expander para melhor organização com destaque
+    with st.expander(f"👨‍🏫 **{nome_completo}** ({id_professor})", expanded=False):
 
-            # Layout com colunas para informação
-            col_info, col_actions = st.columns([4, 1])
+        # Layout com colunas para informação
+        col_info, col_actions = st.columns([4, 1])
 
-            with col_info:
-                # Informações principais
-                st.write(f"**🆔 ID:** {id_professor}")
-                st.write(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
-                if professor_data.get('Email'):
-                    st.write(f"**📧 Email:** {professor_data.get('Email')}")
+        with col_info:
+            # Informações principais
+            st.write(f"**🆔 ID:** {id_professor}")
+            st.write(f"**📞 Telefone:** {professor_data.get('Telefone', 'N/A')}")
+            if professor_data.get('Email'):
+                st.write(f"**📧 Email:** {professor_data.get('Email')}")
 
-                col1, col2 = st.columns(2)
-                with col1:
-                    if professor_data.get('NIB'):
-                        st.write(f"**💳 NIB:** {professor_data.get('NIB')}")
-                with col2:
-                    if professor_data.get('Valor Hora'):
-                        valor_hora = float(professor_data.get('Valor Hora', 0))
-                        if valor_hora > 0:
-                            st.write(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
+            col1, col2 = st.columns(2)
+            with col1:
+                if professor_data.get('NIB'):
+                    st.write(f"**💳 NIB:** {professor_data.get('NIB')}")
+            with col2:
+                if professor_data.get('Valor Hora'):
+                    valor_hora = float(professor_data.get('Valor Hora', 0))
+                    if valor_hora > 0:
+                        st.write(f"**💰 Valor/Hora:** {valor_hora:.2f}€")
 
-                if professor_data.get('Observacoes'):
-                    st.write("**📝 Observações:**")
-                    st.write(professor_data.get('Observacoes'))
+            if professor_data.get('Observacoes'):
+                st.write("**📝 Observações:**")
+                st.write(professor_data.get('Observacoes'))
 
-            with col_actions:
-                # Botões de ação vertical
-                if st.button("✏️ Editar", key=f"edit_prof_{index}", use_container_width=True):
-                    st.session_state['edit_prof_index'] = index
-                    st.rerun()
+        with col_actions:
+            # Botões de ação vertical
+            if st.button("✏️ Editar", key=f"edit_prof_{index}", use_container_width=True):
+                st.session_state['edit_prof_index'] = index
+                st.rerun()
 
-                if st.button("🗑️ Apagar", key=f"delete_prof_{index}", use_container_width=True):
-                    st.session_state['delete_prof_index'] = index
-                    st.rerun()
-
-            st.divider()
-
-    # Fechar o container destaque do card
-    st.markdown('</div>', unsafe_allow_html=True)
+            if st.button("🗑️ Apagar", key=f"delete_prof_{index}", use_container_width=True):
+                st.session_state['delete_prof_index'] = index
+                st.rerun()
