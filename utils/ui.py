@@ -419,18 +419,18 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
-        /* ESTILIZING COM SELECTORES MAIS BÁSICOS E FORÇADOS */
+        /* ESTILIZING COM AZUL-CLARO FINAL */
         summary {{
-            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
-            background-image: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
-            background-color: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
-            color: #2c3e50 !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background-image: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background-color: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            color: white !important;
             font-weight: 600 !important;
             padding: 16px 20px !important;
             border-radius: 12px 12px 0 0 !important;
             cursor: pointer !important;
-            border: 2px solid #e67e22 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+            border: none !important;
+            box-shadow: 0 4px 16px rgba(52, 73, 94, 0.3) !important;
             display: block !important;
             width: 100% !important;
             text-align: left !important;
@@ -441,31 +441,30 @@ def aplicar_estilos():
 
         /* Hover para todos os summaries */
         summary:hover {{
-            background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%) !important;
+            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
             transform: translateY(-2px) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-            border-color: #c0392b !important;
+            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.5) !important;
         }}
 
-        /* DETECTAR EXPANDER EXPANDIDO E APLICAR FUNDO AMARELO */
+        /* DETECTAR EXPANDER EXPANDIDO E APLICAR FUNDO AZUL CLARO */
         div[aria-expanded="true"] {{
-            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
         }}
 
         /* FORÇAR FUNDO EM QUALQUER DIV FILHO DE EXPANDER EXPANDIDO */
         div[aria-expanded="true"] > div {{
-            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%) !important;
-            background-color: #ffeaa7 !important;
-            color: #2c3e50 !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background-color: #3498db !important;
+            color: white !important;
             padding: 20px !important;
             border-radius: 0 0 12px 12px !important;
-            border: 2px solid #e67e22 !important;
+            border: 1px solid #546e7a !important;
             border-top: none !important;
         }}
 
         /* SELETOR ESPECÍFICO PARA STREAMLIT */
         .st-emotion-cache-1st99hm {{
-            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
         }}
 
         /* Divisórias mais visíveis */
