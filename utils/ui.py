@@ -419,52 +419,34 @@ def aplicar_estilos():
             color: rgba(255, 255, 255, 0.9) !important;
         }}
 
-        /* ESTILIZING COM AZUL-CLARO FINAL */
-        summary {{
+        /* Cabeçalho do expander */
+        details > summary {{
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            background-image: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            background-color: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             color: white !important;
             font-weight: 600 !important;
-            padding: 16px 20px !important;
-            border-radius: 12px 12px 0 0 !important;
+            padding: 12px 16px !important;
+            border-radius: 12px !important;
             cursor: pointer !important;
-            border: none !important;
-            box-shadow: 0 4px 16px rgba(52, 73, 94, 0.3) !important;
-            display: block !important;
-            width: 100% !important;
-            text-align: left !important;
-            transition: all 0.3s ease !important;
-            font-size: 18px !important;
-            margin: 8px 0 2px 0 !important;
+            list-style: none !important; /* remove o triângulo default */
         }}
 
-        /* Hover para todos os summaries */
-        summary:hover {{
+        /* Hover do cabeçalho */
+        details > summary:hover {{
             background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.5) !important;
         }}
 
-        /* DETECTAR EXPANDER EXPANDIDO E APLICAR FUNDO AZUL CLARO */
-        details[open] {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+        /* Quando o expander está aberto */
+        details[open] > summary {{
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
+            border-radius: 12px 12px 0 0 !important;
         }}
 
-        /* FORÇAR FUNDO EM QUALQUER DIV FILHO DE EXPANDER EXPANDIDO */
+        /* Conteúdo interno do expander */
         details[open] > div {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
-            background-color: #3498db !important;
+            background: rgba(255, 255, 255, 0.05) !important;
             color: white !important;
-            padding: 20px !important;
+            padding: 16px !important;
             border-radius: 0 0 12px 12px !important;
-            border: 1px solid #546e7a !important;
-            border-top: none !important;
-        }}
-
-        /* SELETOR ESPECÍFICO PARA STREAMLIT */
-        .st-emotion-cache-1st99hm {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
         }}
 
         /* Divisórias mais visíveis */
