@@ -407,81 +407,28 @@ def aplicar_estilos():
             border-image: linear-gradient(to bottom, var(--color-brand-start), var(--color-brand-end)) 1;
         }}
 
-        /* SUPER FORÇADO - AZUL CLARO PARA TODOS OS EXPANDERS */
-        /* Aplicar azul-claro a todos os detalhes HTML */
-        details {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
-            border: 1px solid #546e7a !important;
-            border-radius: var(--radius) !important;
-            margin: 10px 0 !important;
-            width: 100% !important;
-            transition: all 0.3s ease !important;
-        }}
-
-        /* Forçar azul nas summaries */
-        summary {{
+        /* EXPANDERS AZUL-CLARO MAIS SIMPLES E FUNCIONAL */
+        [data-testid="stExpander"] summary {{
             background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
             color: white !important;
             font-weight: 600 !important;
-            font-size: 1.1rem !important;
             padding: 16px 20px !important;
-            margin: 0 !important;
-            border: none !important;
-            width: 100% !important;
-        }}
-
-        /* Aplicar azul-claro nos seletores específicos do Streamlit */
-        div[data-testid*="stExpander"] {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
-            border-radius: var(--radius) !important;
-            border: 1px solid #546e7a !important;
-        }}
-
-        /* Forçar no cabeçalho específico */
-        [data-testid="stExpander"] summary,
-        details summary {{
-            background: linear-gradient(135deg, #4a6fa5 0%, #415a77 100%) !important;
-            border: none !important;
             border-radius: var(--radius) var(--radius) 0 0 !important;
-            padding: 16px 20px !important;
-            margin: 0 !important;
-            color: white !important;
-            font-weight: 600 !important;
-            font-size: 1.1rem !important;
-            width: 100% !important;
             cursor: pointer !important;
         }}
 
-        /* Hover azul ainda mais claro */
-        details summary:hover,
+        /* Hover azul mais claro */
         [data-testid="stExpander"] summary:hover {{
             background: linear-gradient(135deg, #5a8fc0 0%, #5175a0 100%) !important;
             transform: translateY(-1px) !important;
-            box-shadow: 0 8px 32px rgba(52, 73, 94, 0.4) !important;
         }}
 
-        /* Conteúdo do Expander quando FECHADO */
-        [data-testid="stExpander"][aria-expanded="false"] [data-testid*="stVerticalBlock"] {{
-            display: none !important;
-        }}
-
-        /* Conteúdo do Expander quando ABERTO */
+        /* Conteúdo expandido com fundo sutil */
         [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] {{
-            display: block !important;
-            background: rgba(52, 73, 94, 0.06) !important;
+            background: rgba(52, 73, 94, 0.08) !important;
             padding: 20px !important;
-            margin: 0 !important;
             border-top: 1px solid #546e7a !important;
-            border-radius: 0 0 vmax vmax !important;
-            color: var(--color-text) !important;
-            line-height: 1.6 !important;
-        }}
-
-        /* Estilização específica do texto dentro do expanderexpandido */
-        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] p,
-        [data-testid="stExpander"][aria-expanded="true"] [data-testid*="stVerticalBlock"] div {{
-            color: var(--color-text) !important;
-            margin: 8px 0 !important;
+            border-radius: 0 0 var(--radius) var(--radius) !important;
         }}
 
         /* Divisórias mais visíveis */
