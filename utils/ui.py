@@ -9,9 +9,10 @@ def imagem_base64(caminho):
     return base64.b64encode(dados).decode()
 
 def aplicar_estilos():
-    mascote_b64 = imagem_base64("imagens/mascote.png")
-    st.markdown(
-        f"""
+    try:
+        mascote_b64 = imagem_base64("imagens/mascote.png")
+        st.markdown(
+            f"""
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -526,8 +527,11 @@ def aplicar_estilos():
         }}
         </style>
         """,
-        unsafe_allow_html=True
-    )
+            unsafe_allow_html=True
+        )
+    except Exception as e:
+        st.error(f"Erro ao aplicar estilos: {e}")
+        print(f"Erro ao aplicar estilos: {e}")
 
 def titulo_secao(texto, icone="📌"):
     """Mostra um título de secção com divisor."""

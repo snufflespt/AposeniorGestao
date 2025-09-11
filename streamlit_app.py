@@ -47,6 +47,7 @@ def get_dashboard_stats():
 st.set_page_config(page_title="Gestão IPSS", page_icon="🧭", layout="wide")
 
 # 🔹 Carregar CSS global logo no arranque
+print("aplicar_estilos() called")
 aplicar_estilos()
 
 # 🔹 Aplicar fundo azul e estilos dos cartões de professores
