@@ -421,7 +421,7 @@ def aplicar_estilos():
 
         /* Cabeçalho do expander */
         div[data-testid="stExpanderHeader"] {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background: linear-gradient(135deg, #87CEEB 0%, #6495ED 100%) !important; /* Azul mais claro */
             color: white !important;
             font-weight: 600 !important;
             padding: 12px 16px !important;
@@ -431,21 +431,23 @@ def aplicar_estilos():
 
         /* Hover no cabeçalho */
         div[data-testid="stExpanderHeader"]:hover {{
-            background: linear-gradient(135deg, #5dade2 0%, #3498db 100%) !important;
+            background: linear-gradient(135deg, #B0E0E6 0%, #87CEEB 100%) !important; /* Azul ainda mais claro no hover */
         }}
 
         /* Quando o expander está aberto */
         div[data-testid="stExpander"][aria-expanded="true"] > div[data-testid="stExpanderHeader"] {{
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important; /* Mantém verde para indicar aberto */
             border-radius: 12px 12px 0 0 !important;
         }}
 
         /* Conteúdo do expander */
         div[data-testid="stExpanderContent"] {{
-            background: rgba(255, 255, 255, 0.05) !important;
-            color: white !important;
+            background: #E3F2FD !important; /* Fundo azul claro para melhor leitura */
+            color: #2c3e50 !important; /* Texto escuro para contraste */
             padding: 16px !important;
             border-radius: 0 0 12px 12px !important;
+            border: 1px solid #B3E5FC !important; /* Borda sutil para definição */
+            border-top: none !important;
         }}
 
         /* Divisórias mais visíveis */
