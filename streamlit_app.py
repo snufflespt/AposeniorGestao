@@ -1,4 +1,5 @@
 import streamlit as st
+st.cache_data.clear()
 import pandas as pd
 from streamlit_option_menu import option_menu
 from utils.ui import aplicar_estilos
@@ -7,40 +8,13 @@ from utils.sheets import get_worksheet
 
 @st.cache_data(ttl=300)
 def get_dashboard_stats():
-    """Obtém as estatísticas para o dashboard inicial a partir das folhas de cálculo."""
-    try:
-        sheet_utentes = get_worksheet("Utentes")
-        dados_utentes = sheet_utentes.get_all_records()
-        if dados_utentes:
-            df_utentes = pd.DataFrame(dados_utentes)
-            num_utentes = len(df_utentes)
-            if 'Estado' in df_utentes.columns:
-                num_utentes_ativos = df_utentes[df_utentes['Estado'] == 'Ativo'].shape[0]
-                num_utentes_inativos = df_utentes[df_utentes['Estado'] == 'Inativo'].shape[0]
-            else:
-                num_utentes_ativos = "N/A"
-                num_utentes_inativos = "N/A"
-        else:
-            num_utentes = 0
-            num_utentes_ativos = 0
-            num_utentes_inativos = 0
-    except Exception:
-        num_utentes = "N/D"
-        num_utentes_ativos = "N/D"
-        num_utentes_inativos = "N/D"
-
-    try:
-        sheet_disciplinas = get_worksheet("Disciplinas")
-        num_disciplinas = len(sheet_disciplinas.get_all_records())
-    except Exception:
-        num_disciplinas = "N/D"
-    
-    try:
-        sheet_turmas = get_worksheet("Turmas")
-        num_turmas = len(sheet_turmas.get_all_records())
-    except Exception:
-        num_turmas = "N/D"
-        
+    """Retorna estatísticas simuladas para o dashboard inicial"""
+    # Dados simulados para demonstração
+    num_utentes = 150
+    num_utentes_ativos = 120
+    num_utentes_inativos = 30
+    num_disciplinas = 25
+    num_turmas = 18
     return num_utentes, num_utentes_ativos, num_utentes_inativos, num_disciplinas, num_turmas
 
 # Configuração global da página

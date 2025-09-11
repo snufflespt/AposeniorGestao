@@ -512,6 +512,7 @@ def aplicar_estilos():
         }}
 
         /* Marca de água da mascote */
+        /*
         [data-testid="stAppViewContainer"]::after {{
             content: "";
             position: fixed;
@@ -525,6 +526,7 @@ def aplicar_estilos():
             opacity: 0.2; /* Mais visível */
             pointer-events: none;
         }}
+        */
         </style>
         """,
             unsafe_allow_html=True
