@@ -435,7 +435,7 @@ def aplicar_estilos():
         }}
 
         /* Cabeçalho do expander */
-        /* Cabeçalho do expander - azul claro apenas para expanders */
+        /* Aplicar estilos apenas aos expanders */
         div[data-testid="stExpanderHeader"] {{
             background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             color: white !important;
@@ -445,18 +445,15 @@ def aplicar_estilos():
             cursor: pointer !important;
         }}
 
-        /* Hover no cabeçalho */
         div[data-testid="stExpanderHeader"]:hover {{
             background: linear-gradient(135deg, #8fc9ff 0%, #4ca3e0 100%) !important;
         }}
 
-        /* Quando o expander está aberto */
         div[data-testid="stExpander"][aria-expanded="true"] > div[data-testid="stExpanderHeader"] {{
             background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             border-radius: 12px 12px 0 0 !important;
         }}
 
-        /* Conteúdo do expander - fundo azul claro sólido */
         div[data-testid="stExpanderContent"] {{
             background: #E3F2FD !important;
             color: #2c3e50 !important;
@@ -466,17 +463,19 @@ def aplicar_estilos():
             border-top: none !important;
         }}
 
-        /* Remover fundo azul de outros elementos */
-        .element-container:not([data-testid="stExpander"]),
-        .stElementContainer,
-        .st-emotion-cache-1vo6xi6,
-        .eceldm40 {{
+        /* Reset de fundo para todos os outros elementos */
+        *:not([data-testid="stExpanderHeader"]):not([data-testid="stExpanderContent"]) {{
             background: transparent !important;
         }}
 
-        /* Garantir que o fundo da página seja mantido */
+        /* Fundo principal da página */
         [data-testid="stAppViewContainer"] {{
             background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
+        }}
+
+        /* Container principal - garantir fundo escuro */
+        .main .block-container {{
+            background: transparent !important;
         }}
 
         /* Divisórias mais visíveis */
