@@ -389,8 +389,8 @@ def render_lista_professores(professor_df: pd.DataFrame) -> None:
     # Mostrar resultados
     st.write(f"**Mostrando {len(filtered_df)} de {len(professor_df)} professor(es)**")
 
-    # Wrapper especial para ativar estilos azul-claro dos cartões
-    st.markdown('<div class="professor-cards-container pc-container">', unsafe_allow_html=True)
+    # Wrapper especial para ativar estilos azul-claro dos cartões e expanders
+    st.markdown('<div class="card-container professor-cards-container">', unsafe_allow_html=True)
 
     # Renderizar cartões de professores
     for i, professor_row in filtered_df.iterrows():

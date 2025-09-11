@@ -177,8 +177,8 @@ def mostrar_pagina():
 
                 for i, row in df_filtrado.iterrows():
                     expander_title = f"📚 **{row.get('Nome da Disciplina', 'Sem Nome')}**"
-                    # Container com destaque azul para disciplinar
-                    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+                    # Container com destaque azul para disciplinar e expanders
+                    st.markdown('<div class="card-container disciplina-container">', unsafe_allow_html=True)
                     with st.expander(expander_title):
                         col1, col2 = st.columns(2)
                         with col1:
