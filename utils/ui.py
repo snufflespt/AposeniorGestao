@@ -466,9 +466,15 @@ def aplicar_estilos():
             border-top: none !important;
         }}
 
-        /* Expanders geral - manter fundo azul claro */
-        div[data-testid="stExpander"] {{
+        /* Expanders geral - aplicar apenas aos componentes de expansão */
+        div[data-testid="stExpander"] > div[data-testid="stExpanderHeader"],
+        div[data-testid="stExpander"] > div[data-testid="stExpanderContent"] {{
             background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+        }}
+
+        /* Container principal do expander - fundo transparente */
+        div[data-testid="stExpander"] {{
+            background: transparent !important;
             border-radius: 12px !important;
         }}
 
