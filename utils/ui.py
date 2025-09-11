@@ -435,7 +435,7 @@ def aplicar_estilos():
         }}
 
         /* Cabeçalho do expander */
-        /* Cabeçalho do expander - azul claro consistente */
+        /* Cabeçalho do expander - azul claro apenas para expanders */
         div[data-testid="stExpanderHeader"] {{
             background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             color: white !important;
@@ -466,16 +466,17 @@ def aplicar_estilos():
             border-top: none !important;
         }}
 
-        /* Expanders geral - aplicar apenas aos componentes de expansão */
-        div[data-testid="stExpander"] > div[data-testid="stExpanderHeader"],
-        div[data-testid="stExpander"] > div[data-testid="stExpanderContent"] {{
-            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+        /* Remover fundo azul de outros elementos */
+        .element-container:not([data-testid="stExpander"]),
+        .stElementContainer,
+        .st-emotion-cache-1vo6xi6,
+        .eceldm40 {{
+            background: transparent !important;
         }}
 
-        /* Container principal do expander - fundo transparente */
-        div[data-testid="stExpander"] {{
-            background: transparent !important;
-            border-radius: 12px !important;
+        /* Garantir que o fundo da página seja mantido */
+        [data-testid="stAppViewContainer"] {{
+            background: radial-gradient(circle, #34495e 0%, #2c3e50 100%) !important;
         }}
 
         /* Divisórias mais visíveis */
