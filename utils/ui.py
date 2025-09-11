@@ -435,8 +435,9 @@ def aplicar_estilos():
         }}
 
         /* Cabeçalho do expander */
+        /* Cabeçalho do expander - azul claro consistente */
         div[data-testid="stExpanderHeader"] {{
-            background: linear-gradient(135deg, #87CEEB 0%, #6495ED 100%) !important; /* Azul mais claro */
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             color: white !important;
             font-weight: 600 !important;
             padding: 12px 16px !important;
@@ -446,26 +447,26 @@ def aplicar_estilos():
 
         /* Hover no cabeçalho */
         div[data-testid="stExpanderHeader"]:hover {{
-            background: linear-gradient(135deg, #B0E0E6 0%, #87CEEB 100%) !important; /* Azul ainda mais claro no hover */
+            background: linear-gradient(135deg, #8fc9ff 0%, #4ca3e0 100%) !important;
         }}
 
         /* Quando o expander está aberto */
         div[data-testid="stExpander"][aria-expanded="true"] > div[data-testid="stExpanderHeader"] {{
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important; /* Mantém verde para indicar aberto */
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             border-radius: 12px 12px 0 0 !important;
         }}
 
-        /* Conteúdo do expander */
+        /* Conteúdo do expander - fundo azul claro sólido */
         div[data-testid="stExpanderContent"] {{
-            background: #E3F2FD !important; /* Fundo azul claro para melhor leitura */
-            color: #2c3e50 !important; /* Texto escuro para contraste */
+            background: #E3F2FD !important;
+            color: #2c3e50 !important;
             padding: 16px !important;
             border-radius: 0 0 12px 12px !important;
-            border: 1px solid #B3E5FC !important; /* Borda sutil para definição */
+            border: 1px solid #B3E5FC !important;
             border-top: none !important;
         }}
 
-        /* Expanders geral - forçar fundo azul claro */
+        /* Expanders geral - manter fundo azul claro */
         div[data-testid="stExpander"] {{
             background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
             border-radius: 12px !important;
