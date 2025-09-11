@@ -397,26 +397,40 @@ def aplicar_estilos():
             border-bottom-style: solid;
         }}
 
-        /* Métricas no Dashboard - Azul Claro Consistente */
+        /* Métricas no Dashboard - Azul Mais Claro */
         [data-testid="stMetric"] {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+            background: linear-gradient(135deg, #87CEEB 0%, #6495ED 100%) !important; /* Azul mais claro */
             border-radius: var(--radius);
             padding: 1.5rem;
-            box-shadow: 0 8px 24px rgba(52, 73, 94, 0.4) !important;
-            border: 1px solid #546e7a !important;
+            box-shadow: 0 8px 24px rgba(52, 73, 94, 0.3) !important; /* Sombra mais sutil */
+            border: 1px solid #B3E5FC !important; /* Borda azul clara */
             color: white !important;
         }}
+        /* Métricas no Dashboard - Azul Mais Claro */
+        [data-testid="stMetric"] {{
+            background: linear-gradient(135deg, #87CEEB 0%, #6495ED 100%) !important; /* Azul mais claro */
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(52, 73, 94, 0.3) !important; /* Sombra mais sutil */
+            border: 1px solid #B3E5FC !important; /* Borda azul clara */
+            color: #2c3e50 !important; /* Texto escuro para melhor contraste com fundo claro */
+            transition: transform 0.2s ease !important;
+        }}
+        [data-testid="stMetric"]:hover {{
+            transform: translateY(-2px) !important; /* Efeito sutil de elevação */
+            box-shadow: 0 12px 32px rgba(52, 73, 94, 0.4) !important;
+        }}
         [data-testid="stMetric"] .metric-label {{
-            color: white !important;
+            color: #2c3e50 !important; /* Texto escuro */
             font-weight: 600 !important;
         }}
         [data-testid="stMetric"] .metric-value {{
-            color: white !important;
+            color: #2c3e50 !important; /* Texto escuro */
             font-weight: 700 !important;
             font-size: 1.2em !important;
         }}
         [data-testid="stMetric"] .metric-delta {{
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #34495e !important; /* Azul médio para delta */
         }}
 
         /* Cabeçalho do expander */
