@@ -464,6 +464,12 @@ def aplicar_estilos():
             border-top: none !important;
         }}
 
+        /* Expanders geral - forçar fundo azul claro */
+        div[data-testid="stExpander"] {{
+            background: linear-gradient(135deg, #74b9ff 0%, #3498db 100%) !important;
+            border-radius: 12px !important;
+        }}
+
         /* Divisórias mais visíveis */
         hr {{
             border: none;
@@ -494,6 +500,14 @@ def aplicar_estilos():
         [data-testid="stAppViewContainer"] {{
             background: radial-gradient(circle, #34495e 0%, #2c3e50 100%);
             background-attachment: fixed;
+        }}
+
+        /* Sidebar image - garantir que aparece acima */
+        [data-testid="stSidebar"] img {{
+            z-index: 1001 !important;
+            position: relative !important;
+            display: block !important;
+            margin-bottom: 10px !important;
         }}
 
         /* Marca de água da mascote */
