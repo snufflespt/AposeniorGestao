@@ -433,17 +433,21 @@ def delete_record(sheet_config: SheetConfig,
 def search_and_filter_dataframe(df: pd.DataFrame,
                                 search_text: str,
                                 search_columns: Optional[List[str]] = None,
-                                filters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
-    """Filter DataFrame based on search text and additional filters.
+                                filters: Optional[Dict[str, Any]] = None,
+                                limit: int = 50,
+                                offset: int = 0) -> pd.DataFrame:
+    """Filter DataFrame based on search text and additional filters with pagination.
 
     Args:
         df (pd.DataFrame): DataFrame to filter
         search_text (str): Text to search for
         search_columns (Optional[List[str]]): Columns to search in
         filters (Optional[Dict[str, Any]]): Additional filters
+        limit (int): Maximum number of records to return
+        offset (int): Number of records to skip
 
     Returns:
-        pd.DataFrame: Filtered DataFrame
+        pd.DataFrame: Filtered and paginated DataFrame
     """
     if df.empty:
         return df
@@ -469,7 +473,11 @@ def search_and_filter_dataframe(df: pd.DataFrame,
             if col in df_filtered.columns and value is not None:
                 df_filtered = df_filtered[df_filtered[col] == value]
 
-    return df_filtered
+    # Apply pagination
+    start_idx = offset * limit
+    end_idx = start_idx + limit
+
+    return df_filtered.iloc[start_idx:end_idx]
 
 
 def format_datetime_for_display(value: Any) -> str:

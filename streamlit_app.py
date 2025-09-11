@@ -5,7 +5,7 @@ from utils.ui import aplicar_estilos
 from secoes import utentes, turmas, professores, disciplinas, horarios
 from utils.sheets import get_worksheet
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=300)
 def get_dashboard_stats():
     """Obtém as estatísticas para o dashboard inicial a partir das folhas de cálculo."""
     try:

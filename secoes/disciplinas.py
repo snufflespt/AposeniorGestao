@@ -1,21 +1,11 @@
 import streamlit as st
 import pandas as pd
 import time
-import unicodedata
 from datetime import date
 from utils.sheets import get_worksheet
 from utils.ui import titulo_secao
 from utils.components import render_confirmation_dialog
-
-def normalize_string(s):
-    """Remove acentos e converte para minúsculas para comparação."""
-    if not s or not isinstance(s, str):
-        return ""
-    # Normaliza para a forma 'NFD' que separa caracteres e acentos, e converte para minúsculas
-    s = unicodedata.normalize('NFD', s.lower())
-    # Codifica para ASCII ignorando caracteres não-ASCII (os acentos) e depois descodifica
-    s = s.encode('ascii', 'ignore').decode('utf-8')
-    return s
+from utils.validation import normalize_string
 
 def mostrar_pagina():
     st.title("📚 Gestão de Disciplinas")
